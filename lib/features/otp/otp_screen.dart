@@ -6,6 +6,7 @@ import 'package:welcome_port/core/widgets/auth_header.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
 import 'package:welcome_port/core/widgets/wide_button.dart';
+import 'package:welcome_port/core/widgets/error_display.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/features/otp/otp_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -47,141 +48,141 @@ class OTPScreenContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AuthHeader(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 10),
-                Text(
-                  "Email Verification",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 10),
+          Expanded(
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    Text(
+                      "Email Verification",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
 
-                // Show error message if any
-                if (provider.error != null) ...[
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(12),
-                    margin: const EdgeInsets.only(bottom: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.red[50],
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.red[300]!),
-                    ),
-                    child: Text(
-                      provider.error!,
-                      style: TextStyle(color: Colors.red[700]),
-                    ),
-                  ),
-                ],
-                RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                    children: [
-                      TextSpan(text: "Please enter the code sent to "),
-                      TextSpan(
-                        text: email,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                    // Show error message if any
+                    if (provider.error != null)
+                      ErrorDisplay(
+                        message: provider.error!,
+                        margin: const EdgeInsets.only(bottom: 20),
                       ),
-                      TextSpan(text: " to verify your account"),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 22),
-                Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: PinCodeTextField(
-                    appContext: context,
-                    length: 6,
-                    controller: provider.otpController,
-                    onChanged:
-                        (value) => provider.setOtp(
-                          value: value,
-                          context: context,
-                          isEditProfile: isEditProfile,
-                          sharedProvider: sharedProvider,
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
                         ),
-                    autoDisposeControllers: false,
-                    keyboardType: TextInputType.number,
-                    animationType: AnimationType.fade,
-                    pinTheme: PinTheme(
-                      shape: PinCodeFieldShape.box,
-                      borderRadius: BorderRadius.circular(10),
-                      fieldHeight: 48,
-                      fieldWidth: 48,
-                      activeFillColor: Colors.white,
-                      inactiveFillColor: Colors.white,
-                      selectedFillColor: Colors.white,
-                      activeColor: AppColors.primaryColor,
-                      inactiveColor: Colors.grey[300]!,
-                      selectedColor: AppColors.primaryColor,
-                      borderWidth: 1,
-                    ),
-                    animationDuration: const Duration(milliseconds: 300),
-                    enableActiveFill: true,
-                    textStyle: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(l.didntReceiveCode, style: TextStyle(fontSize: 14)),
-                      const SizedBox(width: 5),
-                      InkwellWithOpacity(
-                        clickedOpacity: !provider.canResend ? 1 : 0.5,
-                        onTap: () => provider.resendOtp(context),
-                        child:
-                            provider.isResending
-                                ? const Loader(
-                                  color: AppColors.primaryColor,
-                                  size: 18,
-                                )
-                                : Text(
-                                  provider.canResend
-                                      ? l.resend
-                                      : l.resendIn(
-                                        provider.getFormattedRemainingTime(
-                                          context,
-                                        ),
-                                      ),
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        provider.canResend
-                                            ? AppColors.primaryColor
-                                            : null,
-                                  ),
-                                ),
+                        children: [
+                          TextSpan(text: "Please enter the code sent to "),
+                          TextSpan(
+                            text: email,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(text: " to verify your account"),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 22),
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: PinCodeTextField(
+                        appContext: context,
+                        length: 6,
+                        controller: provider.otpController,
+                        onChanged:
+                            (value) => provider.setOtp(
+                              value: value,
+                              context: context,
+                              sharedProvider: sharedProvider,
+                              isEditProfile: isEditProfile,
+                            ),
+                        autoDisposeControllers: false,
+                        keyboardType: TextInputType.number,
+                        animationType: AnimationType.fade,
+                        pinTheme: PinTheme(
+                          shape: PinCodeFieldShape.box,
+                          borderRadius: BorderRadius.circular(10),
+                          fieldHeight: 48,
+                          fieldWidth: 48,
+                          activeFillColor: Colors.white,
+                          inactiveFillColor: Colors.white,
+                          selectedFillColor: Colors.white,
+                          activeColor: AppColors.primaryColor,
+                          inactiveColor: Colors.grey[300]!,
+                          selectedColor: AppColors.primaryColor,
+                          borderWidth: 1,
+                        ),
+                        animationDuration: const Duration(milliseconds: 300),
+                        enableActiveFill: true,
+                        textStyle: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            l.didntReceiveCode,
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          const SizedBox(width: 5),
+                          InkwellWithOpacity(
+                            clickedOpacity: !provider.canResend ? 1 : 0.5,
+                            onTap: () => provider.resendOtp(context),
+                            child:
+                                provider.isResending
+                                    ? const Loader(
+                                      color: AppColors.primaryColor,
+                                      size: 18,
+                                    )
+                                    : Text(
+                                      provider.canResend
+                                          ? l.resend
+                                          : l.resendIn(
+                                            provider.getFormattedRemainingTime(
+                                              context,
+                                            ),
+                                          ),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color:
+                                            provider.canResend
+                                                ? AppColors.primaryColor
+                                                : null,
+                                      ),
+                                    ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                    WideButton(
+                      text: l.verify,
+                      isLoading: provider.isLoading,
+                      onPressed: () async {
+                        await provider.validateForm(
+                          context,
+                          sharedProvider: sharedProvider,
+                          isEditProfile: isEditProfile,
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 30),
+                  ],
                 ),
-                const SizedBox(height: 40),
-                WideButton(
-                  text: l.verify,
-                  isLoading: provider.isLoading,
-                  onPressed: () async {
-                    await provider.validateForm(
-                      context,
-                      isEditProfile: isEditProfile,
-                      sharedProvider: sharedProvider,
-                    );
-                  },
-                ),
-                const SizedBox(height: 30),
-              ],
+              ),
             ),
           ),
         ],

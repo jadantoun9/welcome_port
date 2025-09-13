@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
+import 'package:welcome_port/features/more/more_screen.dart';
 
 class NavScreen extends StatefulWidget {
   const NavScreen({super.key});
@@ -17,11 +18,9 @@ class _NavScreenState extends State<NavScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     // HomeScreen(),
     // CartScreen(),
-    // MoreScreen(),
     SizedBox(),
     SizedBox(),
-    SizedBox(),
-    SizedBox(),
+    MoreScreen(),
   ];
 
   @override
@@ -70,18 +69,8 @@ class CustomNavBar extends StatelessWidget {
         child: Row(
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(
-              index: 0,
-              iconPath: 'assets/icons/home.svg',
-              label: 'Home',
-              icon: null,
-            ),
-            _buildNavItem(
-              index: 1,
-              iconPath: 'assets/icons/cart.svg',
-              label: 'Cart',
-              icon: null,
-            ),
+            _buildNavItem(index: 0, label: 'Home', icon: Icons.home),
+            _buildNavItem(index: 1, label: 'Cart', icon: Icons.shopping_cart),
             _buildNavItem(index: 2, label: 'More', icon: Icons.menu),
           ],
         ),
@@ -126,9 +115,7 @@ class CustomNavBar extends StatelessWidget {
                               width: 24,
                               colorFilter: ColorFilter.mode(
                                 isSelected
-                                    ? selectedIndex == 2
-                                        ? Colors.black
-                                        : AppColors.primaryColor
+                                    ? AppColors.primaryColor
                                     : Colors.grey,
                                 BlendMode.srcIn,
                               ),
@@ -138,9 +125,7 @@ class CustomNavBar extends StatelessWidget {
                               icon,
                               color:
                                   isSelected
-                                      ? selectedIndex == 2
-                                          ? Colors.black
-                                          : AppColors.primaryColor
+                                      ? AppColors.primaryColor
                                       : Colors.grey,
                               size: 24,
                             ),
@@ -150,9 +135,7 @@ class CustomNavBar extends StatelessWidget {
                             style: TextStyle(
                               color:
                                   isSelected
-                                      ? selectedIndex == 2
-                                          ? Colors.black
-                                          : AppColors.primaryColor
+                                      ? AppColors.primaryColor
                                       : Colors.grey,
                               fontSize: 12,
                               fontWeight:

@@ -5,15 +5,22 @@ import 'package:welcome_port/core/helpers/error_helpers.dart';
 import 'package:welcome_port/core/helpers/singletons.dart';
 import 'package:welcome_port/core/models/setting.dart';
 
-class LoginService {
-  Future<Either<String, CustomerModel>> login({
-    required String email,
-    required String password,
+class ProfileService {
+  Future<Either<String, CustomerModel>> updateProfile({
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
   }) async {
     try {
-      final response = await Singletons.dio.post(
-        '/login',
-        data: {'email': email, 'password': password},
+      final response = await Singletons.dio.put(
+        '/account',
+        data: {
+          if (firstName != null) 'firstname': firstName,
+          if (lastName != null) 'lastname': lastName,
+          if (email != null) 'email': email,
+          if (phone != null) 'telephone': removePlus(phone),
+        },
       );
       final customer = CustomerModel.fromJson(
         response.data['data']['customer'],

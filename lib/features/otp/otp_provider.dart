@@ -41,8 +41,8 @@ class OtpProvider extends ChangeNotifier {
   void setOtp({
     required String value,
     required BuildContext context,
-    required bool isEditProfile,
     required SharedProvider sharedProvider,
+    required bool isEditProfile,
   }) {
     _otp = value;
     if (otpController.text != value) {
@@ -51,8 +51,8 @@ class OtpProvider extends ChangeNotifier {
     if (otpController.text.length == 6) {
       validateForm(
         context,
-        isEditProfile: isEditProfile,
         sharedProvider: sharedProvider,
+        isEditProfile: isEditProfile,
       );
     }
     setError(null);
@@ -131,8 +131,8 @@ class OtpProvider extends ChangeNotifier {
 
   Future validateForm(
     BuildContext context, {
-    required bool isEditProfile,
     required SharedProvider sharedProvider,
+    required bool isEditProfile,
   }) async {
     final l = AppLocalizations.of(context)!;
     if (_otp.length != 6) {
@@ -145,10 +145,16 @@ class OtpProvider extends ChangeNotifier {
 
     result.fold((error) => setError(error), (verResponse) async {
       sharedProvider.setCustomer(verResponse.customer);
+      if (verResponse.message != null && verResponse.message!.isNotEmpty) {
+        showSuccessMessage(context: context, message: verResponse.message!);
+      } else if (isEditProfile) {
+        showSuccessMessage(
+          context: context,
+          message: l.profileUpdatedSuccessfully,
+        );
+      }
       if (isEditProfile) {
-        if (verResponse.message != null) {
-          showSuccessMessage(context: context, message: verResponse.message!);
-        }
+        NavigationUtils.pop(context);
         NavigationUtils.pop(context);
       } else {
         NavigationUtils.clearAndPush(context, NavScreen());

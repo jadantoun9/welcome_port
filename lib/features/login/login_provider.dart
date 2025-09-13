@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/features/login/login_service.dart';
 import 'package:welcome_port/features/nav/nav_screen.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
@@ -68,7 +69,10 @@ class LoginProvider extends ChangeNotifier {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
-  Future validateForm(BuildContext context) async {
+  Future validateForm(
+    BuildContext context,
+    SharedProvider sharedProvider,
+  ) async {
     setEmailError(null);
     setPasswordError(null);
     setApiError(null);
@@ -105,6 +109,7 @@ class LoginProvider extends ChangeNotifier {
 
     result.fold((error) => setApiError(error), (response) {
       // Navigate to OTP screen for email verification
+      sharedProvider.setCustomer(response);
       NavigationUtils.push(context, NavScreen());
     });
     setLoading(false);

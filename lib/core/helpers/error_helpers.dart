@@ -101,3 +101,17 @@ String getMessageFromError(DioException exception) {
 
   return getDefaultErrorMessage();
 }
+
+String removePlus(String phoneNumber) {
+  if (phoneNumber.startsWith('+')) {
+    return phoneNumber.substring(1);
+  }
+  return phoneNumber;
+}
+
+String addPlus(String phoneNumber) {
+  if (phoneNumber.startsWith('+') || phoneNumber.isEmpty) {
+    return phoneNumber;
+  }
+  return '+$phoneNumber';
+}

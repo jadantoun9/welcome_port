@@ -1,3 +1,5 @@
+import 'package:welcome_port/core/helpers/error_helpers.dart';
+
 class Setting {
   final String activeLanguage;
   final List<LanguageModel> languages;
@@ -85,7 +87,7 @@ class CustomerModel {
       firstName: json['firstname'] ?? '',
       lastName: json['lastname'] ?? '',
       email: json['email'] ?? '',
-      phone: json['telephone'] ?? '',
+      phone: addPlus(json['telephone'] ?? ''),
       type: json['type'] ?? '',
       balance: int.tryParse(json['balance'].toString()) ?? 0,
       balanceFormatted: json['balance_formatted'] ?? '',

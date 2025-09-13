@@ -7,7 +7,6 @@ import 'package:welcome_port/core/helpers/singletons.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/show_update_dialog.dart';
-import 'package:welcome_port/features/login/login_screen.dart';
 import 'package:welcome_port/features/nav/nav_screen.dart';
 import 'package:welcome_port/features/splash/splash_service.dart';
 import 'package:welcome_port/features/splash/utils/utils.dart';
@@ -102,11 +101,7 @@ class SplashProvider extends ChangeNotifier {
 
       if (!context.mounted) return;
 
-      if (data.customer != null) {
-        NavigationUtils.pushReplacement(context, const NavScreen());
-      } else {
-        NavigationUtils.pushReplacement(context, const LoginScreen());
-      }
+      NavigationUtils.pushReplacement(context, const NavScreen());
     });
   }
 }

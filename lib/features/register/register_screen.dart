@@ -8,6 +8,7 @@ import 'package:welcome_port/core/widgets/custom_textfield.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/core/widgets/social_login_section.dart';
 import 'package:welcome_port/core/widgets/wide_button.dart';
+import 'package:welcome_port/core/widgets/error_display.dart';
 import 'package:welcome_port/features/login/login_screen.dart';
 import 'package:welcome_port/features/register/register_provider.dart';
 
@@ -72,22 +73,11 @@ class _RegisterScreenState extends State<RegisterContent> {
                     const SizedBox(height: 22),
 
                     // Show error message if any
-                    if (provider.registerError.isNotEmpty) ...[
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(12),
+                    if (provider.registerError.isNotEmpty)
+                      ErrorDisplay(
+                        message: provider.registerError,
                         margin: const EdgeInsets.only(bottom: 20),
-                        decoration: BoxDecoration(
-                          color: Colors.red[50],
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.red[300]!),
-                        ),
-                        child: Text(
-                          provider.registerError,
-                          style: TextStyle(color: Colors.red[700]),
-                        ),
                       ),
-                    ],
 
                     // Email field
                     CustomTextField(
@@ -148,7 +138,6 @@ class _RegisterScreenState extends State<RegisterContent> {
                     const SizedBox(height: 25),
                     WideButton(
                       text: l.register,
-                      isDisabled: provider.isLoading,
                       onPressed: () => provider.register(context),
                       isLoading: provider.isLoading,
                     ),

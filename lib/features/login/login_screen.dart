@@ -3,11 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
+import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/auth_header.dart';
 import 'package:welcome_port/core/widgets/custom_textfield.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/core/widgets/social_login_section.dart';
 import 'package:welcome_port/core/widgets/wide_button.dart';
+import 'package:welcome_port/core/widgets/error_display.dart';
+import 'package:welcome_port/features/forgot_password/forgot_password_screen.dart';
 import 'package:welcome_port/features/login/login_provider.dart';
 import 'package:welcome_port/features/register/register_screen.dart';
 
@@ -46,6 +49,7 @@ class _LoginContentState extends State<LoginContent> {
   Widget build(BuildContext context) {
     final provider = Provider.of<LoginProvider>(context);
     final l = AppLocalizations.of(context)!;
+    final sharedProvider = Provider.of<SharedProvider>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -71,22 +75,11 @@ class _LoginContentState extends State<LoginContent> {
                     const SizedBox(height: 22),
 
                     // Show API error message if any
-                    if (provider.apiError != null) ...[
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(12),
+                    if (provider.apiError != null)
+                      ErrorDisplay(
+                        message: provider.apiError!,
                         margin: const EdgeInsets.only(bottom: 20),
-                        decoration: BoxDecoration(
-                          color: Colors.red[50],
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.red[300]!),
-                        ),
-                        child: Text(
-                          provider.apiError!,
-                          style: TextStyle(color: Colors.red[700]),
-                        ),
                       ),
-                    ],
 
                     // Email field
                     CustomTextField(
@@ -128,7 +121,7 @@ class _LoginContentState extends State<LoginContent> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          // Handle forgot password
+                          NavigationUtils.push(context, ForgotPasswordScreen());
                         },
                         child: Text(
                           l.forgotPassword,
@@ -144,8 +137,8 @@ class _LoginContentState extends State<LoginContent> {
                     const SizedBox(height: 10),
                     WideButton(
                       text: l.login,
-                      isDisabled: provider.isLoading,
-                      onPressed: () => provider.validateForm(context),
+                      onPressed:
+                          () => provider.validateForm(context, sharedProvider),
                       isLoading: provider.isLoading,
                     ),
                     Padding(

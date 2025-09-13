@@ -1,0 +1,66 @@
+{
+  "noInternetConnection": "No Internet Connection",
+  "checkInternetConnection": "Please check your internet connection and try again.",
+  "error": "Error",
+  "ok": "OK",
+  "pleaseUpdateApp": "Please update your app.",
+  "updateNow": "Update Now",
+  "newUpdate": "New Update!",
+  "maybeLater": "Maybe Later",
+  "versionAvailable": "Version {version} is now available. {forceMessage}",
+  "@versionAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "forceMessage": {
+        "type": "String"
+      }
+    }
+  },
+  "didntReceiveCode": "Didn't receive the code?",
+  "resend": "Resend",
+  "resendIn": "Resend in {time}",
+  "@resendIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "verify": "Verify",
+  "enterValidOTP": "Please enter a valid 6-digit OTP",
+  "otpCodeResent": "OTP code has been resent successfully",
+  "emailUpdatedSuccessfully": "Email updated successfully",
+  "day": "day",
+  "days": "days",
+  "hour": "hour",
+  "hours": "hours",
+  "minute": "minute",
+  "minutes": "minutes",
+  "seconds": "seconds",
+  "pleaseEnterEmail": "Please enter your email",
+  "pleaseEnterValidEmail": "Please enter a valid email address",
+  "pleaseEnterPassword": "Please enter your password",
+  "passwordTooShort": "Password must be at least 6 characters",
+  "email": "Email",
+  "password": "Password",
+  "login": "Login",
+  "forgotPassword": "Forgot Password?",
+  "dontHaveAccount": "Don't have an account?",
+  "signUp": "Sign Up",
+  "registration": "Registration",
+  "confirmPassword": "Confirm Password",
+  "register": "Register",
+  "alreadyHaveAccount": "Already have an account?",
+  "logIn": "Log in",
+  "continueWithGoogle": "Continue with Google",
+  "continueWithApple": "Continue with Apple",
+  "or": "or",
+  "emailRequired": "Email is required",
+  "pleaseEnterValidEmailAddress": "Please enter a valid email",
+  "passwordRequired": "Password is required",
+  "passwordMinLength": "Password must be at least 6 characters",
+  "pleaseConfirmPassword": "Please confirm your password",
+  "passwordsDoNotMatch": "Passwords do not match"
+}

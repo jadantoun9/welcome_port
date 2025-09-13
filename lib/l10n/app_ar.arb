@@ -1,0 +1,66 @@
+{
+    "noInternetConnection": "لا يوجد اتصال بالإنترنت",
+    "checkInternetConnection": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
+    "error": "خطأ",
+    "ok": "موافق",
+    "pleaseUpdateApp": "يرجى تحديث التطبيق.",
+    "updateNow": "حدث الآن",
+    "newUpdate": "تحديث جديد!",
+    "maybeLater": "ربما لاحقاً",
+    "versionAvailable": "الإصدار {version} متاح الآن. {forceMessage}",
+    "@versionAvailable": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "forceMessage": {
+                "type": "String"
+            }
+        }
+    },
+    "didntReceiveCode": "لم تستلم الرمز؟",
+    "resend": "إعادة الإرسال",
+    "resendIn": "إعادة الإرسال خلال {time}",
+    "@resendIn": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "verify": "تحقق",
+    "enterValidOTP": "يرجى إدخال رمز تحقق صحيح مكون من 6 أرقام",
+    "otpCodeResent": "تم إعادة إرسال رمز التحقق بنجاح",
+    "emailUpdatedSuccessfully": "تم تحديث البريد الإلكتروني بنجاح",
+    "day": "يوم",
+    "days": "أيام",
+    "hour": "ساعة",
+    "hours": "ساعات",
+    "minute": "دقيقة",
+    "minutes": "دقائق",
+    "seconds": "ثواني",
+    "pleaseEnterEmail": "يرجى إدخال بريدك الإلكتروني",
+    "pleaseEnterValidEmail": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+    "pleaseEnterPassword": "يرجى إدخال كلمة المرور",
+    "passwordTooShort": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "login": "تسجيل الدخول",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "signUp": "إنشاء حساب",
+    "registration": "التسجيل",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "register": "تسجيل",
+    "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "logIn": "تسجيل الدخول",
+    "continueWithGoogle": "المتابعة مع جوجل",
+    "continueWithApple": "المتابعة مع آبل",
+    "or": "أو",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "pleaseEnterValidEmailAddress": "يرجى إدخال بريد إلكتروني صحيح",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "passwordMinLength": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+    "pleaseConfirmPassword": "يرجى تأكيد كلمة المرور",
+    "passwordsDoNotMatch": "كلمات المرور غير متطابقة"
+}

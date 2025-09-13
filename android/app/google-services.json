@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "25702481865",
+    "project_id": "welcome-port",
+    "storage_bucket": "welcome-port.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25702481865:android:70806cba42c5360d23b218",
+        "android_client_info": {
+          "package_name": "com.ipublish.welcomeport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25702481865-ldqjuk9j0vg2rrq6r7bp92jt9i4tpk01.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn1EOo0X6RHw098baklCG2dV27O88EVcc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "25702481865-ldqjuk9j0vg2rrq6r7bp92jt9i4tpk01.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "25702481865-bk57i4906hliak9uoi73eb4ovr9smbne.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ipublish.welcomeport"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

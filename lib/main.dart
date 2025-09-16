@@ -56,6 +56,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     return GetMaterialApp(
       key: ValueKey(provider.locale.languageCode),
+      locale: provider.locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,

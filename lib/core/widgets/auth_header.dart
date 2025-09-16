@@ -35,7 +35,8 @@ class AuthHeader extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => NavigationUtils.pop(context),
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.fromLTRB(8, 8, 25, 14),
                   child: const Icon(
                     Icons.arrow_back,
                     color: Colors.white,

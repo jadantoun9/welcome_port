@@ -60,13 +60,15 @@ class Setting {
   }
 }
 
+enum CustomerType { customer, agent }
+
 class CustomerModel {
   final int id;
   final String firstName;
   final String lastName;
   final String email;
   final String phone;
-  final String type;
+  final CustomerType type;
   final int balance;
   final String balanceFormatted;
 
@@ -88,7 +90,8 @@ class CustomerModel {
       lastName: json['lastname'] ?? '',
       email: json['email'] ?? '',
       phone: addPlus(json['telephone'] ?? ''),
-      type: json['type'] ?? '',
+      type:
+          json['type'] == 'agent' ? CustomerType.agent : CustomerType.customer,
       balance: int.tryParse(json['balance'].toString()) ?? 0,
       balanceFormatted: json['balance_formatted'] ?? '',
     );
@@ -98,35 +101,51 @@ class CustomerModel {
 class LanguageModel {
   final String code;
   final String name;
+  final String image;
 
-  LanguageModel({required this.code, required this.name});
+  LanguageModel({required this.code, required this.name, required this.image});
 
   factory LanguageModel.fromJson(Map<String, dynamic> json) {
-    return LanguageModel(code: json['code'] ?? '', name: json['name'] ?? '');
+    return LanguageModel(
+      code: json['code'] ?? '',
+      name: json['name'] ?? '',
+      image: json['image'] ?? '',
+    );
   }
 }
 
 class CurrencyModel {
   final String code;
   final String name;
+  final String image;
 
-  CurrencyModel({required this.code, required this.name});
+  CurrencyModel({required this.code, required this.name, required this.image});
 
   factory CurrencyModel.fromJson(Map<String, dynamic> json) {
-    return CurrencyModel(code: json['code'] ?? '', name: json['name'] ?? '');
+    return CurrencyModel(
+      code: json['code'] ?? '',
+      name: json['name'] ?? '',
+      image: json['image'] ?? '',
+    );
   }
 }
 
 class InformationModel {
   final int informationId;
   final String title;
+  final String image;
 
-  InformationModel({required this.informationId, required this.title});
+  InformationModel({
+    required this.informationId,
+    required this.title,
+    required this.image,
+  });
 
   factory InformationModel.fromJson(Map<String, dynamic> json) {
     return InformationModel(
       informationId: json['information_id'] ?? 0,
       title: json['title'] ?? '',
+      image: json['image'] ?? '',
     );
   }
 }

@@ -88,5 +88,29 @@
   "profileUpdatedSuccessfully": "Profile updated successfully!",
   "pleaseEnterFirstName": "Please enter first name",
   "pleaseEnterLastName": "Please enter last name",
-  "pleaseEnterValidPhoneNumber": "Please enter a valid phone number"
+  "pleaseEnterValidPhoneNumber": "Please enter a valid phone number",
+  "more": "More",
+  "welcomeGuest": "Welcome, Guest",
+  "welcomeUser": "Welcome, {name}",
+  "@welcomeUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "manageAccountPreferences": "Manage your account and preferences",
+  "pleaseLoginAccessFeatures": "Please login to access all features",
+  "account": "ACCOUNT",
+  "myAccount": "My Account",
+  "becomeAgent": "Become an Agent",
+  "preferences": "PREFERENCES",
+  "language": "Language",
+  "currency": "Currency",
+  "selectLanguage": "Select Language",
+  "selectCurrency": "Select Currency",
+  "confirm": "Confirm",
+  "areYouSureLogout": "Are you sure you want to Logout?",
+  "logout": "Logout",
+  "information": "INFORMATION"
 }

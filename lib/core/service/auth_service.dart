@@ -35,15 +35,4 @@ class AuthService {
       return Left(getDefaultErrorMessage());
     }
   }
-
-  static Future<Either<String, bool>> logOut() async {
-    try {
-      await Singletons.dio.post('/logout');
-      return const Right(true);
-    } on DioException catch (e) {
-      return Left(getMessageFromError(e));
-    } catch (e) {
-      return Left(getDefaultErrorMessage());
-    }
-  }
 }

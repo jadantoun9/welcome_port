@@ -88,5 +88,29 @@
     "profileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح!",
     "pleaseEnterFirstName": "يرجى إدخال الاسم الأول",
     "pleaseEnterLastName": "يرجى إدخال الاسم الأخير",
-    "pleaseEnterValidPhoneNumber": "يرجى إدخال رقم هاتف صحيح"
+    "pleaseEnterValidPhoneNumber": "يرجى إدخال رقم هاتف صحيح",
+    "more": "المزيد",
+    "welcomeGuest": "مرحباً، ضيف",
+    "welcomeUser": "مرحباً، {name}",
+    "@welcomeUser": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "manageAccountPreferences": "إدارة حسابك وتفضيلاتك",
+    "pleaseLoginAccessFeatures": "يرجى تسجيل الدخول للوصول إلى جميع الميزات",
+    "account": "الحساب",
+    "myAccount": "حسابي",
+    "becomeAgent": "كن وكيلاً",
+    "preferences": "التفضيلات",
+    "language": "اللغة",
+    "currency": "العملة",
+    "selectLanguage": "اختر اللغة",
+    "selectCurrency": "اختر العملة",
+    "confirm": "تأكيد",
+    "areYouSureLogout": "هل أنت متأكد من تسجيل الخروج؟",
+    "logout": "تسجيل الخروج",
+    "information": "المعلومات"
 }

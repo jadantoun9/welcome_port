@@ -6,6 +6,7 @@ import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
+import 'package:welcome_port/features/become_an_agent/become_an_agent_screen.dart';
 import 'package:welcome_port/features/info/info_screen.dart';
 import 'package:welcome_port/features/login/login_screen.dart';
 import 'package:welcome_port/features/more/more_provider.dart';
@@ -184,7 +185,12 @@ class MoreContent extends StatelessWidget {
                           svgPath: 'assets/icons/handshake4.svg',
                           iconPadding: 9,
                           title: l10n.becomeAgent,
-                          onTap: () {},
+                          onTap: () {
+                            NavigationUtils.push(
+                              context,
+                              BecomeAnAgentScreen(),
+                            );
+                          },
                         ),
                       ],
                       if (isLoggedIn) ...[

@@ -42,7 +42,7 @@ class InfoScreenContent extends StatelessWidget {
       ),
       body:
           provider.isLoading
-              ? const Center(child: Loader())
+              ? const Center(child: Loader(color: Colors.black))
               : SafeArea(
                 child: SingleChildScrollView(
                   child: Padding(

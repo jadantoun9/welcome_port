@@ -7,7 +7,7 @@ import 'package:welcome_port/core/helpers/singletons.dart';
 class RegisterService {
   Future<Either<String, Unit>> register(String email, String password) async {
     try {
-      final response = await Singletons.dio.post(
+       await Singletons.dio.post(
         '/register',
         data: {
           'email': email,
@@ -16,10 +16,8 @@ class RegisterService {
           'type': 'customer',
         },
       );
-      print(response.data);
       return const Right(unit);
     } on DioException catch (e) {
-      print(e.toString());
       return Left(getMessageFromError(e));
     } catch (e) {
       debugPrint('Registration error: ${e.toString()}');

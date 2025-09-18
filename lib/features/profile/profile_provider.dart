@@ -51,7 +51,6 @@ class ProfileProvider extends ChangeNotifier {
     required SharedProvider sharedProvider,
   }) async {
     final l = AppLocalizations.of(context)!;
-
     // Check if form is valid
     if (!formKey.currentState!.validate()) {
       return;

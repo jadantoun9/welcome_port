@@ -171,7 +171,7 @@ class _ProfileScreenState extends State<_ProfileContent> {
                               sharedProvider: sharedProvider,
                             ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),

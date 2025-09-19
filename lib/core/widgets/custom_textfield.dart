@@ -14,6 +14,7 @@ class CustomTextField extends StatefulWidget {
   final Function(String)? onChanged;
   final String? errorText;
   final int? maxLines;
+  final bool readOnly;
 
   const CustomTextField({
     Key? key,
@@ -28,6 +29,7 @@ class CustomTextField extends StatefulWidget {
     this.onChanged,
     this.errorText,
     this.maxLines,
+    this.readOnly = false,
   }) : super(key: key);
 
   @override
@@ -50,6 +52,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             focusNode: widget.focusNode,
             obscureText: widget.obscureText,
             maxLines: widget.maxLines ?? 1,
+            readOnly: widget.readOnly,
             onTapOutside: (event) {
               widget.focusNode.unfocus();
               setState(() {});

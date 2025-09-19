@@ -24,7 +24,7 @@ class BecomeAnAgentService {
           'email': email,
           'firstname': firstName,
           'lastname': lastName,
-          'telephone': phone,
+          'telephone': removePlus(phone),
           'password': password,
           'confirm': password,
           'type': 'agent',

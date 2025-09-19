@@ -70,7 +70,7 @@ class CustomNavBar extends StatelessWidget {
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildNavItem(index: 0, label: 'Home', icon: Icons.home),
-            _buildNavItem(index: 1, label: 'Cart', icon: Icons.shopping_cart),
+            _buildNavItem(index: 1, label: 'Wallet', icon: Icons.wallet),
             _buildNavItem(index: 2, label: 'More', icon: Icons.menu),
           ],
         ),

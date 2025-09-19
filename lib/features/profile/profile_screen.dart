@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/auth_header.dart';
 import 'package:welcome_port/core/widgets/custom_textfield.dart';
@@ -36,6 +37,7 @@ class _ProfileScreenState extends State<_ProfileContent> {
     final provider = Provider.of<ProfileProvider>(context);
     final sharedProvider = Provider.of<SharedProvider>(context);
     final l = AppLocalizations.of(context)!;
+    final isAgent = sharedProvider.customer?.type == CustomerType.agent;
 
     if (provider.updateProfileError != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -79,6 +81,37 @@ class _ProfileScreenState extends State<_ProfileContent> {
                         l.updatePersonalDetails,
                         style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       ),
+                      if (isAgent) ...[
+                        const SizedBox(height: 8),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.blue[200]!),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                color: Colors.blue[600],
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  l.profileReadOnlyForAgents,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.blue[700],
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 24),
 
                       // First Name and Last Name row
@@ -90,6 +123,7 @@ class _ProfileScreenState extends State<_ProfileContent> {
                               focusNode: provider.firstNameFocusNode,
                               hintText: l.firstName,
                               icon: Icons.person,
+                              readOnly: isAgent,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return l.pleaseEnterFirstName;
@@ -105,6 +139,7 @@ class _ProfileScreenState extends State<_ProfileContent> {
                               focusNode: provider.lastNameFocusNode,
                               hintText: l.lastName,
                               icon: Icons.person,
+                              readOnly: isAgent,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return l.pleaseEnterLastName;
@@ -124,6 +159,7 @@ class _ProfileScreenState extends State<_ProfileContent> {
                         hintText: l.email,
                         icon: Icons.email,
                         keyboardType: TextInputType.emailAddress,
+                        readOnly: isAgent,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return null;
@@ -146,6 +182,7 @@ class _ProfileScreenState extends State<_ProfileContent> {
                         value: provider.phoneController.text,
                         focusNode: provider.phoneFocusNode,
                         placeholder: l.phoneNumber,
+                        readOnly: isAgent,
                         validator: (value) {
                           // Phone number is optional, but if provided, validate it
                           if (value == null || value.number.isEmpty) {
@@ -161,16 +198,18 @@ class _ProfileScreenState extends State<_ProfileContent> {
                         },
                       ),
                       Expanded(child: Container()),
-                      // Save button
-                      WideButton(
-                        text: l.saveChanges,
-                        isLoading: provider.updateProfileLoading,
-                        onPressed:
-                            () => provider.updateProfile(
-                              context: context,
-                              sharedProvider: sharedProvider,
-                            ),
-                      ),
+                      // Save button - hidden for agents
+                      if (!isAgent) ...[
+                        WideButton(
+                          text: l.saveChanges,
+                          isLoading: provider.updateProfileLoading,
+                          onPressed:
+                              () => provider.updateProfile(
+                                context: context,
+                                sharedProvider: sharedProvider,
+                              ),
+                        ),
+                      ],
                       const SizedBox(height: 20),
                     ],
                   ),

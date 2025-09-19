@@ -71,6 +71,11 @@ class CustomerModel {
   final CustomerType type;
   final int balance;
   final String balanceFormatted;
+  final String? companyName;
+  final String? companyAddress;
+  final String? companyTelephone;
+  final String? companyEmail;
+  final String? companyLogo;
 
   CustomerModel({
     required this.id,
@@ -81,6 +86,11 @@ class CustomerModel {
     required this.type,
     required this.balance,
     required this.balanceFormatted,
+    this.companyName,
+    this.companyAddress,
+    this.companyTelephone,
+    this.companyEmail,
+    this.companyLogo,
   });
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
@@ -90,10 +100,17 @@ class CustomerModel {
       lastName: json['lastname'] ?? '',
       email: json['email'] ?? '',
       phone: addPlus(json['telephone'] ?? ''),
-      type:
-          json['type'] == 'agent' ? CustomerType.agent : CustomerType.customer,
+      type: json['type'] == 'b2b' ? CustomerType.agent : CustomerType.customer,
       balance: int.tryParse(json['balance'].toString()) ?? 0,
       balanceFormatted: json['balance_formatted'] ?? '',
+      companyName: json['company']?['name'],
+      companyAddress: json['company']?['address'],
+      companyTelephone:
+          json['company']?['telephone'] != null
+              ? addPlus(json['company']['telephone'])
+              : null,
+      companyEmail: json['company']?['email'],
+      companyLogo: json['company']?['logo'],
     );
   }
 }

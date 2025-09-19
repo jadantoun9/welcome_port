@@ -12,6 +12,7 @@ class PhoneNumberField extends StatefulWidget {
   final String? value;
   final FocusNode focusNode;
   final String? Function(PhoneNumber?)? validator;
+  final bool readOnly;
 
   const PhoneNumberField({
     super.key,
@@ -21,6 +22,7 @@ class PhoneNumberField extends StatefulWidget {
     this.errorText,
     this.value,
     this.validator,
+    this.readOnly = false,
   });
 
   @override
@@ -50,6 +52,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
               initialValue: widget.value,
               focusNode: widget.focusNode,
               countries: countries,
+              readOnly: widget.readOnly,
               buildCounter:
                   (
                     context, {

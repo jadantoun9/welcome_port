@@ -110,6 +110,7 @@ class LoginProvider extends ChangeNotifier {
     result.fold((error) => setApiError(error), (response) {
       // Navigate to OTP screen for email verification
       sharedProvider.setCustomer(response);
+      sharedProvider.setSelectedIndex(0);
       NavigationUtils.push(context, NavScreen());
     });
     setLoading(false);

@@ -7,6 +7,7 @@ import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/features/become_an_agent/become_an_agent_screen.dart';
+import 'package:welcome_port/features/company_info/company_info_screen.dart';
 import 'package:welcome_port/features/info/info_screen.dart';
 import 'package:welcome_port/features/login/login_screen.dart';
 import 'package:welcome_port/features/more/more_provider.dart';
@@ -178,6 +179,15 @@ class MoreContent extends StatelessWidget {
                                 context,
                                 ProfileScreen(),
                               ),
+                        ),
+                      ],
+                      if (isLoggedIn && isAgent) ...[
+                        MenuButton(
+                          icon: Icons.business,
+                          title: l10n.companyInfo,
+                          onTap: () {
+                            NavigationUtils.push(context, CompanyInfoScreen());
+                          },
                         ),
                       ],
                       if (!isLoggedIn || !isAgent) ...[

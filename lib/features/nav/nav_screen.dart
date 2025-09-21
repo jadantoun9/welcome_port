@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
+import 'package:welcome_port/features/book/home/home_screen.dart';
 import 'package:welcome_port/features/more/more_screen.dart';
 
 class NavScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class NavScreen extends StatefulWidget {
 
 class _NavScreenState extends State<NavScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
-    // HomeScreen(),
+    HomeScreen(),
     // CartScreen(),
     SizedBox(),
     SizedBox(),

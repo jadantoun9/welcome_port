@@ -42,62 +42,43 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: TextFormField(
-            controller: widget.controller,
-            focusNode: widget.focusNode,
-            obscureText: widget.obscureText,
-            maxLines: widget.maxLines ?? 1,
-            readOnly: widget.readOnly,
-            onTapOutside: (event) {
-              widget.focusNode.unfocus();
-              setState(() {});
-            },
-            onTap: () => setState(() {}),
-            onChanged: widget.onChanged,
-            keyboardType: widget.keyboardType,
-            validator: widget.validator,
-            decoration: InputDecoration(
-              hintText: widget.hintText,
-              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
-              prefixIcon: Icon(
-                widget.icon,
-                color:
-                    widget.focusNode.hasFocus
-                        ? AppColors.primaryColor
-                        : Colors.grey[400],
-                size: 22,
-              ),
-              suffixIcon: widget.suffixIcon,
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red, width: 1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red, width: 2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 15,
-              ),
+        TextFormField(
+          controller: widget.controller,
+          focusNode: widget.focusNode,
+          obscureText: widget.obscureText,
+          maxLines: widget.maxLines ?? 1,
+          readOnly: widget.readOnly,
+          onTapOutside: (event) {
+            widget.focusNode.unfocus();
+            setState(() {});
+          },
+          onTap: () => setState(() {}),
+          onChanged: widget.onChanged,
+          keyboardType: widget.keyboardType,
+          validator: widget.validator,
+          decoration: InputDecoration(
+            hintText: widget.hintText,
+            hintStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
+            prefixIcon: Icon(
+              widget.icon,
+              color:
+                  widget.focusNode.hasFocus
+                      ? AppColors.primaryColor
+                      : Colors.grey[400],
+              size: 22,
             ),
+            suffixIcon: widget.suffixIcon,
+            border: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            focusedErrorBorder: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 15,
+            ),
+            filled: true,
+            fillColor: Colors.transparent,
           ),
         ),
         if (widget.errorText != null) ...[

@@ -9,7 +9,6 @@ class SplashService {
   Future<Either<String, Setting>> getSetting() async {
     try {
       final response = await Singletons.dio.get('/setting');
-      print(response.data);
       return Right(Setting.fromJson(response.data['data']));
     } on DioException catch (e) {
       return Left(getMessageFromError(e));

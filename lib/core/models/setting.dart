@@ -7,6 +7,7 @@ class Setting {
   final List<CurrencyModel> currencies;
   final String logo;
   final int privacyPolicy;
+  final String gmApiKey;
   final int termsAndConditions;
   final List<InformationModel> information;
   final UpdateModel? update;
@@ -19,6 +20,7 @@ class Setting {
     required this.currencies,
     required this.logo,
     required this.privacyPolicy,
+    required this.gmApiKey,
     required this.termsAndConditions,
     required this.information,
     required this.update,
@@ -42,6 +44,7 @@ class Setting {
                   .toList()
               : [],
       logo: json['logo'] ?? '',
+      gmApiKey: json['gmak'] ?? '',
       privacyPolicy: json['privacy_policy'] ?? 0,
       termsAndConditions: json['terms_and_confitions'] ?? 0,
       information:

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/widgets/show_error_toast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DateTimePickerScreen extends StatefulWidget {
   final DateTime? initialDate;
@@ -57,9 +58,9 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
           icon: const Icon(Icons.close, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Date & Time',
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context)!.dateAndTime,
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 22,
             fontWeight: FontWeight.w600,
@@ -138,9 +139,9 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
                   // ),
                   child: Row(
                     children: [
-                      const Text(
-                        'Time',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.time,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
@@ -150,7 +151,7 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
                       Text(
                         _selectedTime != null
                             ? _selectedTime!.format(context)
-                            : 'Select time',
+                            : AppLocalizations.of(context)!.selectTime,
                         style: TextStyle(
                           fontSize: 16,
                           color:
@@ -188,9 +189,9 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.cancel,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -208,9 +209,9 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
-                        'Confirm',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.confirm,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
@@ -261,14 +262,17 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
                   children: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      child: Text(
+                        AppLocalizations.of(context)!.cancel,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
-                    const Text(
-                      'Select Time',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.selectTime,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
@@ -277,9 +281,9 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text(
-                        'Done',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.done,
+                        style: const TextStyle(
                           fontSize: 16,
                           color: AppColors.primaryColor,
                           fontWeight: FontWeight.w600,
@@ -320,7 +324,10 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
 
   void _confirmSelection() {
     if (_selectedTime == null) {
-      showErrorToast(context, 'Please select a time');
+      showErrorToast(
+        context,
+        AppLocalizations.of(context)!.validationErrorSelectTime,
+      );
       return;
     }
 

@@ -76,7 +76,6 @@
   "newPasswordRequired": "New Password is required",
   "passwordMustBeAtLeast6": "Password must be at least 6 characters",
   "confirmPasswordRequired": "Confirm password is required",
-  "passwordsDoNotMatch": "Passwords do not match",
   "editProfile": "Edit Profile",
   "personalInformation": "Personal Information",
   "updatePersonalDetails": "Update your personal details below",
@@ -162,8 +161,135 @@
   "failedSelectImageDifferentFormat": "Failed to select image. Please try a different format",
   "documentUploaded": "Document uploaded successfully",
   "tapToUploadPhoto": "Tap to upload photo",
-  "companyLogo": "Company Logo",
   "address": "Address",
   "telephone": "Telephone",
-  "logo": "Logo"
+  "logo": "Logo",
+  "bookTransfer": "Book Transfer",
+  "quickEasyAirportTransfers": "Quick and easy airport transfers",
+  "fromAirport": "From Airport",
+  "toAirport": "To Airport",
+  "tripType": "Trip Type",
+  "oneWay": "One Way",
+  "roundTrip": "Round Trip",
+  "pickupAirport": "Pickup Airport",
+  "pickupLocation": "Pick Up Location",
+  "selectAirport": "Select Airport",
+  "searchLocation": "Search Location",
+  "destinationLocation": "Destination Location",
+  "destinationAirport": "Destination Airport",
+  "flightArrival": "Flight Arrival",
+  "flightDeparture": "Flight Departure",
+  "returnFlight": "Return Flight",
+  "selectDateAndTime": "Select Date & Time",
+  "selectReturnDateAndTime": "Select Return Date & Time",
+  "passengers": "Passengers",
+  "adults": "Adults",
+  "adultsAge": "(16+ years)",
+  "children": "Children",
+  "childrenAge": "(2-15 years)",
+  "infants": "Infants",
+  "infantsAge": "(0-2 years)",
+  "searchBooking": "Search Booking",
+  "haveCoupon": "Have a coupon?",
+  "applyCoupon": "Apply Coupon",
+  "couponApplied": "Coupon \"{coupon}\" applied",
+  "@couponApplied": {
+    "placeholders": {
+      "coupon": {
+        "type": "String"
+      }
+    }
+  },
+  "couponSuccess": "Coupon applied successfully!",
+  "dateAndTime": "Date & Time",
+  "time": "Time",
+  "selectTime": "Select Time",
+  "cancel": "Cancel",
+  "done": "Done",
+  "searchResults": "SEARCH RESULTS",
+  "noLocationsFound": "No locations found",
+  "noAirportsFound": "No airports found",
+  "popularLocations": "POPULAR LOCATIONS",
+  "typeCityOrAirport": "Type city or airport",
+  "validationErrorSelectPickupDestination": "Please select pickup and destination locations",
+  "validationErrorSelectFlightDate": "Please select flight date",
+  "validationErrorSelectReturnDate": "Please select return flight date",
+  "validationErrorReturnDateAfterFlight": "Return date must be after flight date",
+  "validationErrorAtLeastOneAdult": "At least 1 adult passenger is required",
+  "validationErrorSelectTime": "Please select a time",
+  "availableVehicles": "Available Vehicles",
+  "optionsFound": "{count} options found",
+  "@optionsFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sessionExpired": "Session Expired",
+  "sessionExpiredDescription": "Your search session has expired. Please search again to see the most up-to-date vehicle availability and pricing.",
+  "searchAgain": "Search Again",
+  "noVehiclesAvailable": "No Vehicles Available",
+  "noVehiclesDescription": "We couldn't find any vehicles for your selected route and time. Please try adjusting your search criteria.",
+  "tryAgain": "Try Again",
+  "sortByPrice": "Sort by Price",
+  "highToLow": "High to Low",
+  "lowToHigh": "Low to High",
+  "totalPrice": "Total Price",
+  "bookThisVehicle": "Book This Vehicle",
+  "shared": "Shared",
+  "bookingDetails": "Booking Details",
+  "customerInformation": "Customer Information",
+  "childrenAndInfantsAges": "Children & Infants Ages",
+  "specifyChildrenAges": "Please specify ages for each child and infant",
+  "infantsSection": "Infants",
+  "childrenSection": "Children",
+  "infantAge": "Infant {number} Age",
+  "@infantAge": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "childAge": "Child {number} Age",
+  "@childAge": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "selectAge": "Select age",
+  "departureInformation": "Departure Information",
+  "returnInformation": "Return Information",
+  "from": "From",
+  "to": "To",
+  "pickupDate": "Pick up date",
+  "flightNumber": "Flight Number",
+  "addressDetails": "Address Details",
+  "continueToPayment": "Continue to Payment",
+  "pleaseEnterCouponCode": "Please enter a coupon code",
+  "enterCouponCode": "Enter Coupon Code",
+  "enterCouponCodeDescription": "Enter your coupon code to get a discount",
+  "apply": "Apply",
+  "pleaseEnterCoupon": "Please enter a coupon code",
+  "pleaseEnterRequiredFields": "Please fill in all required fields",
+  "fieldIsRequired": "{field} is required",
+  "@fieldIsRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "invalidEmail": "Please enter a valid email address",
+  "ageIsRequired": "{field} age is required",
+  "@ageIsRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  }
 }

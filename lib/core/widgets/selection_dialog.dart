@@ -124,13 +124,16 @@ Widget _buildSelectionItem(
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color:
-                          isSelected
-                              ? AppColors.primaryColor
-                              : Colors.grey[300],
+                      // shape: BoxShape.circle,
+                      // color:
+                      //     isSelected
+                      //         ? AppColors.primaryColor
+                      //         : Colors.grey[300],
                     ),
-                    child: CustomCachedImage(imageUrl: item.icon),
+                    child: CustomCachedImage(
+                      imageUrl: item.icon,
+                      contain: true,
+                    ),
                   ),
                   const SizedBox(width: 12),
                 ],

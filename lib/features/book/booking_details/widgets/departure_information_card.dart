@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/features/book/booking_details/booking_details_provider.dart';
 import 'package:welcome_port/features/book/booking_details/widgets/flight_picker_screen.dart';
@@ -53,8 +54,10 @@ class DepartureReturnCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  isDeparture ? 'Departure Information' : 'Return Information',
-                  style: TextStyle(
+                  isDeparture
+                      ? AppLocalizations.of(context)!.departureInformation
+                      : AppLocalizations.of(context)!.returnInformation,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
@@ -67,7 +70,7 @@ class DepartureReturnCard extends StatelessWidget {
             // Origin Section
             _buildLocationSection(
               context: context,
-              title: 'From',
+              title: AppLocalizations.of(context)!.from,
               // origin of return is the destination of departure (the one object returned represents departure)
               location:
                   isDeparture
@@ -81,7 +84,7 @@ class DepartureReturnCard extends StatelessWidget {
             // Destination Section
             _buildLocationSection(
               context: context,
-              title: 'To',
+              title: AppLocalizations.of(context)!.to,
               // destination of return is the origin of departure (the one object returned represents departure)
               location:
                   isDeparture
@@ -169,10 +172,10 @@ class DepartureReturnCard extends StatelessWidget {
                     isDeparture
                         ? provider.departureDateController
                         : provider.returnDateController,
-                label: 'Pick up date',
+                label: AppLocalizations.of(context)!.pickupDate,
                 icon: Icons.calendar_today,
                 backgroundColor: Colors.white,
-                placeholder: 'Pick up date',
+                placeholder: AppLocalizations.of(context)!.pickupDate,
                 onClick: () async {
                   provider.onPickUpDateClick(context, isDeparture);
                 },

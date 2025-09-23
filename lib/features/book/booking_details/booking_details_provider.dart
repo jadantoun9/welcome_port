@@ -303,7 +303,7 @@ class BookingDetailsProvider extends ChangeNotifier {
       );
       return;
     }
-    final result = await bookingDetailsService.book(
+    final result = await bookingDetailsService.preBook(
       title: selectedTitle,
       firstName: firstNameController.text,
       lastName: lastNameController.text,
@@ -338,10 +338,26 @@ class BookingDetailsProvider extends ChangeNotifier {
           context,
         ).showSnackBar(SnackBar(content: Text(error)));
       },
-      (success) {
+      (success) async {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(success.toString())));
+
+        final result = await bookingDetailsService.book(
+          flightNumberController.text,
+        );
+        result.fold(
+          (error) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(error)));
+          },
+          (success) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(success.toString())));
+          },
+        );
       },
     );
   }

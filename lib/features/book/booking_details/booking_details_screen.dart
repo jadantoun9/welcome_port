@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/features/book/booking_details/booking_details_provider.dart';
 import 'package:welcome_port/features/book/booking_details/widgets/continue_button.dart';
@@ -75,9 +76,9 @@ class _BookingDetailsContent extends StatelessWidget {
                 ),
                 const Spacer(),
                 // Title
-                const Text(
-                  'Booking Details',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.bookingDetails,
+                  style: const TextStyle(
                     fontSize: 21,
                     fontWeight: FontWeight.w600,
                     color: Colors.black,

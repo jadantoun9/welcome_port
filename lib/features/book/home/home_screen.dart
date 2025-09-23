@@ -13,6 +13,8 @@ import 'package:welcome_port/features/book/home/home_provider.dart';
 import 'package:welcome_port/features/book/home/widgets/date_time_picker_screen.dart';
 import 'package:welcome_port/features/book/home/widgets/location_picker_screen.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
+import 'package:welcome_port/core/widgets/coupon_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -48,7 +50,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                 children: [
                   // Header
                   Text(
-                    'Book Transfer',
+                    AppLocalizations.of(context)!.bookTransfer,
                     style: TextStyle(
                       color: Colors.grey[100],
                       fontSize: 26,
@@ -56,9 +58,9 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Quick and easy airport transfers',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  Text(
+                    AppLocalizations.of(context)!.quickEasyAirportTransfers,
+                    style: const TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                   const SizedBox(height: 30),
 
@@ -90,11 +92,15 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
 
                   // Search Button
                   WideButton(
-                    text: 'Search Booking',
+                    text: AppLocalizations.of(context)!.searchBooking,
                     onPressed: () => provider.handleSearch(context, provider),
                     isLoading: provider.isLoading,
                     bgColor: Colors.amber,
                   ),
+                  const SizedBox(height: 16),
+
+                  // Coupon Section
+                  _buildCouponSection(provider),
                   const SizedBox(height: 20),
                 ],
               ),
@@ -118,7 +124,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
             child: _buildDirectionOption(
               provider,
               TripDirection.fromAirport,
-              'From Airport',
+              AppLocalizations.of(context)!.fromAirport,
               Icons.flight_takeoff,
             ),
           ),
@@ -126,7 +132,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
             child: _buildDirectionOption(
               provider,
               TripDirection.toAirport,
-              'To Airport',
+              AppLocalizations.of(context)!.toAirport,
               Icons.flight_land,
             ),
           ),
@@ -178,7 +184,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
 
   Widget _buildTripTypeSelector(HomeProvider provider) {
     return InputContainer(
-      label: 'Trip Type',
+      label: AppLocalizations.of(context)!.tripType,
       child: DropdownButtonFormField<TripType>(
         value: provider.tripType,
         decoration: InputDecoration(
@@ -198,7 +204,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
               children: [
                 Icon(Icons.flight, color: Colors.grey[600], size: 20),
                 const SizedBox(width: 12),
-                const Text('One Way'),
+                Text(AppLocalizations.of(context)!.oneWay),
               ],
             ),
           ),
@@ -208,7 +214,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
               children: [
                 Icon(Icons.swap_horiz, color: Colors.grey[600], size: 20),
                 const SizedBox(width: 12),
-                const Text('Round Trip'),
+                Text(AppLocalizations.of(context)!.roundTrip),
               ],
             ),
           ),
@@ -233,12 +239,12 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           sharedProvider,
           label:
               provider.tripDirection == TripDirection.fromAirport
-                  ? 'Pickup Airport'
-                  : 'Pick Up Location',
+                  ? AppLocalizations.of(context)!.pickupAirport
+                  : AppLocalizations.of(context)!.pickupLocation,
           hintText:
               provider.tripDirection == TripDirection.fromAirport
-                  ? 'Select Airport'
-                  : 'Search Location',
+                  ? AppLocalizations.of(context)!.selectAirport
+                  : AppLocalizations.of(context)!.searchLocation,
           controller: provider.pickupController,
           focusNode: provider.pickupFocus,
           isAirport: provider.tripDirection == TripDirection.fromAirport,
@@ -254,12 +260,12 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           sharedProvider,
           label:
               provider.tripDirection == TripDirection.fromAirport
-                  ? 'Destination Location'
-                  : 'Destination Airport',
+                  ? AppLocalizations.of(context)!.destinationLocation
+                  : AppLocalizations.of(context)!.destinationAirport,
           hintText:
               provider.tripDirection == TripDirection.fromAirport
-                  ? 'Search Location'
-                  : 'Select Airport',
+                  ? AppLocalizations.of(context)!.searchLocation
+                  : AppLocalizations.of(context)!.selectAirport,
           controller: provider.destinationController,
           focusNode: provider.destinationFocus,
           isAirport: provider.tripDirection == TripDirection.toAirport,
@@ -334,8 +340,8 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
     return InputContainer(
       label:
           provider.tripDirection == TripDirection.fromAirport
-              ? 'Flight Arrival'
-              : 'Flight Departure',
+              ? AppLocalizations.of(context)!.flightArrival
+              : AppLocalizations.of(context)!.flightDeparture,
       child: InkwellWithOpacity(
         onTap: () async {
           final DateTime? newSelectedDateTime =
@@ -361,7 +367,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                               provider.flightDate!.minute == 0
                           ? '${provider.flightDate!.day}/${provider.flightDate!.month}/${provider.flightDate!.year}'
                           : '${provider.flightDate!.day}/${provider.flightDate!.month}/${provider.flightDate!.year} ${provider.flightDate!.hour.toString().padLeft(2, '0')}:${provider.flightDate!.minute.toString().padLeft(2, '0')}')
-                      : 'Select Date & Time',
+                      : AppLocalizations.of(context)!.selectDateAndTime,
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
               ),
@@ -374,7 +380,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
 
   Widget _buildReturnDateField(HomeProvider provider) {
     return InputContainer(
-      label: 'Return Flight',
+      label: AppLocalizations.of(context)!.returnFlight,
       child: InkWell(
         onTap: () async {
           final DateTime? newSelectedDateTime =
@@ -403,7 +409,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                               provider.returnFlightDate!.minute == 0
                           ? '${provider.returnFlightDate!.day}/${provider.returnFlightDate!.month}/${provider.returnFlightDate!.year}'
                           : '${provider.returnFlightDate!.day}/${provider.returnFlightDate!.month}/${provider.returnFlightDate!.year} ${provider.returnFlightDate!.hour.toString().padLeft(2, '0')}:${provider.returnFlightDate!.minute.toString().padLeft(2, '0')}')
-                      : 'Select Return Date & Time',
+                      : AppLocalizations.of(context)!.selectReturnDateAndTime,
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
               ),
@@ -425,7 +431,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Passengers',
+            AppLocalizations.of(context)!.passengers,
             style: TextStyle(
               color: Colors.grey[600],
               fontSize: 14,
@@ -434,24 +440,24 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           ),
           const SizedBox(height: 16),
           _buildPassengerCounter(
-            'Adults',
-            '(16+ years)',
+            AppLocalizations.of(context)!.adults,
+            AppLocalizations.of(context)!.adultsAge,
             provider.adults,
             (count) => provider.setAdults(count),
             Icons.person,
           ),
           const SizedBox(height: 16),
           _buildPassengerCounter(
-            'Children',
-            '(2-15 years)',
+            AppLocalizations.of(context)!.children,
+            AppLocalizations.of(context)!.childrenAge,
             provider.children,
             (count) => provider.setChildren(count),
             Icons.child_care,
           ),
           const SizedBox(height: 16),
           _buildPassengerCounter(
-            'Infants',
-            '(0-2 years)',
+            AppLocalizations.of(context)!.infants,
+            AppLocalizations.of(context)!.infantsAge,
             provider.babies,
             (count) => provider.setBabies(count),
             Icons.baby_changing_station,
@@ -547,6 +553,75 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildCouponSection(HomeProvider provider) {
+    return Center(
+      child: Column(
+        children: [
+          if (provider.isCouponApplied) ...[
+            // Applied coupon display
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.green[50],
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.green[200]!),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.check_circle, color: Colors.green[600], size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    AppLocalizations.of(
+                      context,
+                    )!.couponApplied(provider.appliedCoupon ?? ''),
+                    style: TextStyle(
+                      color: Colors.green[700],
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () {
+                      provider.setAppliedCoupon(null);
+                    },
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.green[600],
+                      size: 18,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ] else ...[
+            // Have a coupon text
+            GestureDetector(
+              onTap: () async {
+                final couponCode = await showCouponDialog(context: context);
+                if (couponCode != null &&
+                    couponCode.isNotEmpty &&
+                    context.mounted) {
+                  await provider.handleApplyCoupon(context, couponCode);
+                }
+              },
+              child: Text(
+                AppLocalizations.of(context)!.haveCoupon,
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.9),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  decorationColor: Colors.white.withOpacity(0.9),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

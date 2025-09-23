@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:welcome_port/core/widgets/custom_cached_image.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
 import 'package:welcome_port/features/book/booking_details/booking_details_service.dart';
 import 'package:welcome_port/features/book/booking_details/models/flight_suggestion.dart';
@@ -214,7 +215,12 @@ class _FlightPickerScreenState extends State<FlightPickerScreen> {
   Widget _buildFlightSuggestionItem(FlightSuggestion suggestion) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: const Icon(Icons.flight, color: AppColors.primaryColor),
+      // leading: const Icon(Icons.flight, color: AppColors.primaryColor),
+      leading: SizedBox(
+        width: 60,
+        height: 32,
+        child: CustomCachedImage(imageUrl: suggestion.airlineLogo),
+      ),
       title: Text(
         suggestion.flightNumber,
         style: const TextStyle(fontWeight: FontWeight.w500),

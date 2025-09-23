@@ -25,7 +25,23 @@ class BookingDetailsService {
     }
   }
 
-  Future<Either<String, Unit>> book({
+  Future<Either<String, Unit>> book(String search) async {
+    try {
+      final response = await Singletons.dio.post(
+        '/transfer/book',
+        data: {"payment_method": "balance"},
+      );
+      print(response.data);
+      return Right(unit);
+    } on DioException catch (e) {
+      return Left(getMessageFromError(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Left(getDefaultErrorMessage());
+    }
+  }
+
+  Future<Either<String, Unit>> preBook({
     required String title,
     required String firstName,
     required String lastName,

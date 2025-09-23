@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/features/book/booking_details/booking_details_provider.dart';
 import 'package:welcome_port/features/book/booking_details/utils/utils.dart';
 import 'package:welcome_port/features/book/booking_details/widgets/reusable/booking_dropdown.dart';
@@ -52,9 +53,9 @@ class ChildrenAgeCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                const Text(
-                  'Children & Infants Ages',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.childrenAndInfantsAges,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
@@ -64,7 +65,7 @@ class ChildrenAgeCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Please specify ages for each child and infant',
+              AppLocalizations.of(context)!.specifyChildrenAges,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[600],
@@ -76,9 +77,9 @@ class ChildrenAgeCard extends StatelessWidget {
             // Infants Section
             if (infants > 0) ...[
               _buildAgeSection(
-                title: 'Infants',
+                title: AppLocalizations.of(context)!.infantsSection,
                 count: infants,
-                ageRange: '0-2 years',
+                ageRange: AppLocalizations.of(context)!.infantsAge,
                 icon: Icons.child_care,
                 items: getInfantPossibleAges(),
                 onChanged: (age, index) => provider.updateInfantAge(index, age),
@@ -91,9 +92,9 @@ class ChildrenAgeCard extends StatelessWidget {
             // Children Section
             if (children > 0) ...[
               _buildAgeSection(
-                title: 'Children',
+                title: AppLocalizations.of(context)!.childrenSection,
                 count: children,
-                ageRange: '3-15 years',
+                ageRange: AppLocalizations.of(context)!.childrenAge,
                 icon: Icons.person,
                 items: getChildPossibleAges(),
                 onChanged: (age, index) => provider.updateChildAge(index, age),
@@ -156,20 +157,32 @@ class ChildrenAgeCard extends StatelessWidget {
             ...List.generate(count, (index) {
               return Padding(
                 padding: EdgeInsets.only(bottom: index < count - 1 ? 12 : 0),
-                child: BookingDropdown<String>(
-                  value: getCurrentValue(index) ?? 'Select age',
-                  items: ['Select age', ...items],
-                  itemBuilder: (age) => age,
-                  onChanged:
-                      (age) =>
-                          onChanged(age == 'Select age' ? null : age, index),
-                  label: '$unitName ${index + 1} Age',
-                  backgroundColor: Colors.white,
-                  validator:
-                      (value) => provider.validateAgeSelection(
-                        value == 'Select age' ? null : value,
-                        '$unitName ${index + 1}',
-                      ),
+                child: Builder(
+                  builder: (context) {
+                    final selectAge = AppLocalizations.of(context)!.selectAge;
+                    final infantAge = AppLocalizations.of(
+                      context,
+                    )!.infantAge(index + 1);
+                    final childAge = AppLocalizations.of(
+                      context,
+                    )!.childAge(index + 1);
+                    final label = unitName == 'Infant' ? infantAge : childAge;
+                    return BookingDropdown<String>(
+                      value: getCurrentValue(index) ?? selectAge,
+                      items: [selectAge, ...items],
+                      itemBuilder: (age) => age,
+                      onChanged:
+                          (age) =>
+                              onChanged(age == selectAge ? null : age, index),
+                      label: label,
+                      backgroundColor: Colors.white,
+                      validator:
+                          (value) => provider.validateAgeSelection(
+                            value == selectAge ? null : value,
+                            label,
+                          ),
+                    );
+                  },
                 ),
               );
             }),

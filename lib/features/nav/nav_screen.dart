@@ -20,7 +20,6 @@ class _NavScreenState extends State<NavScreen> {
     HomeScreen(),
     // CartScreen(),
     SizedBox(),
-    SizedBox(),
     MoreScreen(),
   ];
 

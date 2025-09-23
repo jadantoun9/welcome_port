@@ -7,6 +7,7 @@ import 'package:welcome_port/features/book/home/models/airport_suggestion.dart';
 import 'package:welcome_port/features/book/home/models/gm_location.dart';
 import 'package:welcome_port/features/book/home/utils/utils.dart';
 import 'package:welcome_port/features/book/quotes/quotes_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum TripDirection { fromAirport, toAirport }
 
@@ -15,8 +16,10 @@ enum TripType { oneWay, roundTrip }
 class HomeProvider extends ChangeNotifier {
   final TextEditingController pickupController = TextEditingController();
   final TextEditingController destinationController = TextEditingController();
+  final TextEditingController couponController = TextEditingController();
   final FocusNode pickupFocus = FocusNode();
   final FocusNode destinationFocus = FocusNode();
+  final FocusNode couponFocus = FocusNode();
 
   final HomeService homeService = HomeService();
   TripDirection tripDirection = TripDirection.fromAirport;
@@ -34,6 +37,11 @@ class HomeProvider extends ChangeNotifier {
   int babies = 0;
 
   bool isLoading = false;
+
+  bool isCouponLoading = false;
+  String? couponError;
+  String? appliedCoupon;
+  bool isCouponApplied = false;
 
   // Setters
   void setTripDirection(TripDirection direction) {
@@ -126,6 +134,22 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setCouponLoading(bool value) {
+    isCouponLoading = value;
+    notifyListeners();
+  }
+
+  void setCouponError(String? value) {
+    couponError = value;
+    notifyListeners();
+  }
+
+  void setAppliedCoupon(String? value) {
+    appliedCoupon = value;
+    isCouponApplied = value != null;
+    notifyListeners();
+  }
+
   // Reset form
   void resetForm() {
     setPickupLocation(null);
@@ -138,23 +162,38 @@ class HomeProvider extends ChangeNotifier {
   Future<void> handleSearch(BuildContext context, HomeProvider provider) async {
     // Validation
     if (pickupLocation == null || destinationLocation == null) {
-      showErrorToast(context, 'Please select pickup and destination locations');
+      showErrorToast(
+        context,
+        AppLocalizations.of(context)!.validationErrorSelectPickupDestination,
+      );
       return;
     }
     if (flightDate == null) {
-      showErrorToast(context, 'Please select flight date');
+      showErrorToast(
+        context,
+        AppLocalizations.of(context)!.validationErrorSelectFlightDate,
+      );
       return;
     }
     if (tripType == TripType.roundTrip && returnFlightDate == null) {
-      showErrorToast(context, 'Please select return flight date');
+      showErrorToast(
+        context,
+        AppLocalizations.of(context)!.validationErrorSelectReturnDate,
+      );
       return;
     }
     if (tripType == TripType.roundTrip && !isReturnDateValid) {
-      showErrorToast(context, 'Return date must be after flight date');
+      showErrorToast(
+        context,
+        AppLocalizations.of(context)!.validationErrorReturnDateAfterFlight,
+      );
       return;
     }
     if (adults < 1) {
-      showErrorToast(context, 'At least 1 adult passenger is required');
+      showErrorToast(
+        context,
+        AppLocalizations.of(context)!.validationErrorAtLeastOneAdult,
+      );
       return;
     }
 
@@ -239,12 +278,42 @@ class HomeProvider extends ChangeNotifier {
     setLoading(false);
   }
 
+  Future<void> handleApplyCoupon(
+    BuildContext context,
+    String couponCode,
+  ) async {
+    setCouponLoading(true);
+    setCouponError(null);
+
+    final result = await homeService.applyCoupon(coupon: couponCode);
+
+    result.fold(
+      (error) {
+        setCouponError(error);
+        showErrorToast(context, error);
+      },
+      (response) {
+        setAppliedCoupon(couponCode);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(AppLocalizations.of(context)!.couponSuccess),
+          ),
+        );
+      },
+    );
+
+    setCouponLoading(false);
+  }
+
   @override
   void dispose() {
     pickupController.dispose();
     destinationController.dispose();
+    couponController.dispose();
     pickupFocus.dispose();
     destinationFocus.dispose();
+    couponFocus.dispose();
     super.dispose();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/models/quote.dart';
 import 'package:welcome_port/core/widgets/custom_cached_image.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
@@ -109,7 +110,7 @@ class _QuoteBoxState extends State<QuoteBox> {
                           const SizedBox(width: 8),
                           _buildCapacityChip(
                             icon: Icons.people_outline,
-                            text: 'Shared',
+                            text: AppLocalizations.of(context)!.shared,
                             color: Colors.orange[600]!,
                           ),
                         ],
@@ -163,7 +164,7 @@ class _QuoteBoxState extends State<QuoteBox> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Total Price',
+                          AppLocalizations.of(context)!.totalPrice,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],
@@ -261,9 +262,9 @@ class _QuoteBoxState extends State<QuoteBox> {
                                   size: 20,
                                 ),
                                 const SizedBox(width: 8),
-                                const Text(
-                                  'Book This Vehicle',
-                                  style: TextStyle(
+                                Text(
+                                  AppLocalizations.of(context)!.bookThisVehicle,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,

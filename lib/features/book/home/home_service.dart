@@ -59,4 +59,15 @@ class HomeService {
       return Left(getDefaultErrorMessage());
     }
   }
+
+  Future<Either<String, Unit>> applyCoupon({required String coupon}) async {
+    try {
+      await Singletons.dio.post('/coupon', data: {'coupon': coupon});
+      return Right(unit);
+    } on DioException catch (e) {
+      return Left(getMessageFromError(e));
+    } catch (e) {
+      return Left(getDefaultErrorMessage());
+    }
+  }
 }

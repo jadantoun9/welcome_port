@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/models/quote.dart';
 import 'package:welcome_port/features/book/home/models/get_quotes_response.dart';
@@ -65,9 +66,9 @@ class _QuotesContent extends StatelessWidget {
                 ),
                 const Spacer(),
                 // Title
-                const Text(
-                  'Available Vehicles',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.availableVehicles,
+                  style: const TextStyle(
                     fontSize: 21,
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
@@ -128,7 +129,9 @@ class _QuotesContent extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${provider.quotesResponse.quotes.length} options found',
+                            AppLocalizations.of(context)!.optionsFound(
+                              provider.quotesResponse.quotes.length,
+                            ),
                             style: TextStyle(
                               fontSize: 16,
                               color:
@@ -197,9 +200,9 @@ class _QuotesContent extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             // Title
-            const Text(
-              'Session Expired',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.sessionExpired,
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
@@ -208,7 +211,7 @@ class _QuotesContent extends StatelessWidget {
             const SizedBox(height: 12),
             // Description
             Text(
-              'Your search session has expired. Please search again to see the most up-to-date vehicle availability and pricing.',
+              AppLocalizations.of(context)!.sessionExpiredDescription,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -230,9 +233,9 @@ class _QuotesContent extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Search Again',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.searchAgain,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
@@ -277,9 +280,9 @@ class _QuotesContent extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             // Title
-            const Text(
-              'No Vehicles Available',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.noVehiclesAvailable,
+              style: const TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
@@ -288,7 +291,7 @@ class _QuotesContent extends StatelessWidget {
             const SizedBox(height: 12),
             // Description
             Text(
-              'We couldn\'t find any vehicles for your selected route and time. Please try adjusting your search criteria.',
+              AppLocalizations.of(context)!.noVehiclesDescription,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -310,9 +313,9 @@ class _QuotesContent extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Try Again',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.tryAgain,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
@@ -359,9 +362,9 @@ class _QuotesContent extends StatelessWidget {
                   // Title
                   Row(
                     children: [
-                      const Text(
-                        'Sort by Price',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.sortByPrice,
+                        style: const TextStyle(
                           fontSize: 21,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
@@ -373,14 +376,14 @@ class _QuotesContent extends StatelessWidget {
                   // Sort options
                   _buildSortOption(
                     context,
-                    'High to Low',
+                    AppLocalizations.of(context)!.highToLow,
                     'high_to_low',
                     Icons.arrow_downward,
                     provider,
                   ),
                   _buildSortOption(
                     context,
-                    'Low to High',
+                    AppLocalizations.of(context)!.lowToHigh,
                     'low_to_high',
                     Icons.arrow_upward,
                     provider,

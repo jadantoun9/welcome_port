@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:welcome_port/core/helpers/singletons.dart';
 
 String formatDateTime(DateTime dateTime) {
-  final formatter = DateFormat('dd/MM/yyyy HH:mm');
+  final locale = Singletons.sharedPref.getString('locale') ?? 'en';
+  final formatter = DateFormat('dd/MM/yyyy HH:mm', locale);
   return formatter.format(dateTime);
 }
 

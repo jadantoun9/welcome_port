@@ -10,6 +10,7 @@ import 'package:welcome_port/features/book/home/models/airport_suggestion.dart';
 import 'package:welcome_port/features/book/home/models/gm_location.dart';
 import 'package:welcome_port/features/book/home/models/google_suggested_location.dart';
 import 'package:welcome_port/features/book/home/utils/google_map_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LocationPickerScreen extends StatefulWidget {
   final String title;
@@ -172,7 +173,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     controller: _searchController,
                     focusNode: _searchFocus,
                     decoration: InputDecoration(
-                      hintText: "Type city or airport",
+                      hintText: AppLocalizations.of(context)!.typeCityOrAirport,
                       hintStyle: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 18,
@@ -245,10 +246,10 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
 
     if (widget.isAirport) {
       if (_airportSuggestions.isEmpty) {
-        return const Center(
+        return Center(
           child: Text(
-            'No airports found',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+            AppLocalizations.of(context)!.noAirportsFound,
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
           ),
         );
       }
@@ -257,7 +258,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "SEARCH RESULTS",
+            AppLocalizations.of(context)!.searchResults,
             style: TextStyle(
               fontSize: 15,
               color: Colors.grey[500],
@@ -279,10 +280,10 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
       );
     } else {
       if (_googleSuggestions.isEmpty) {
-        return const Center(
+        return Center(
           child: Text(
-            'No locations found',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+            AppLocalizations.of(context)!.noLocationsFound,
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
           ),
         );
       }
@@ -291,7 +292,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "SEARCH RESULTS",
+            AppLocalizations.of(context)!.searchResults,
             style: TextStyle(
               fontSize: 15,
               color: Colors.grey[500],
@@ -380,7 +381,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "POPULAR LOCATIONS",
+            AppLocalizations.of(context)!.popularLocations,
             style: TextStyle(
               fontSize: 15,
               color: Colors.grey[500],

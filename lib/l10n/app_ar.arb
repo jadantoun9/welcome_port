@@ -76,7 +76,6 @@
     "newPasswordRequired": "كلمة المرور الجديدة مطلوبة",
     "passwordMustBeAtLeast6": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
     "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب",
-    "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
     "editProfile": "تعديل الملف الشخصي",
     "personalInformation": "المعلومات الشخصية",
     "updatePersonalDetails": "قم بتحديث تفاصيلك الشخصية أدناه",
@@ -162,8 +161,135 @@
     "failedSelectImageDifferentFormat": "فشل في اختيار الصورة. يرجى المحاولة بتنسيق مختلف",
     "documentUploaded": "تم رفع المستند بنجاح",
     "tapToUploadPhoto": "اضغط لرفع الصورة",
-    "companyLogo": "شعار الشركة",
     "address": "العنوان",
     "telephone": "الهاتف",
-    "logo": "الشعار"
+    "logo": "الشعار",
+    "bookTransfer": "حجز نقل",
+    "quickEasyAirportTransfers": "نقل مطار سريع وسهل",
+    "fromAirport": "من المطار",
+    "toAirport": "إلى المطار",
+    "tripType": "نوع الرحلة",
+    "oneWay": "ذهاب فقط",
+    "roundTrip": "ذهاب وإياب",
+    "pickupAirport": "مطار الاستلام",
+    "pickupLocation": "موقع الاستلام",
+    "selectAirport": "اختر المطار",
+    "searchLocation": "ابحث عن موقع",
+    "destinationLocation": "موقع الوجهة",
+    "destinationAirport": "مطار الوجهة",
+    "flightArrival": "وصول الرحلة",
+    "flightDeparture": "مغادرة الرحلة",
+    "returnFlight": "رحلة العودة",
+    "selectDateAndTime": "اختر التاريخ والوقت",
+    "selectReturnDateAndTime": "اختر تاريخ ووقت العودة",
+    "passengers": "المسافرون",
+    "adults": "البالغون",
+    "adultsAge": "(16+ سنة)",
+    "children": "الأطفال",
+    "childrenAge": "(2-15 سنة)",
+    "infants": "الرضع",
+    "infantsAge": "(0-2 سنة)",
+    "searchBooking": "بحث عن حجز",
+    "haveCoupon": "لديك قسيمة؟",
+    "applyCoupon": "تطبيق القسيمة",
+    "couponApplied": "تم تطبيق القسيمة \"{coupon}\"",
+    "@couponApplied": {
+        "placeholders": {
+            "coupon": {
+                "type": "String"
+            }
+        }
+    },
+    "couponSuccess": "تم تطبيق القسيمة بنجاح!",
+    "dateAndTime": "التاريخ والوقت",
+    "time": "الوقت",
+    "selectTime": "اختر الوقت",
+    "cancel": "إلغاء",
+    "done": "تم",
+    "searchResults": "نتائج البحث",
+    "noLocationsFound": "لم يتم العثور على مواقع",
+    "noAirportsFound": "لم يتم العثور على مطارات",
+    "popularLocations": "المواقع الشائعة",
+    "typeCityOrAirport": "اكتب المدينة أو المطار",
+    "validationErrorSelectPickupDestination": "يرجى اختيار مواقع الاستلام والوجهة",
+    "validationErrorSelectFlightDate": "يرجى اختيار تاريخ الرحلة",
+    "validationErrorSelectReturnDate": "يرجى اختيار تاريخ العودة",
+    "validationErrorReturnDateAfterFlight": "يجب أن يكون تاريخ العودة بعد تاريخ الرحلة",
+    "validationErrorAtLeastOneAdult": "مطلوب مسافر بالغ واحد على الأقل",
+    "validationErrorSelectTime": "يرجى اختيار الوقت",
+    "availableVehicles": "المركبات المتاحة",
+    "optionsFound": "تم العثور على {count} خيارات",
+    "@optionsFound": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "sessionExpired": "انتهت الجلسة",
+    "sessionExpiredDescription": "انتهت صلاحية جلسة البحث الخاصة بك. يرجى البحث مرة أخرى لرؤية أحدث المركبات المتاحة والأسعار.",
+    "searchAgain": "البحث مرة أخرى",
+    "noVehiclesAvailable": "لا توجد مركبات متاحة",
+    "noVehiclesDescription": "لم نتمكن من العثور على أي مركبات للمسار والوقت المحددين. يرجى تعديل معايير البحث.",
+    "tryAgain": "المحاولة مرة أخرى",
+    "sortByPrice": "ترتيب حسب السعر",
+    "highToLow": "من الأعلى إلى الأقل",
+    "lowToHigh": "من الأقل إلى الأعلى",
+    "totalPrice": "السعر الإجمالي",
+    "bookThisVehicle": "احجز هذه المركبة",
+    "shared": "مشترك",
+    "bookingDetails": "تفاصيل الحجز",
+    "customerInformation": "معلومات العميل",
+    "childrenAndInfantsAges": "أعمار الأطفال والرضع",
+    "specifyChildrenAges": "يرجى تحديد أعمار كل طفل ورضيع",
+    "infantsSection": "الرضع",
+    "childrenSection": "الأطفال",
+    "infantAge": "عمر الرضيع {number}",
+    "@infantAge": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "childAge": "عمر الطفل {number}",
+    "@childAge": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "selectAge": "اختر العمر",
+    "departureInformation": "معلومات المغادرة",
+    "returnInformation": "معلومات العودة",
+    "from": "من",
+    "to": "إلى",
+    "pickupDate": "تاريخ الاستلام",
+    "flightNumber": "رقم الرحلة",
+    "addressDetails": "تفاصيل العنوان",
+    "continueToPayment": "المتابعة للدفع",
+    "pleaseEnterCouponCode": "يرجى إدخال رمز القسيمة",
+    "enterCouponCode": "أدخل رمز القسيمة",
+    "enterCouponCodeDescription": "أدخل رمز القسيمة للحصول على خصم",
+    "apply": "تطبيق",
+    "pleaseEnterCoupon": "يرجى إدخال رمز القسيمة",
+    "pleaseEnterRequiredFields": "يرجى ملء جميع الحقول المطلوبة",
+    "fieldIsRequired": "{field} مطلوب",
+    "@fieldIsRequired": {
+        "placeholders": {
+            "field": {
+                "type": "String"
+            }
+        }
+    },
+    "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+    "ageIsRequired": "عمر {field} مطلوب",
+    "@ageIsRequired": {
+        "placeholders": {
+            "field": {
+                "type": "String"
+            }
+        }
+    }
 }

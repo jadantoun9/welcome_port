@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/widgets/phone_number_field.dart';
 import 'package:welcome_port/features/book/booking_details/booking_details_provider.dart';
@@ -53,9 +54,9 @@ class CustomerInfoCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                const Text(
-                  'Customer Information',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.customerInformation,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
@@ -81,20 +82,24 @@ class CustomerInfoCard extends StatelessWidget {
                 Expanded(
                   child: BookingTextfield(
                     controller: provider.firstNameController,
-                    label: 'First Name',
+                    label: AppLocalizations.of(context)!.firstName,
                     validator:
-                        (value) =>
-                            provider.validateRequired(value, 'First Name'),
+                        (value) => provider.validateRequired(
+                          value,
+                          AppLocalizations.of(context)!.firstName,
+                        ),
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: BookingTextfield(
                     controller: provider.lastNameController,
-                    label: 'Last Name',
+                    label: AppLocalizations.of(context)!.lastName,
                     validator:
-                        (value) =>
-                            provider.validateRequired(value, 'Last Name'),
+                        (value) => provider.validateRequired(
+                          value,
+                          AppLocalizations.of(context)!.lastName,
+                        ),
                   ),
                 ),
               ],
@@ -106,7 +111,7 @@ class CustomerInfoCard extends StatelessWidget {
               onPhoneNumberChanged: (phoneNumber) {
                 provider.updatePhoneNumber(phoneNumber);
               },
-              placeholder: 'Phone Number',
+              placeholder: AppLocalizations.of(context)!.phoneNumber,
               value:
                   provider.phoneController.text.isNotEmpty
                       ? provider.phoneController.text
@@ -116,7 +121,7 @@ class CustomerInfoCard extends StatelessWidget {
 
             BookingTextfield(
               controller: provider.emailController,
-              label: 'Email Address',
+              label: AppLocalizations.of(context)!.email,
               readOnly: isLoggedIn,
               icon: Icons.email_outlined,
               keyboardType: TextInputType.emailAddress,

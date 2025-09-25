@@ -1,4 +1,5 @@
 {
+  "@@locale": "en",
   "noInternetConnection": "No Internet Connection",
   "checkInternetConnection": "Please check your internet connection and try again.",
   "error": "Error",
@@ -184,9 +185,9 @@
   "selectReturnDateAndTime": "Select Return Date & Time",
   "passengers": "Passengers",
   "adults": "Adults",
-  "adultsAge": "(16+ years)",
+  "adultsAge": "(13+ years)",
   "children": "Children",
-  "childrenAge": "(2-15 years)",
+  "childrenAge": "(3-12 years)",
   "infants": "Infants",
   "infantsAge": "(0-2 years)",
   "searchBooking": "Search Booking",
@@ -236,7 +237,7 @@
   "highToLow": "High to Low",
   "lowToHigh": "Low to High",
   "totalPrice": "Total Price",
-  "bookThisVehicle": "Book This Vehicle",
+  "bookThisVehicle": "Book Now",
   "shared": "Shared",
   "bookingDetails": "Booking Details",
   "customerInformation": "Customer Information",
@@ -291,5 +292,27 @@
         "type": "String"
       }
     }
-  }
+  },
+  "addReturn": "Add Return",
+  "passengerCount": "{adults} Adults, {children} Children, {infants} Infants",
+  "@passengerCount": {
+    "placeholders": {
+      "adults": {
+        "type": "int"
+      },
+      "children": {
+        "type": "int"
+      },
+      "infants": {
+        "type": "int"
+      }
+    }
+  },
+  "selectPassengers": "Select Passengers",
+  "selectPassenger": "Select Passenger",
+  "flightTime": "Flight Time",
+  "returnFlightTime": "Return Flight Time",
+  "select": "Select",
+  "selectFlightTime": "Select Flight Time",
+  "selectReturnFlightTime": "Select Return Flight Time"
 }

@@ -158,7 +158,11 @@ class BookingDetailsProvider extends ChangeNotifier {
 
     final result = await NavigationUtils.push(
       context,
-      DateTimePickerScreen(initialDate: initialDate, initialTime: initialTime),
+      DateTimePickerScreen(
+        initialDate: initialDate,
+        initialTime: initialTime,
+        title: isDeparture ? 'Departure Date' : 'Return Date',
+      ),
     );
 
     if (result != null && result is DateTime) {

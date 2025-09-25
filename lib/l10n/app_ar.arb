@@ -1,4 +1,5 @@
 {
+    "@@locale": "ar",
     "noInternetConnection": "لا يوجد اتصال بالإنترنت",
     "checkInternetConnection": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
     "error": "خطأ",
@@ -184,9 +185,9 @@
     "selectReturnDateAndTime": "اختر تاريخ ووقت العودة",
     "passengers": "المسافرون",
     "adults": "البالغون",
-    "adultsAge": "(16+ سنة)",
+    "adultsAge": "(13+ سنة)",
     "children": "الأطفال",
-    "childrenAge": "(2-15 سنة)",
+    "childrenAge": "(3-12 سنة)",
     "infants": "الرضع",
     "infantsAge": "(0-2 سنة)",
     "searchBooking": "بحث عن حجز",
@@ -236,7 +237,7 @@
     "highToLow": "من الأعلى إلى الأقل",
     "lowToHigh": "من الأقل إلى الأعلى",
     "totalPrice": "السعر الإجمالي",
-    "bookThisVehicle": "احجز هذه المركبة",
+    "bookThisVehicle": "احجز الآن",
     "shared": "مشترك",
     "bookingDetails": "تفاصيل الحجز",
     "customerInformation": "معلومات العميل",
@@ -291,5 +292,27 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "addReturn": "إضافة عودة",
+    "passengerCount": "{adults} بالغين، {children} أطفال، {infants} رضع",
+    "@passengerCount": {
+        "placeholders": {
+            "adults": {
+                "type": "int"
+            },
+            "children": {
+                "type": "int"
+            },
+            "infants": {
+                "type": "int"
+            }
+        }
+    },
+    "selectPassengers": "اختر المسافرين",
+    "selectPassenger": "اختر مسافر",
+    "flightTime": "وقت الطيران",
+    "returnFlightTime": "وقت طيران العودة",
+    "select": "اختر",
+    "selectFlightTime": "اختر وقت الطيران",
+    "selectReturnFlightTime": "اختر وقت طيران العودة"
 }

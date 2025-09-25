@@ -27,22 +27,6 @@ Future<String?> showCouponDialog({required BuildContext context}) async {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Icon
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.primaryColor,
-                    ),
-                    child: const Icon(
-                      Icons.local_offer,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
                   // Title
                   Text(
                     AppLocalizations.of(context)!.enterCouponCode,
@@ -51,14 +35,7 @@ Future<String?> showCouponDialog({required BuildContext context}) async {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
 
-                  // Subtitle
-                  Text(
-                    AppLocalizations.of(context)!.enterCouponCodeDescription,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 14, color: Colors.black87),
-                  ),
                   const SizedBox(height: 24),
 
                   // Coupon Input Field

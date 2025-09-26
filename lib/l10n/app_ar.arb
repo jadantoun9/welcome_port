@@ -314,5 +314,10 @@
     "returnFlightTime": "وقت طيران العودة",
     "select": "اختر",
     "selectFlightTime": "اختر وقت الطيران",
-    "selectReturnFlightTime": "اختر وقت طيران العودة"
+    "selectReturnFlightTime": "اختر وقت طيران العودة",
+    "viewMore": "عرض المزيد",
+    "airports": "المطارات",
+    "places": "الأماكن",
+    "typeAirport": "اكتب المطار",
+    "typeCity": "اكتب المدينة"
 }

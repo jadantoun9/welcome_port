@@ -209,7 +209,6 @@
   "done": "Done",
   "searchResults": "SEARCH RESULTS",
   "noLocationsFound": "No locations found",
-  "noAirportsFound": "No airports found",
   "popularLocations": "POPULAR LOCATIONS",
   "typeCityOrAirport": "Type city or airport",
   "validationErrorSelectPickupDestination": "Please select pickup and destination locations",
@@ -314,5 +313,10 @@
   "returnFlightTime": "Return Flight Time",
   "select": "Select",
   "selectFlightTime": "Select Flight Time",
-  "selectReturnFlightTime": "Select Return Flight Time"
+  "selectReturnFlightTime": "Select Return Flight Time",
+  "viewMore": "View More",
+  "airports": "AIRPORTS",
+  "places": "PLACES",
+  "typeAirport": "Type airport",
+  "typeCity": "Type city"
 }

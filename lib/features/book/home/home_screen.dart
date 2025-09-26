@@ -10,6 +10,7 @@ import 'package:welcome_port/features/book/home/models/gm_location.dart';
 import 'package:welcome_port/core/widgets/input_container.dart';
 import 'package:welcome_port/core/widgets/wide_button.dart';
 import 'package:welcome_port/features/book/home/home_provider.dart';
+import 'package:welcome_port/features/book/home/models/location_type.dart';
 import 'package:welcome_port/features/book/home/widgets/date_time_picker_screen.dart';
 import 'package:welcome_port/features/book/home/widgets/location_picker_screen.dart';
 import 'package:welcome_port/features/book/home/widgets/passenger_picker_screen.dart';
@@ -191,7 +192,6 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           hintText: AppLocalizations.of(context)!.searchLocation,
           controller: provider.pickupController,
           focusNode: provider.pickupFocus,
-          isAirport: provider.tripDirection == TripDirection.fromAirport,
           isPickupField: true,
           onLocationSelected: (Either<GMLocation, AirportSuggestion> location) {
             provider.setPickupLocation(location);
@@ -206,7 +206,6 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           hintText: AppLocalizations.of(context)!.searchLocation,
           controller: provider.destinationController,
           focusNode: provider.destinationFocus,
-          isAirport: provider.tripDirection == TripDirection.toAirport,
           isPickupField: false,
           onLocationSelected: (Either<GMLocation, AirportSuggestion> location) {
             provider.setDestinationLocation(location);
@@ -223,7 +222,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
     required String hintText,
     required TextEditingController controller,
     required FocusNode focusNode,
-    required bool isAirport,
+    // required bool isAirport,
     required Function(Either<GMLocation, AirportSuggestion>) onLocationSelected,
     required bool isPickupField,
   }) {
@@ -236,21 +235,37 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                   ? provider.destinationLocation
                   : provider.pickupLocation;
 
+          // Determine restriction based on other location type
+          LocationType? restrictToDirection;
+          if (otherLocation != null) {
+            otherLocation.fold(
+              (gmLocation) {
+                // If other location is GMLocation (place), restrict this to airport
+                restrictToDirection = LocationType.airport;
+              },
+              (airportSuggestion) {
+                // If other location is AirportSuggestion (airport), restrict this to place
+                restrictToDirection = LocationType.place;
+              },
+            );
+          }
+
           await NavigationUtils.push<Either<GMLocation, AirportSuggestion>>(
             context,
             LocationPickerScreen(
+              restrictToDirection: restrictToDirection,
               title: label,
               hintText: hintText,
-              isAirport: isAirport,
               googleMapsApiKey: sharedProvider.setting?.gmApiKey ?? '',
               onSubmit: onLocationSelected,
-              selectedAirport:
-                  !isAirport
-                      ? otherLocation?.fold(
-                        (gmLocation) => null,
-                        (airport) => airport,
-                      )
-                      : null,
+              selectedLocation: otherLocation?.fold(
+                (gmLocation) => gmLocation,
+                (airport) => null,
+              ),
+              selectedAirport: otherLocation?.fold(
+                (gmLocation) => null,
+                (airport) => airport,
+              ),
             ),
           );
         },
@@ -266,7 +281,19 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 16),
+              if ((isPickupField && provider.pickupLocation != null) ||
+                  (!isPickupField && provider.destinationLocation != null)) ...[
+                IconButton(
+                  onPressed: () {
+                    if (isPickupField) {
+                      provider.setPickupLocation(null);
+                    } else {
+                      provider.setDestinationLocation(null);
+                    }
+                  },
+                  icon: const Icon(Icons.close, color: Colors.black, size: 20),
+                ),
+              ],
             ],
           ),
         ),

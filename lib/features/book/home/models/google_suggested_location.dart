@@ -3,15 +3,16 @@ import 'dart:convert';
 class GoogleSuggestedLocation {
   final String mainText;
   final String secondaryText;
-
   final String description;
   final String placeId;
+  final List<String> types;
 
   GoogleSuggestedLocation({
     required this.mainText,
     required this.secondaryText,
     required this.description,
     required this.placeId,
+    required this.types,
   });
 
   factory GoogleSuggestedLocation.fromJson(Map<String, dynamic> json) {
@@ -26,6 +27,11 @@ class GoogleSuggestedLocation {
       secondaryText: secondaryText,
       description: json['description'] as String? ?? '',
       placeId: json['place_id'] as String? ?? '',
+      types:
+          (json['types'] as List<dynamic>?)
+              ?.map((type) => type.toString())
+              .toList() ??
+          [],
     );
   }
 

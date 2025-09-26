@@ -7,9 +7,11 @@ import 'package:welcome_port/features/book/home/models/airport_suggestion.dart';
 import 'package:welcome_port/features/book/home/models/get_quotes_response.dart';
 
 class HomeService {
-  Future<Either<String, List<AirportSuggestion>>> getAirportSuggestions(
-    String search,
-  ) async {
+  Future<Either<String, List<AirportSuggestion>>> getAirportSuggestions({
+    required String search,
+    required String countryCode,
+  }) async {
+    print("filtering on countryCode: $countryCode");
     try {
       final response = await Singletons.dio.get(
         '/autocomplete/airport/$search',
@@ -19,6 +21,14 @@ class HomeService {
           airports
               .map((airport) => AirportSuggestion.fromJson(airport))
               .toList();
+
+      if (countryCode.isNotEmpty) {
+        airportSuggestions =
+            airportSuggestions
+                .where((airport) => airport.countryCode == countryCode)
+                .toList();
+      }
+
       return Right(airportSuggestions);
     } on DioException catch (e) {
       return Left(getMessageFromError(e));

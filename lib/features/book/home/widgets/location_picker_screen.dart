@@ -9,24 +9,27 @@ import 'package:welcome_port/features/book/home/home_service.dart';
 import 'package:welcome_port/features/book/home/models/airport_suggestion.dart';
 import 'package:welcome_port/features/book/home/models/gm_location.dart';
 import 'package:welcome_port/features/book/home/models/google_suggested_location.dart';
+import 'package:welcome_port/features/book/home/models/location_type.dart';
 import 'package:welcome_port/features/book/home/utils/google_map_utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LocationPickerScreen extends StatefulWidget {
   final String title;
   final String hintText;
-  final bool isAirport;
   final String googleMapsApiKey;
   final AirportSuggestion? selectedAirport;
+  final GMLocation? selectedLocation;
   final Function(Either<GMLocation, AirportSuggestion>)? onSubmit;
+  final LocationType? restrictToDirection;
 
   const LocationPickerScreen({
     super.key,
     required this.title,
     required this.hintText,
-    required this.isAirport,
     required this.googleMapsApiKey,
     required this.selectedAirport,
+    required this.restrictToDirection,
+    this.selectedLocation,
     this.onSubmit,
   });
 
@@ -42,6 +45,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   List<AirportSuggestion> _airportSuggestions = [];
   List<GoogleSuggestedLocation> _googleSuggestions = [];
   bool _isLoading = false;
+  bool _showAllAirports = false;
   Timer? _debounceTimer;
 
   @override
@@ -70,6 +74,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         _airportSuggestions = [];
         _googleSuggestions = [];
         _isLoading = false;
+        _showAllAirports = false;
       });
       return;
     }
@@ -77,66 +82,107 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
     // Set loading state immediately
     setState(() {
       _isLoading = true;
+      _showAllAirports = false;
     });
 
-    // Start new timer for debounced search
+    // Start new timer for debounced search - call both methods
     _debounceTimer = Timer(const Duration(seconds: 1), () {
-      if (widget.isAirport) {
-        _searchAirports(query);
-      } else {
-        _searchGoogleMaps(query);
-      }
+      _searchBoth(query);
     });
   }
 
-  Future<void> _searchAirports(String query) async {
+  Future<void> _searchBoth(String query) async {
     if (query.isEmpty) {
       setState(() {
         _airportSuggestions = [];
-        _isLoading = false;
-      });
-      return;
-    }
-
-    final result = await _homeService.getAirportSuggestions(query);
-
-    result.fold(
-      (error) {
-        setState(() {
-          _isLoading = false;
-          _airportSuggestions = [];
-        });
-      },
-      (suggestions) {
-        setState(() {
-          _isLoading = false;
-          _airportSuggestions = suggestions;
-        });
-      },
-    );
-  }
-
-  Future<void> _searchGoogleMaps(String query) async {
-    if (query.isEmpty) {
-      setState(() {
         _googleSuggestions = [];
         _isLoading = false;
       });
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
+    // Determine what to search based on restriction
+    final shouldSearchAirports =
+        widget.restrictToDirection == null ||
+        widget.restrictToDirection == LocationType.airport;
+    final shouldSearchPlaces =
+        widget.restrictToDirection == null ||
+        widget.restrictToDirection == LocationType.place;
 
-    final suggestions = await GoogleMapUtils.getSuggestionsForKeyword(
-      query,
-      widget.googleMapsApiKey,
-    );
+    List<Future> futures = [];
+
+    print("selectedLocation: ${widget.selectedLocation}");
+    print("selectedLocation: ${widget.selectedLocation?.latLng}");
+    print("selectedLocation: ${widget.selectedLocation?.latLng.latitude}");
+
+    // Add airport search if allowed
+    if (shouldSearchAirports) {
+      futures.add(
+        _homeService.getAirportSuggestions(
+          search: query,
+          countryCode: widget.selectedLocation?.countryCode ?? '',
+        ),
+      );
+    }
+
+    // Add places search if allowed
+    if (shouldSearchPlaces) {
+      futures.add(
+        GoogleMapUtils.getSuggestionsForKeyword(
+          keyword: query,
+          gmKey: widget.googleMapsApiKey,
+          countryCode: widget.selectedAirport?.countryCode ?? '',
+        ),
+      );
+    }
+
+    // Execute the allowed searches
+    if (futures.isNotEmpty) {
+      final results = await Future.wait(futures);
+
+      int resultIndex = 0;
+
+      // Handle airport results if we searched for them
+      if (shouldSearchAirports) {
+        final airportResult =
+            results[resultIndex] as Either<String, List<AirportSuggestion>>;
+        airportResult.fold(
+          (error) {
+            setState(() {
+              _airportSuggestions = [];
+            });
+          },
+          (suggestions) {
+            setState(() {
+              _airportSuggestions = suggestions;
+            });
+          },
+        );
+        resultIndex++;
+      } else {
+        // Clear airports if not searching for them
+        setState(() {
+          _airportSuggestions = [];
+        });
+      }
+
+      // Handle places results if we searched for them
+      if (shouldSearchPlaces) {
+        final placesResult =
+            results[resultIndex] as List<GoogleSuggestedLocation>?;
+        setState(() {
+          _googleSuggestions = placesResult ?? [];
+        });
+      } else {
+        // Clear places if not searching for them
+        setState(() {
+          _googleSuggestions = [];
+        });
+      }
+    }
 
     setState(() {
       _isLoading = false;
-      _googleSuggestions = suggestions ?? [];
     });
   }
 
@@ -173,7 +219,12 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     controller: _searchController,
                     focusNode: _searchFocus,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!.typeCityOrAirport,
+                      hintText:
+                          widget.restrictToDirection == LocationType.airport
+                              ? AppLocalizations.of(context)!.typeAirport
+                              : widget.restrictToDirection == LocationType.place
+                              ? AppLocalizations.of(context)!.typeCity
+                              : AppLocalizations.of(context)!.typeCityOrAirport,
                       hintStyle: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 18,
@@ -244,61 +295,63 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
       return Loader(color: Colors.black);
     }
 
-    if (widget.isAirport) {
-      if (_airportSuggestions.isEmpty) {
-        return Center(
-          child: Text(
-            AppLocalizations.of(context)!.noAirportsFound,
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
-          ),
-        );
-      }
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Airports Section
+        if (_airportSuggestions.isNotEmpty) ...[
           Text(
-            AppLocalizations.of(context)!.searchResults,
+            AppLocalizations.of(context)!.airports,
             style: TextStyle(
               fontSize: 15,
               color: Colors.grey[500],
               fontWeight: FontWeight.w500,
             ),
           ),
-          ListView(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            children:
-                _airportSuggestions
-                    .map(
-                      (suggestion) => _buildAirportSuggestionItem(suggestion),
-                    )
-                    .toList(),
-          ),
+          const SizedBox(height: 8),
+          ..._buildAirportsList(),
+          if (_shouldShowViewMore()) ...[
+            InkWell(
+              onTap: () {
+                setState(() {
+                  _showAllAirports = true;
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.viewMore,
+                    style: TextStyle(
+                      color: AppColors.primaryColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: AppColors.primaryColor,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
+          ],
+          const SizedBox(height: 10),
         ],
-      );
-    } else {
-      if (_googleSuggestions.isEmpty) {
-        return Center(
-          child: Text(
-            AppLocalizations.of(context)!.noLocationsFound,
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
-          ),
-        );
-      }
 
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        // Places Section
+        if (_googleSuggestions.isNotEmpty) ...[
           Text(
-            AppLocalizations.of(context)!.searchResults,
+            AppLocalizations.of(context)!.places,
             style: TextStyle(
               fontSize: 15,
               color: Colors.grey[500],
               fontWeight: FontWeight.w500,
             ),
           ),
+          const SizedBox(height: 8),
           ListView(
             shrinkWrap: true,
             padding: EdgeInsets.zero,
@@ -312,8 +365,40 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     .toList(),
           ),
         ],
-      );
-    }
+
+        // No results message
+        if (_airportSuggestions.isEmpty && _googleSuggestions.isEmpty) ...[
+          Center(
+            child: Text(
+              AppLocalizations.of(context)!.noLocationsFound,
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  bool _shouldShowViewMore() {
+    // Don't show "View More" if restricted to airports (show all by default)
+    // Only show if there are more than 3 airports, not showing all, and not restricted
+    return _airportSuggestions.length > 3 &&
+        !_showAllAirports &&
+        widget.restrictToDirection != LocationType.airport;
+  }
+
+  List<Widget> _buildAirportsList() {
+    final shouldShowAll =
+        _showAllAirports || widget.restrictToDirection == LocationType.airport;
+    final airportsToShow =
+        shouldShowAll
+            ? _airportSuggestions
+            : _airportSuggestions.take(3).toList();
+
+    return airportsToShow
+        .map((suggestion) => _buildAirportSuggestionItem(suggestion))
+        .toList();
   }
 
   Widget _buildAirportSuggestionItem(AirportSuggestion suggestion) {
@@ -355,14 +440,15 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
       onTap: () async {
         if (widget.onSubmit != null) {
           // Get the LatLng for this location
-          final latLng = await GoogleMapUtils.getPlaceDetails(
+          final placeDetails = await GoogleMapUtils.getPlaceDetails(
             suggestion.placeId,
             widget.googleMapsApiKey,
           );
 
-          if (latLng != null) {
+          if (placeDetails != null) {
             final gmLocation = GMLocation(
-              latLng: latLng,
+              latLng: placeDetails.latLng,
+              countryCode: placeDetails.countryCode,
               mainText: suggestion.mainText,
               secondaryText: suggestion.secondaryText,
               description: suggestion.description,
@@ -408,6 +494,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                               mainText: location.name,
                               secondaryText: '',
                               description: '',
+                              countryCode: '', // MOHAMAD
                             );
                             widget.onSubmit!(Left(gmLocation));
                             Navigator.pop(context);

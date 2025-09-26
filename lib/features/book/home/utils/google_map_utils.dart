@@ -8,18 +8,24 @@ class GoogleMapUtils {
   static const languageCode = 'en';
   static String languageParams = languageCode;
 
-  static Future<List<GoogleSuggestedLocation>?> getSuggestionsForKeyword(
-    String keyword,
-    String gmKey,
-  ) async {
+  static Future<List<GoogleSuggestedLocation>?> getSuggestionsForKeyword({
+    required String keyword,
+    required String gmKey,
+    required String countryCode,
+  }) async {
     try {
       String url =
-          'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$keyword&key=${gmKey}&language=$languageParams';
+          'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$keyword&key=${gmKey}&language=$languageParams${countryCode.isNotEmpty ? '&components=country:$countryCode' : ''}';
       final response = await Singletons.dio.get(url);
-      print("response: ${response.data}");
       List<dynamic> results = response.data['predictions'];
       List<GoogleSuggestedLocation> suggLocations =
           results.map((res) => GoogleSuggestedLocation.fromJson(res)).toList();
+
+      // remove all airport types
+      suggLocations =
+          suggLocations
+              .where((location) => !location.types.contains('airport'))
+              .toList();
       return suggLocations;
     } on DioException catch (err) {
       debugPrint(
@@ -31,19 +37,67 @@ class GoogleMapUtils {
     return null;
   }
 
-  static Future<LatLng?> getPlaceDetails(String placeId, String gmKey) async {
+  static Future<GMPlaceDetails?> getPlaceDetails(
+    String placeId,
+    String gmKey,
+  ) async {
     String url =
-        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry&key=$gmKey';
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry,address_components&key=$gmKey';
 
     try {
       final response = await Singletons.dio.get(url);
       if (response.data == null) return null;
-      double lat = response.data['result']['geometry']['location']['lat'];
-      double lng = response.data['result']['geometry']['location']['lng'];
-      return LatLng(lat, lng);
+
+      final result = response.data['result'];
+      if (result == null) return null;
+
+      // Extract coordinates
+      final geometry = result['geometry'];
+      final location = geometry?['location'];
+      if (location == null) return null;
+
+      double lat = location['lat'];
+      double lng = location['lng'];
+
+      // Extract country code safely
+      String countryCode = '';
+      final addressComponents = result['address_components'] as List<dynamic>?;
+
+      if (addressComponents != null && addressComponents.isNotEmpty) {
+        // Find the country component
+        for (final component in addressComponents) {
+          final types = component['types'] as List<dynamic>?;
+          if (types != null && types.contains('country')) {
+            countryCode = component['short_name'] as String? ?? '';
+            break;
+          }
+        }
+
+        // Fallback: if no country component found, try the last component
+        if (countryCode.isEmpty) {
+          final lastComponent = addressComponents.last;
+          countryCode = lastComponent['short_name'] as String? ?? '';
+        }
+      }
+
+      // if country code is not 2 characters, it's wrong, set it to empty
+      if (countryCode.length != 2) {
+        countryCode = '';
+      }
+
+      print("selected countryCode: $countryCode");
+
+      return GMPlaceDetails(latLng: LatLng(lat, lng), countryCode: countryCode);
     } catch (err) {
-      debugPrint(err.toString());
+      debugPrint("getPlaceDetails error: $err");
       return null;
     }
   }
+}
+
+class GMPlaceDetails {
+  final LatLng latLng;
+  final String countryCode;
+
+  GMPlaceDetails({required this.latLng, required this.countryCode});
 }

@@ -3,6 +3,7 @@ class AirportSuggestion {
   final String name;
   final String code;
   final String country;
+  final String countryCode;
   final List<LocationSuggestion> locations;
 
   AirportSuggestion({
@@ -10,6 +11,7 @@ class AirportSuggestion {
     required this.name,
     required this.code,
     required this.country,
+    required this.countryCode,
     required this.locations,
   });
 
@@ -19,6 +21,7 @@ class AirportSuggestion {
       name: json['name'] ?? '',
       code: json['code'] ?? '',
       country: json['country'] ?? '',
+      countryCode: json['country_code'] ?? '',
       locations:
           (json['locations'] as List<dynamic>)
               .map((location) => LocationSuggestion.fromJson(location))

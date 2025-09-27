@@ -13,14 +13,18 @@ class PhoneNumberField extends StatefulWidget {
   final FocusNode focusNode;
   final String? Function(PhoneNumber?)? validator;
   final bool readOnly;
+  final Color? bgColor;
+  final Border? border;
 
   const PhoneNumberField({
     super.key,
     required this.onPhoneNumberChanged,
     required this.focusNode,
     this.placeholder,
+    this.bgColor,
     this.errorText,
     this.value,
+    this.border,
     this.validator,
     this.readOnly = false,
   });
@@ -43,7 +47,8 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Colors.grey[50],
+            color: widget.bgColor ?? Colors.grey[50],
+            border: widget.border,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Directionality(
@@ -97,7 +102,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.primaryColor,
-                    width: 2,
+                    width: widget.border != null ? 1 : 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
                 ),

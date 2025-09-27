@@ -85,8 +85,6 @@ class GoogleMapUtils {
         countryCode = '';
       }
 
-      print("selected countryCode: $countryCode");
-
       return GMPlaceDetails(latLng: LatLng(lat, lng), countryCode: countryCode);
     } catch (err) {
       debugPrint("getPlaceDetails error: $err");

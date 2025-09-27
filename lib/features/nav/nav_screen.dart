@@ -3,10 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/features/book/home/home_screen.dart';
 import 'package:welcome_port/features/more/more_screen.dart';
+import 'package:welcome_port/features/orders/orders_screen.dart';
+import 'package:welcome_port/features/wallet/wallet_screen.dart';
 
 class NavScreen extends StatefulWidget {
   const NavScreen({super.key});
@@ -16,19 +19,21 @@ class NavScreen extends StatefulWidget {
 }
 
 class _NavScreenState extends State<NavScreen> {
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    // CartScreen(),
-    SizedBox(),
-    MoreScreen(),
-  ];
+  getWidgetOptions(SharedProvider sharedProv) {
+    if (sharedProv.customer?.type == CustomerType.agent) {
+      return [HomeScreen(), OrdersScreen(), WalletScreen(), MoreScreen()];
+    }
+    return [HomeScreen(), OrdersScreen(), MoreScreen()];
+  }
 
   @override
   Widget build(BuildContext context) {
     final sharedProvider = Provider.of<SharedProvider>(context);
     return Scaffold(
       body: Center(
-        child: _widgetOptions.elementAt(sharedProvider.selectedIndex),
+        child: getWidgetOptions(
+          sharedProvider,
+        ).elementAt(sharedProvider.selectedIndex),
       ),
       bottomNavigationBar: Container(
         color: Colors.white,
@@ -57,6 +62,8 @@ class CustomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sharedProvider = Provider.of<SharedProvider>(context);
+
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -67,11 +74,18 @@ class CustomNavBar extends StatelessWidget {
         height: 60,
         color: Colors.white,
         child: Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+          spacing: 3,
           children: [
             _buildNavItem(index: 0, label: 'Home', icon: Icons.home),
-            _buildNavItem(index: 1, label: 'Wallet', icon: Icons.wallet),
-            _buildNavItem(index: 2, label: 'More', icon: Icons.menu),
+            _buildNavItem(index: 1, label: 'Orders', icon: Icons.receipt),
+            if (sharedProvider.customer?.type == CustomerType.agent)
+              _buildNavItem(index: 2, label: 'Wallet', icon: Icons.wallet),
+            _buildNavItem(
+              index:
+                  sharedProvider.customer?.type == CustomerType.agent ? 3 : 2,
+              label: 'More',
+              icon: Icons.menu,
+            ),
           ],
         ),
       ),
@@ -82,7 +96,6 @@ class CustomNavBar extends StatelessWidget {
     required int index,
     required String label,
     String? iconPath,
-    String? note,
     IconData? icon,
   }) {
     final bool isSelected = selectedIndex == index;
@@ -101,7 +114,6 @@ class CustomNavBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 40,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -146,28 +158,6 @@ class CustomNavBar extends StatelessWidget {
                           ),
                         ],
                       ),
-                      if (note != null)
-                        Positioned(
-                          top: 2,
-                          right: 0,
-                          child: Container(
-                            height: 15,
-                            width: 15,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.primaryColor,
-                            ),
-                            child: Center(
-                              child: Text(
-                                note,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                     ],
                   ),
                 ),

@@ -5,6 +5,7 @@ class Quote {
   double? priceDiscounted;
   String priceDiscountedFormatted;
   int durationInMinutes;
+  bool isOneWay;
   Vehicle vehicle;
 
   Quote({
@@ -15,6 +16,7 @@ class Quote {
     required this.priceDiscountedFormatted,
     required this.durationInMinutes,
     required this.vehicle,
+    required this.isOneWay,
   });
 
   factory Quote.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class Quote {
       durationInMinutes:
           int.tryParse(json['duration_in_minutes'].toString()) ?? 0,
       vehicle: Vehicle.fromJson(json['vehicle']),
+      isOneWay: json['is_oneway'].toString().toLowerCase() == 'true',
     );
   }
 }

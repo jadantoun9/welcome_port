@@ -463,12 +463,6 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
     final totalPassengers =
         provider.adults + provider.children + provider.babies;
 
-    if (provider.adults == 1 &&
-        provider.children == 0 &&
-        provider.babies == 0) {
-      return AppLocalizations.of(context)!.selectPassengers;
-    }
-
     return totalPassengers.toString();
   }
 

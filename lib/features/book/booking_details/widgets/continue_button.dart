@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:welcome_port/core/widgets/loader.dart';
 import 'package:welcome_port/features/book/booking_details/booking_details_provider.dart';
 
 class ContinueButton extends StatelessWidget {
+  final String text;
+  final bool isBooking;
   final BookingDetailsProvider provider;
 
-  const ContinueButton({super.key, required this.provider});
+  const ContinueButton({
+    super.key,
+    required this.provider,
+    required this.text,
+    required this.isBooking,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,25 +47,28 @@ class ContinueButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.arrow_forward_rounded,
-              color: Colors.white,
-              size: 20,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              'Continue to Payment',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
+        child:
+            isBooking
+                ? const Loader()
+                : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.arrow_forward_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      text,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
       ),
     );
   }

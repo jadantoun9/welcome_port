@@ -19,83 +19,49 @@ class DepartureReturnCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey[200]!, width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header
+        Text(
+          isDeparture
+              ? AppLocalizations.of(context)!.departureInformation
+              : AppLocalizations.of(context)!.returnInformation,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryColor,
           ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.flight_takeoff,
-                    color: AppColors.primaryColor,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  isDeparture
-                      ? AppLocalizations.of(context)!.departureInformation
-                      : AppLocalizations.of(context)!.returnInformation,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            // Origin Section
-            _buildLocationSection(
-              context: context,
-              title: AppLocalizations.of(context)!.from,
-              // origin of return is the destination of departure (the one object returned represents departure)
-              location:
-                  isDeparture
-                      ? provider.preBookRequirementsResponse.origin
-                      : provider.preBookRequirementsResponse.destination,
-              isOrigin: true,
-              isDeparture: isDeparture,
-            ),
-            const SizedBox(height: 20),
-
-            // Destination Section
-            _buildLocationSection(
-              context: context,
-              title: AppLocalizations.of(context)!.to,
-              // destination of return is the origin of departure (the one object returned represents departure)
-              location:
-                  isDeparture
-                      ? provider.preBookRequirementsResponse.destination
-                      : provider.preBookRequirementsResponse.origin,
-              isOrigin: false,
-              isDeparture: isDeparture,
-            ),
-          ],
         ),
-      ),
+        const SizedBox(height: 24),
+
+        // Origin Section
+        _buildLocationSection(
+          context: context,
+          title: AppLocalizations.of(context)!.from,
+          // origin of return is the destination of departure (the one object returned represents departure)
+          location:
+              isDeparture
+                  ? provider.preBookRequirementsResponse.origin
+                  : provider.preBookRequirementsResponse.destination,
+          isOrigin: true,
+          isDeparture: isDeparture,
+        ),
+        const SizedBox(height: 20),
+
+        // Destination Section
+        _buildLocationSection(
+          context: context,
+          title: AppLocalizations.of(context)!.to,
+          // destination of return is the origin of departure (the one object returned represents departure)
+          location:
+              isDeparture
+                  ? provider.preBookRequirementsResponse.destination
+                  : provider.preBookRequirementsResponse.origin,
+          isOrigin: false,
+          isDeparture: isDeparture,
+        ),
+      ],
     );
   }
 
@@ -110,124 +76,100 @@ class DepartureReturnCard extends StatelessWidget {
     final locationName =
         isAirport ? '${location.name} (${location.code})' : location.name;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Location Header
+        Row(
           children: [
-            // Location Header
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200]!,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    isAirport ? Icons.flight : Icons.location_on,
-                    color: Colors.grey[800]!,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '$title: ',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[800]!,
-                          ),
-                        ),
-                        TextSpan(
-                          text: locationName,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[800]!,
-                          ),
-                        ),
-                      ],
+            Expanded(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '$title: ',
+                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
                     ),
-                  ),
+                    TextSpan(
+                      text: locationName,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[800]!,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-            const SizedBox(height: 16),
-
-            // Input Fields
-            // Always ask for Pick up date for both origin and destination
-            if (isOrigin) ...[
-              BookingTextfield(
-                controller:
-                    isDeparture
-                        ? provider.departureDateController
-                        : provider.returnDateController,
-                label: AppLocalizations.of(context)!.pickupDate,
-                icon: Icons.calendar_today,
-                backgroundColor: Colors.white,
-                placeholder: AppLocalizations.of(context)!.pickupDate,
-                onClick: () async {
-                  provider.onPickUpDateClick(context, isDeparture);
-                },
-                validator:
-                    isDeparture
-                        ? provider.validateDepartureDate
-                        : provider.validateReturnDate,
-              ),
-              const SizedBox(height: 16),
-            ],
-
-            if (isAirport) ...[
-              BookingTextfield(
-                controller:
-                    isOrigin
-                        ? provider.flightNumberController
-                        : provider.returnFlightNumberController,
-                label: 'Flight Number',
-                icon: Icons.confirmation_number,
-                backgroundColor: Colors.white,
-                onClick: () async {
-                  NavigationUtils.push(
-                    context,
-                    FlightPickerScreen(
-                      title: 'Flight Number',
-                      hintText: 'Flight Number',
-                      onSubmit: (flight) {
-                        if (isDeparture) {
-                          provider.setDepartureFlight(flight);
-                        } else {
-                          provider.setReturnFlight(flight);
-                        }
-                      },
-                    ),
-                  );
-                },
-                validator: provider.validateFlightNumber,
-              ),
-            ] else ...[
-              // Location - Ask for Address Details
-              if (isDeparture)
-                BookingTextfield(
-                  controller: provider.addressDetailsController,
-                  label: 'Address Details',
-                  icon: Icons.location_on,
-                  backgroundColor: Colors.white,
-                  validator: provider.validateAddress,
-                ),
-            ],
           ],
         ),
-      ),
+        const SizedBox(height: 16),
+
+        // Input Fields
+        // Always ask for Pick up date for both origin and destination
+        if (isOrigin) ...[
+          BookingTextfield(
+            controller:
+                isDeparture
+                    ? provider.departureDateController
+                    : provider.returnDateController,
+            label: AppLocalizations.of(context)!.pickupDate,
+            icon: Icons.calendar_today,
+            backgroundColor: Colors.white,
+            placeholder: AppLocalizations.of(context)!.pickupDate,
+            onClick: () async {
+              provider.onPickUpDateClick(context, isDeparture);
+            },
+            validator:
+                (value) =>
+                    isDeparture
+                        ? provider.validateDepartureDate(value, context)
+                        : provider.validateReturnDate(value, context),
+          ),
+          const SizedBox(height: 16),
+        ],
+
+        if (isAirport) ...[
+          BookingTextfield(
+            controller:
+                isOrigin
+                    ? provider.flightNumberController
+                    : provider.returnFlightNumberController,
+            label: 'Flight Number',
+            icon: Icons.confirmation_number,
+            backgroundColor: Colors.white,
+            onClick: () async {
+              NavigationUtils.push(
+                context,
+                FlightPickerScreen(
+                  title: 'Flight Number',
+                  hintText: 'Flight Number',
+                  onSubmit: (flight) {
+                    if (isDeparture) {
+                      provider.setDepartureFlight(flight);
+                    } else {
+                      provider.setReturnFlight(flight);
+                    }
+                  },
+                ),
+              );
+            },
+            validator: (value) => provider.validateFlightNumber(value, context),
+          ),
+        ] else ...[
+          // Location - Ask for Address Details
+          if (isDeparture)
+            BookingTextfield(
+              controller: provider.addressDetailsController,
+              label: 'Additional Directions (Optional)',
+              icon: Icons.location_on,
+              backgroundColor: Colors.white,
+              // validator: (value) => provider.validateAddress(value, context),
+              validator: (value) => null,
+            ),
+        ],
+      ],
     );
   }
 }

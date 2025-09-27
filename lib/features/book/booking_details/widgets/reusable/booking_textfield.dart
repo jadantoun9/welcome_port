@@ -46,7 +46,7 @@ class BookingTextfield extends StatelessWidget {
                     onTap: isClickable ? onClick : null,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: backgroundColor ?? Colors.grey[50],
+                        color: backgroundColor ?? Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color:
@@ -148,7 +148,7 @@ class BookingTextfield extends StatelessWidget {
                 onTap: isClickable ? onClick : null,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: backgroundColor ?? Colors.grey[50],
+                    color: backgroundColor ?? Colors.white,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: field.hasError ? Colors.red : Colors.grey[200]!,

@@ -12,6 +12,7 @@ class Setting {
   final List<InformationModel> information;
   final UpdateModel? update;
   final CustomerModel? customer;
+  final String whatsappUrl;
 
   Setting({
     required this.activeLanguage,
@@ -25,6 +26,7 @@ class Setting {
     required this.information,
     required this.update,
     required this.customer,
+    required this.whatsappUrl,
   });
 
   factory Setting.fromJson(Map<String, dynamic> json) {
@@ -59,6 +61,7 @@ class Setting {
           json['customer'] != null
               ? CustomerModel.fromJson(json['customer'])
               : null,
+      whatsappUrl: json['whatsapp_url'] ?? '',
     );
   }
 }

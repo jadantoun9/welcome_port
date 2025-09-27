@@ -1,4 +1,6 @@
-import 'package:welcome_port/features/book/home/home_provider.dart';
+import 'package:welcome_port/core/models/quote.dart';
+
+enum TripDirection { fromAirport, toAirport }
 
 class PreBookRequirementsResponse {
   bool isOneWay;
@@ -6,6 +8,10 @@ class PreBookRequirementsResponse {
   Passengers passengers;
   dynamic origin; // Can be ReturnedAirport or ReturnedGMLocation
   dynamic destination; // Can be ReturnedAirport or ReturnedGMLocation
+  Vehicle vehicle;
+
+  String outwardDate;
+  String? returnDate;
   String outwardFromPickupDate;
   String? returnFromPickupDate;
 
@@ -16,12 +22,15 @@ class PreBookRequirementsResponse {
     required this.origin,
     required this.destination,
     required this.outwardFromPickupDate,
+    required this.vehicle,
+    required this.outwardDate,
+    this.returnDate,
     this.returnFromPickupDate,
   });
 
   factory PreBookRequirementsResponse.fromJson(Map<String, dynamic> json) {
     return PreBookRequirementsResponse(
-      isOneWay: json['is_onway'].toString().toLowerCase() == 'true',
+      isOneWay: json['is_oneway'].toString().toLowerCase() == 'true',
       direction:
           json['type'].toString().toLowerCase() == "location_to_airport"
               ? TripDirection.toAirport
@@ -29,8 +38,11 @@ class PreBookRequirementsResponse {
       passengers: Passengers.fromJson(json['passengers']),
       origin: _parseLocation(json['origin']),
       destination: _parseLocation(json['destination']),
+      outwardDate: json['outward_date'] ?? '',
+      returnDate: json['return_date'] ?? '',
       outwardFromPickupDate: json['outward_from_pickup_date'] ?? '',
       returnFromPickupDate: json['return_from_pickup_date'] ?? '',
+      vehicle: Vehicle.fromJson(json['vehicle']),
     );
   }
 

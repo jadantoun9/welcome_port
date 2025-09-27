@@ -9,8 +9,6 @@ import 'package:welcome_port/features/book/home/utils/utils.dart';
 import 'package:welcome_port/features/book/quotes/quotes_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-enum TripDirection { fromAirport, toAirport }
-
 enum TripType { oneWay, roundTrip }
 
 class HomeProvider extends ChangeNotifier {
@@ -22,7 +20,6 @@ class HomeProvider extends ChangeNotifier {
   final FocusNode couponFocus = FocusNode();
 
   final HomeService homeService = HomeService();
-  TripDirection tripDirection = TripDirection.fromAirport;
   TripType tripType = TripType.oneWay;
   Either<GMLocation, AirportSuggestion>? pickupLocation;
   Either<GMLocation, AirportSuggestion>? destinationLocation;
@@ -42,13 +39,6 @@ class HomeProvider extends ChangeNotifier {
   String? couponError;
   String? appliedCoupon;
   bool isCouponApplied = false;
-
-  // Setters
-  void setTripDirection(TripDirection direction) {
-    tripDirection = direction;
-    resetForm();
-    notifyListeners();
-  }
 
   void setTripType(TripType type) {
     tripType = type;
@@ -199,20 +189,24 @@ class HomeProvider extends ChangeNotifier {
 
     // GMLocation origin;
     // AirportSuggestion destination;
-    String originString;
+    String originString = '';
     String destinationString;
     String locationName;
     String locationAddress;
 
-    if (tripDirection == TripDirection.toAirport) {
-      final origin =
-          pickupLocation!.fold((gmLocation) => gmLocation, (airport) => airport)
-              as GMLocation;
+    var origin = pickupLocation!.fold(
+      (gmLocation) => gmLocation,
+      (airport) => airport,
+    );
 
+    if (origin is GMLocation) {
       originString =
           "coords:${origin.latLng.latitude},${origin.latLng.longitude}";
       locationName = origin.mainText;
-      locationAddress = origin.secondaryText;
+      locationAddress =
+          origin.secondaryText.isNotEmpty
+              ? origin.secondaryText
+              : origin.mainText;
 
       final destination =
           destinationLocation!.fold(
@@ -223,9 +217,7 @@ class HomeProvider extends ChangeNotifier {
 
       destinationString = "iata:${destination.code}";
     } else {
-      final origin =
-          pickupLocation!.fold((gmLocation) => gmLocation, (airport) => airport)
-              as AirportSuggestion;
+      origin = origin as AirportSuggestion;
 
       originString = "iata:${origin.code}";
 

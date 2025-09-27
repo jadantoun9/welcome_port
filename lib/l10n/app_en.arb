@@ -318,5 +318,47 @@
   "airports": "AIRPORTS",
   "places": "PLACES",
   "typeAirport": "Type airport",
-  "typeCity": "Type city"
+  "typeCity": "Type city",
+  "totalOneWayPrice": "Total one-way price",
+  "totalRoundTripPrice": "Total round-trip price",
+  "freeCancellation": "Free cancellation",
+  "taxesIncluded": "Taxes included",
+  "deleteAccount": "Delete Account",
+  "pickupLocation": "Pickup Location",
+  "returnDate": "Return Date",
+  "passengers": "Passengers",
+  "date": "Date",
+  "dropOffLocation": "Drop-Off Location",
+  "minPassengers": "Min 1 - Max {max} Passengers",
+  "@minPassengers": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "suitcase": "Suitcase",
+  "passengerDetails": "Passenger Details",
+  "numberOfLuggages": "Number of Luggages",
+  "luggageWarning": "Be sure not to take any extra suitcase",
+  "luggageInfo": "In those cases, you may be charged for any extra pack or not to be taken by driver without any refund.",
+  "mr": "Mr",
+  "ms": "Ms",
+  "mrs": "Mrs",
+  "miss": "Miss",
+  "dr": "Dr",
+  "prof": "Prof",
+  "departureDate": "Departure Date",
+  "emailIsRequired": "Email is required",
+  "pleaseEnterValidEmailAddress": "Please enter a valid email address",
+  "phoneNumberIsRequired": "Phone number is required",
+  "selectAge": "Select age",
+  "selectTitle": "Select title",
+  "titleIsRequired": "Title is required",
+  "departureDateIsRequired": "Departure date is required",
+  "returnDateIsRequired": "Return date is required",
+  "flightNumberIsRequired": "Flight number is required",
+  "addressIsRequired": "Address is required",
+  "pleaseFillInAllRequiredFields": "Please fill in all required fields",
+  "bookNow": "Book Now"
 }

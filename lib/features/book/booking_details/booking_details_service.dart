@@ -25,14 +25,14 @@ class BookingDetailsService {
     }
   }
 
-  Future<Either<String, Unit>> book(String search) async {
+  Future<Either<String, String>> bookWithBalance() async {
     try {
       final response = await Singletons.dio.post(
         '/transfer/book',
         data: {"payment_method": "balance"},
       );
       print(response.data);
-      return Right(unit);
+      return Right(response.data['data']['reference']);
     } on DioException catch (e) {
       return Left(getMessageFromError(e));
     } catch (e) {

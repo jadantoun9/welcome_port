@@ -319,5 +319,47 @@
     "airports": "المطارات",
     "places": "الأماكن",
     "typeAirport": "اكتب المطار",
-    "typeCity": "اكتب المدينة"
+    "typeCity": "اكتب المدينة",
+    "totalOneWayPrice": "السعر الإجمالي للرحلة الواحدة",
+    "totalRoundTripPrice": "السعر الإجمالي للرحلة ذهاب وإياب",
+    "freeCancellation": "إلغاء مجاني",
+    "taxesIncluded": "الضرائب مشمولة",
+    "deleteAccount": "حذف الحساب",
+    "pickupLocation": "موقع الاستلام",
+    "returnDate": "تاريخ العودة",
+    "passengers": "المسافرون",
+    "date": "التاريخ",
+    "dropOffLocation": "موقع التسليم",
+    "minPassengers": "الحد الأدنى 1 - الحد الأقصى {max} مسافر",
+    "@minPassengers": {
+        "placeholders": {
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "suitcase": "حقيبة",
+    "passengerDetails": "تفاصيل المسافر",
+    "numberOfLuggages": "عدد الحقائب",
+    "luggageWarning": "تأكد من عدم أخذ حقائب إضافية",
+    "luggageInfo": "في هذه الحالات، قد يتم فرض رسوم عليك لأي حقيبة إضافية أو عدم أخذها من قبل السائق دون أي استرداد.",
+    "mr": "السيد",
+    "ms": "الآنسة",
+    "mrs": "السيدة",
+    "miss": "الآنسة",
+    "dr": "د.",
+    "prof": "أ.د",
+    "departureDate": "تاريخ المغادرة",
+    "emailIsRequired": "البريد الإلكتروني مطلوب",
+    "pleaseEnterValidEmailAddress": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+    "phoneNumberIsRequired": "رقم الهاتف مطلوب",
+    "selectAge": "اختر العمر",
+    "selectTitle": "اختر اللقب",
+    "titleIsRequired": "اللقب مطلوب",
+    "departureDateIsRequired": "تاريخ المغادرة مطلوب",
+    "returnDateIsRequired": "تاريخ العودة مطلوب",
+    "flightNumberIsRequired": "رقم الرحلة مطلوب",
+    "addressIsRequired": "العنوان مطلوب",
+    "pleaseFillInAllRequiredFields": "يرجى ملء جميع الحقول المطلوبة",
+    "bookNow": "احجز الآن"
 }

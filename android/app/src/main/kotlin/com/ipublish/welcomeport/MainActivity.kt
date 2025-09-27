@@ -1,4 +1,4 @@
-package com.example.welcomeport
+package com.ipublish.welcomeport
 
 import io.flutter.embedding.android.FlutterActivity
 

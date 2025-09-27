@@ -33,4 +33,16 @@ class ProfileService {
       return Left(getDefaultErrorMessage());
     }
   }
+
+  Future<Either<String, Unit>> deleteProfile() async {
+    try {
+      await Singletons.dio.delete('/account');
+      return Right(unit);
+    } on DioException catch (e) {
+      return Left(getMessageFromError(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Left(getDefaultErrorMessage());
+    }
+  }
 }

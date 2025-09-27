@@ -111,10 +111,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
 
     List<Future> futures = [];
 
-    print("selectedLocation: ${widget.selectedLocation}");
-    print("selectedLocation: ${widget.selectedLocation?.latLng}");
-    print("selectedLocation: ${widget.selectedLocation?.latLng.latitude}");
-
     // Add airport search if allowed
     if (shouldSearchAirports) {
       futures.add(

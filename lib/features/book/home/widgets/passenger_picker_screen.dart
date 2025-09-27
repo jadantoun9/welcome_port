@@ -14,6 +14,14 @@ class PassengerData {
     required this.children,
     required this.infants,
   });
+
+  factory PassengerData.fromJson(Map<String, dynamic> json) {
+    return PassengerData(
+      adults: int.tryParse(json['adults'].toString()) ?? 0,
+      children: int.tryParse(json['children'].toString()) ?? 0,
+      infants: int.tryParse(json['infants'].toString()) ?? 0,
+    );
+  }
 }
 
 class PassengerPickerScreen extends StatefulWidget {

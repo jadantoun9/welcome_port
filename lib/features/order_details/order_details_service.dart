@@ -3,19 +3,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:welcome_port/core/helpers/error_helpers.dart';
 import 'package:welcome_port/core/helpers/singletons.dart';
-import 'package:welcome_port/features/book/quotes/models/prebook_requirements_response.dart';
+import 'package:welcome_port/features/order_details/models/order_details.dart';
 
-class QuotesService {
-  Future<Either<String, PreBookRequirementsResponse>> preBook(
-    String quoteId,
-  ) async {
+class OrderDetailsService {
+  Future<Either<String, OrderDetailsModel>> getOrder({
+    required String reference,
+  }) async {
     try {
-      final response = await Singletons.dio.post(
-        '/transfer/prebook-requirements',
-        data: {'quote_id': quoteId},
-      );
+      final response = await Singletons.dio.get("/orders/$reference");
       print(response.data);
-      return Right(PreBookRequirementsResponse.fromJson(response.data['data']));
+      final order = OrderDetailsModel.fromJson(response.data['data']['order']);
+      return Right(order);
     } on DioException catch (e) {
       return Left(getMessageFromError(e));
     } catch (e) {

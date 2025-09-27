@@ -46,9 +46,7 @@ class SocialLoginProvider extends ChangeNotifier {
     SharedProvider sharedProvider,
   ) async {
     _setIsGoogleLoading(true);
-    print("signInWithGoogle");
     final result = await service.signInWithGoogle();
-    print("result: $result");
     inspect(result);
 
     if (result.isSuccess) {

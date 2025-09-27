@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_intl_phone_field/phone_number.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
+import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/features/book/booking_details/booking_details_service.dart';
 import 'package:welcome_port/features/book/booking_details/models/flight_suggestion.dart';
-import 'package:welcome_port/features/book/home/home_provider.dart';
 import 'package:welcome_port/features/book/home/utils/utils.dart';
 import 'package:welcome_port/features/book/home/widgets/date_time_picker_screen.dart';
 import 'package:welcome_port/features/book/quotes/models/prebook_requirements_response.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
+import 'package:welcome_port/features/order_details/order_details_screen.dart';
 
 class BookingDetailsProvider extends ChangeNotifier {
   final bookingDetailsService = BookingDetailsService();
@@ -32,10 +34,11 @@ class BookingDetailsProvider extends ChangeNotifier {
   // Form state
   String selectedTitle = 'Mr';
   bool isLoading = false;
+  bool isBooking = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  // Title options
-  final List<String> titleOptions = ['Mr', 'Mrs', 'Ms'];
+  // Title options - will be initialized with localized strings
+  late final List<String> titleOptions;
 
   // Children and infants ages
   final List<String?> infantAges = [];
@@ -49,9 +52,15 @@ class BookingDetailsProvider extends ChangeNotifier {
     this.preBookRequirementsResponse,
     this.sharedProvider,
   ) {
+    _initializeTitleOptions();
     _initializeForm();
     _initializeAges();
     _initializePickupDate();
+  }
+
+  void _initializeTitleOptions() {
+    // Initialize with localized title options
+    titleOptions = ['Mr', 'Ms', 'Mrs', 'Miss', 'Dr', 'Prof'];
   }
 
   void _initializeForm() {
@@ -69,13 +78,13 @@ class BookingDetailsProvider extends ChangeNotifier {
     // Initialize infant ages as null
     infantAges.clear();
     for (int i = 0; i < preBookRequirementsResponse.passengers.infants; i++) {
-      infantAges.add(null);
+      infantAges.add('2');
     }
 
     // Initialize child ages as null
     childAges.clear();
     for (int i = 0; i < preBookRequirementsResponse.passengers.children; i++) {
-      childAges.add(null);
+      childAges.add('10');
     }
   }
 
@@ -94,6 +103,11 @@ class BookingDetailsProvider extends ChangeNotifier {
 
   void setLoading(bool loading) {
     isLoading = loading;
+    notifyListeners();
+  }
+
+  void setIsBooking(bool loading) {
+    isBooking = loading;
     notifyListeners();
   }
 
@@ -225,64 +239,76 @@ class BookingDetailsProvider extends ChangeNotifier {
     return null;
   }
 
-  String? validateEmail(String? value) {
+  String? validateEmail(String? value, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     if (value == null || value.isEmpty) {
-      return 'Email is required';
+      return l.emailIsRequired;
     }
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-      return 'Please enter a valid email address';
+      return l.pleaseEnterValidEmailAddress;
     }
     return null;
   }
 
-  String? validatePhoneNumber(PhoneNumber? phoneNumber) {
+  String? validatePhoneNumber(PhoneNumber? phoneNumber, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     if (phoneNumber == null || phoneNumber.completeNumber.isEmpty) {
-      return 'Phone number is required';
+      return l.phoneNumberIsRequired;
     }
     return null;
   }
 
-  String? validateAgeSelection(String? value, String fieldName) {
-    if (value == null || value.isEmpty || value == 'Select age') {
-      return '$fieldName age is required';
+  String? validateAgeSelection(
+    String? value,
+    String fieldName,
+    BuildContext context,
+  ) {
+    final l = AppLocalizations.of(context)!;
+    if (value == null || value.isEmpty || value == l.selectAge) {
+      return l.ageIsRequired(fieldName);
     }
     return null;
   }
 
-  String? validateTitle(String? value) {
+  String? validateTitle(String? value, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     // Check the actual selected title value
     final actualValue = selectedTitle;
-    if (actualValue.isEmpty || actualValue == 'Select title') {
-      return 'Title is required';
+    if (actualValue.isEmpty || actualValue == l.selectTitle) {
+      return l.titleIsRequired;
     }
     return null;
   }
 
-  String? validateDepartureDate(String? value) {
+  String? validateDepartureDate(String? value, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     if (value == null || value.isEmpty) {
-      return 'Departure date is required';
+      return l.departureDateIsRequired;
     }
     return null;
   }
 
-  String? validateReturnDate(String? value) {
+  String? validateReturnDate(String? value, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     if (preBookRequirementsResponse.isOneWay) return null;
     if (value == null || value.isEmpty) {
-      return 'Return date is required';
+      return l.returnDateIsRequired;
     }
     return null;
   }
 
-  String? validateFlightNumber(String? value) {
+  String? validateFlightNumber(String? value, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     if (value == null || value.isEmpty) {
-      return 'Flight number is required';
+      return l.flightNumberIsRequired;
     }
     return null;
   }
 
-  String? validateAddress(String? value) {
+  String? validateAddress(String? value, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     if (value == null || value.isEmpty) {
-      return 'Address is required';
+      return l.addressIsRequired;
     }
     return null;
   }
@@ -298,15 +324,18 @@ class BookingDetailsProvider extends ChangeNotifier {
   }
 
   void onSubmit({required BuildContext context}) async {
+    if (isBooking) return;
+    final l = AppLocalizations.of(context)!;
     if (!validateForm()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill in all required fields'),
+        SnackBar(
+          content: Text(l.pleaseFillInAllRequiredFields),
           backgroundColor: Colors.red,
         ),
       );
       return;
     }
+    setIsBooking(true);
     final result = await bookingDetailsService.preBook(
       title: selectedTitle,
       firstName: firstNameController.text,
@@ -338,32 +367,40 @@ class BookingDetailsProvider extends ChangeNotifier {
     );
     result.fold(
       (error) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(error)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(backgroundColor: Colors.red, content: Text(error)),
+        );
+        setIsBooking(false);
       },
       (success) async {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(success.toString())));
+        if (sharedProvider.customer?.type == CustomerType.agent) {
+          final result = await bookingDetailsService.bookWithBalance();
+          setIsBooking(false);
 
-        final result = await bookingDetailsService.book(
-          flightNumberController.text,
-        );
-        result.fold(
-          (error) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(error)));
-          },
-          (success) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(success.toString())));
-          },
-        );
+          result.fold(
+            (error) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(backgroundColor: Colors.red, content: Text(error)),
+              );
+            },
+            (reference) {
+              NavigationUtils.push(
+                context,
+                OrderDetailsScreen(orderReference: reference),
+              );
+            },
+          );
+        }
       },
     );
+  }
+
+  String getButtonText(SharedProvider sharedProvider, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    if (sharedProvider.customer?.type == CustomerType.agent) {
+      return l.bookNow;
+    }
+    return l.continueToPayment;
   }
 
   @override

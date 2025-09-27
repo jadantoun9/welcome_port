@@ -209,6 +209,16 @@ class _ProfileScreenState extends State<_ProfileContent> {
                                 sharedProvider: sharedProvider,
                               ),
                         ),
+                        const SizedBox(height: 10),
+                        WideButton(
+                          text: l.deleteAccount,
+                          bgColor: Colors.red,
+                          onPressed:
+                              () => provider.deleteProfile(
+                                context: context,
+                                sharedProvider: sharedProvider,
+                              ),
+                        ),
                       ],
                       const SizedBox(height: 20),
                     ],

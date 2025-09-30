@@ -85,7 +85,7 @@ class LoginProvider extends ChangeNotifier {
     }
 
     if (!_isValidEmail(_email!.trim())) {
-      setEmailError(l.pleaseEnterValidEmail);
+      setEmailError(l.pleaseEnterValidEmailAddress);
       return;
     }
 

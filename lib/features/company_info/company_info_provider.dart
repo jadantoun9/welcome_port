@@ -126,7 +126,7 @@ class CompanyInfoProvider extends ChangeNotifier {
       return null; // Optional field
     }
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value.trim())) {
-      return l.pleaseEnterValidEmail;
+      return l.pleaseEnterValidEmailAddress;
     }
     return null;
   }

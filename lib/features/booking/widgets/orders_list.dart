@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:welcome_port/core/widgets/error_card.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
 import 'package:welcome_port/features/booking/bookings_provider.dart';
 import 'package:welcome_port/features/booking/widgets/order_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BookingsList extends StatelessWidget {
   final BookingsProvider provider;
@@ -39,72 +41,74 @@ class BookingsList extends StatelessWidget {
   }
 
   Widget _buildErrorWidget() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
-          const SizedBox(height: 16),
-          Text(
-            'Failed to load orders',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[600],
-            ),
+    return Builder(
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              ErrorCard(
+                title: "Failed to load bookings",
+                message: provider.error ?? 'Unknown error',
+                onRetry: () => provider.refreshBookings(),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            provider.error ?? 'Unknown error',
-            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () => provider.refreshBookings(),
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   Widget _buildEmptyWidget() {
-    return Container(
-      padding: const EdgeInsets.only(top: 60),
-      child: Column(
-        children: [
-          Icon(Icons.shopping_bag_outlined, size: 48, color: Colors.grey[500]),
-          const SizedBox(height: 16),
-          Text(
-            'No orders yet',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[900],
-            ),
+    return Builder(
+      builder: (context) {
+        final l = AppLocalizations.of(context)!;
+        return Container(
+          padding: const EdgeInsets.only(top: 60),
+          child: Column(
+            children: [
+              Icon(
+                Icons.shopping_bag_outlined,
+                size: 48,
+                color: Colors.grey[500],
+              ),
+              const SizedBox(height: 16),
+              Text(
+                l.noOrdersYet,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey[900],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l.orderHistoryWillAppearHere,
+                style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            'Your order history will appear here',
-            style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   Widget _buildLoadMoreButton() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child:
-          provider.isLoading
-              ? Loader(color: Colors.black)
-              : ElevatedButton(
-                onPressed: provider.loadMoreBookings,
-                child: const Text('Load More'),
-              ),
+    return Builder(
+      builder: (context) {
+        final l = AppLocalizations.of(context)!;
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child:
+              provider.isLoading
+                  ? Loader(color: Colors.black)
+                  : ElevatedButton(
+                    onPressed: provider.loadMoreBookings,
+                    child: Text(l.loadMore),
+                  ),
+        );
+      },
     );
   }
 }

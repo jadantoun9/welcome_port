@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:welcome_port/core/widgets/error_card.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
 import 'package:welcome_port/features/wallet/model/transaction.dart';
 import 'package:welcome_port/features/wallet/wallet_provider.dart';
@@ -85,33 +86,17 @@ class TransactionList extends StatelessWidget {
   }
 
   Widget _buildErrorWidget() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
-          const SizedBox(height: 16),
-          Text(
-            'Failed to load transactions',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[600],
-            ),
+    return Builder(
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: ErrorCard(
+            title: 'Failed to load transactions',
+            message: provider.error ?? 'Unknown error',
+            onRetry: () => provider.refreshTransactions(),
           ),
-          const SizedBox(height: 8),
-          Text(
-            provider.error ?? 'Unknown error',
-            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () => provider.refreshTransactions(),
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

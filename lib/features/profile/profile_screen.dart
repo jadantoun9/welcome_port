@@ -167,7 +167,7 @@ class _ProfileScreenState extends State<_ProfileContent> {
                           if (!RegExp(
                             r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                           ).hasMatch(value)) {
-                            return l.pleaseEnterValidEmail;
+                            return l.pleaseEnterValidEmailAddress;
                           }
                           return null;
                         },

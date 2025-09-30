@@ -31,8 +31,8 @@ class WalletProvider extends ChangeNotifier {
     );
 
     result.fold(
-      (error) {
-        error = error;
+      (err) {
+        error = err;
         isLoading = false;
         notifyListeners();
       },

@@ -119,7 +119,10 @@ class DepartureReturnCard extends StatelessWidget {
             backgroundColor: Colors.white,
             placeholder: AppLocalizations.of(context)!.pickupDate,
             onClick: () async {
-              provider.onPickUpDateClick(context, isDeparture);
+              provider.onPickUpDateClick(
+                context: context,
+                isDeparture: isDeparture,
+              );
             },
             validator:
                 (value) =>

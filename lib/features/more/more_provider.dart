@@ -162,6 +162,7 @@ class MoreProvider extends ChangeNotifier {
 
     if (selectedValue != null) {
       sharedProvider.changeCurrency(selectedValue);
+      ;
     }
   }
 }

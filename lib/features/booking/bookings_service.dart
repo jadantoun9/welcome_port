@@ -3,10 +3,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:welcome_port/core/helpers/error_helpers.dart';
 import 'package:welcome_port/core/helpers/singletons.dart';
-import 'package:welcome_port/features/orders/models/order.dart';
+import 'package:welcome_port/features/booking/models/order.dart';
 
-class OrdersService {
-  Future<Either<String, List<OrderModel>>> getOrders({
+class BookingsService {
+  Future<Either<String, List<OrderModel>>> getBookings({
     required int limit,
     required int page,
   }) async {

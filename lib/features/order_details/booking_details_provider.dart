@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:welcome_port/features/order_details/models/order_details.dart';
-import 'package:welcome_port/features/order_details/order_details_service.dart';
+import 'package:welcome_port/features/order_details/models/booking_details.dart';
+import 'package:welcome_port/features/order_details/booking_details_service.dart';
 
-class OrderDetailsProvider extends ChangeNotifier {
-  final OrderDetailsService _orderDetailsService = OrderDetailsService();
+class BookingDetailsProvider extends ChangeNotifier {
+  final BookingDetailsService _orderDetailsService = BookingDetailsService();
 
   OrderDetailsModel? orderDetails;
   bool isLoading = false;

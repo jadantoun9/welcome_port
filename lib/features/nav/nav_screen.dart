@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/features/book/home/home_screen.dart';
+import 'package:welcome_port/features/login/login_screen.dart';
 import 'package:welcome_port/features/more/more_screen.dart';
-import 'package:welcome_port/features/orders/orders_screen.dart';
+import 'package:welcome_port/features/booking/bookings_screen.dart';
 import 'package:welcome_port/features/wallet/wallet_screen.dart';
 
 class NavScreen extends StatefulWidget {
@@ -21,9 +23,9 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   getWidgetOptions(SharedProvider sharedProv) {
     if (sharedProv.customer?.type == CustomerType.agent) {
-      return [HomeScreen(), OrdersScreen(), WalletScreen(), MoreScreen()];
+      return [HomeScreen(), BookingsScreen(), WalletScreen(), MoreScreen()];
     }
-    return [HomeScreen(), OrdersScreen(), MoreScreen()];
+    return [HomeScreen(), BookingsScreen(), MoreScreen()];
   }
 
   @override
@@ -76,14 +78,35 @@ class CustomNavBar extends StatelessWidget {
         child: Row(
           spacing: 3,
           children: [
-            _buildNavItem(index: 0, label: 'Home', icon: Icons.home),
-            _buildNavItem(index: 1, label: 'Orders', icon: Icons.receipt),
+            _buildNavItem(
+              index: 0,
+              label: 'Home',
+              context: context,
+              sharedProvider: sharedProvider,
+              iconPath: 'assets/icons/home.svg',
+            ),
+            _buildNavItem(
+              index: 1,
+              label: 'Bookings',
+              context: context,
+              sharedProvider: sharedProvider,
+              iconPath: 'assets/icons/bookings.svg',
+            ),
             if (sharedProvider.customer?.type == CustomerType.agent)
-              _buildNavItem(index: 2, label: 'Wallet', icon: Icons.wallet),
+              _buildNavItem(
+                index: 2,
+                label: 'Wallet',
+                context: context,
+                sharedProvider: sharedProvider,
+                iconPath: 'assets/icons/wallet.svg',
+                size: 22,
+              ),
             _buildNavItem(
               index:
                   sharedProvider.customer?.type == CustomerType.agent ? 3 : 2,
               label: 'More',
+              context: context,
+              sharedProvider: sharedProvider,
               icon: Icons.menu,
             ),
           ],
@@ -95,8 +118,11 @@ class CustomNavBar extends StatelessWidget {
   Widget _buildNavItem({
     required int index,
     required String label,
+    required BuildContext context,
+    required SharedProvider sharedProvider,
     String? iconPath,
     IconData? icon,
+    double size = 24,
   }) {
     final bool isSelected = selectedIndex == index;
 
@@ -105,6 +131,11 @@ class CustomNavBar extends StatelessWidget {
         clickedOpacity: 0.6,
         onTap: () {
           HapticFeedback.mediumImpact();
+          // if user opened "bookings" and is not logged in, redirect to login screen
+          if (index == 1 && sharedProvider.customer == null) {
+            NavigationUtils.push(context, LoginScreen());
+            return;
+          }
           onItemTapped(index);
         },
         child: Stack(
@@ -123,8 +154,8 @@ class CustomNavBar extends StatelessWidget {
                           if (iconPath != null)
                             SvgPicture.asset(
                               iconPath,
-                              height: 24,
-                              width: 24,
+                              height: size,
+                              width: size,
                               colorFilter: ColorFilter.mode(
                                 isSelected
                                     ? AppColors.primaryColor

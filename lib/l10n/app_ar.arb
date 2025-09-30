@@ -361,5 +361,7 @@
     "flightNumberIsRequired": "رقم الرحلة مطلوب",
     "addressIsRequired": "العنوان مطلوب",
     "pleaseFillInAllRequiredFields": "يرجى ملء جميع الحقول المطلوبة",
-    "bookNow": "احجز الآن"
+    "bookNow": "احجز الآن",
+    "searchCountry": "ابحث عن دولة",
+    "phoneNumberPlaceholder": "رقم الهاتف"
 }

@@ -6,30 +6,31 @@ import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/custom_cached_image.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
 import 'package:welcome_port/features/book/home/home_provider.dart';
-import 'package:welcome_port/features/order_details/models/order_details.dart';
-import 'package:welcome_port/features/order_details/order_details_provider.dart';
+import 'package:welcome_port/features/order_details/models/booking_details.dart';
+import 'package:welcome_port/features/order_details/booking_details_provider.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
+class BookingDetailsScreen extends StatelessWidget {
   final String orderReference;
 
-  const OrderDetailsScreen({super.key, required this.orderReference});
+  const BookingDetailsScreen({super.key, required this.orderReference});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create:
-          (context) => OrderDetailsProvider()..loadOrderDetails(orderReference),
-      child: _OrderDetailsContent(),
+          (context) =>
+              BookingDetailsProvider()..loadOrderDetails(orderReference),
+      child: _BookingDetailsContent(),
     );
   }
 }
 
-class _OrderDetailsContent extends StatelessWidget {
-  const _OrderDetailsContent();
+class _BookingDetailsContent extends StatelessWidget {
+  const _BookingDetailsContent();
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<OrderDetailsProvider>(context);
+    final provider = Provider.of<BookingDetailsProvider>(context);
     final sharedProvider = Provider.of<SharedProvider>(context);
 
     if (provider.isLoading) {
@@ -45,7 +46,7 @@ class _OrderDetailsContent extends StatelessWidget {
             icon: const Icon(Icons.arrow_back, color: Colors.white),
           ),
           title: const Text(
-            'Order Details',
+            'Booking Details',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
@@ -70,7 +71,7 @@ class _OrderDetailsContent extends StatelessWidget {
             icon: const Icon(Icons.arrow_back, color: Colors.white),
           ),
           title: const Text(
-            'Order Details',
+            'Booking Details',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
@@ -85,7 +86,7 @@ class _OrderDetailsContent extends StatelessWidget {
               const Icon(Icons.error_outline, color: Colors.white, size: 48),
               const SizedBox(height: 16),
               const Text(
-                'Error loading order details',
+                'Error loading booking details',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
               const SizedBox(height: 8),
@@ -114,7 +115,7 @@ class _OrderDetailsContent extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: const Text(
-          'Order Details',
+          'Booking Details',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -137,7 +138,7 @@ class _OrderDetailsContent extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      'Order #${order.reference}',
+                      'Booking #${order.reference}',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.white,
@@ -229,17 +230,17 @@ class _OrderDetailsContent extends StatelessWidget {
                               ),
                               const SizedBox(height: 16),
                               _buildOrderDetail(
-                                label: 'Flight Date',
-                                value: _formatDateString(order.outwardDate),
+                                label: 'Pickup Date',
+                                value: order.outwardPickupDate,
                               ),
                               const SizedBox(height: 16),
                               if (provider.orderDetails?.tripType ==
                                   TripType.roundTrip)
                                 _buildOrderDetail(
-                                  label: 'Return Flight Date',
-                                  value: _formatDateString(
-                                    provider.orderDetails?.returnDate ?? '',
-                                  ),
+                                  label: 'Return Pickup Date',
+                                  value:
+                                      provider.orderDetails?.returnPickupDate ??
+                                      '',
                                 ),
                             ],
                           ),
@@ -386,10 +387,6 @@ class _OrderDetailsContent extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _formatDateString(String dateString) {
-    return dateString;
   }
 
   String _getPassengerSummary(passengers) {

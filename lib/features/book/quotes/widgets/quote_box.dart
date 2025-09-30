@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 // import 'package:welcome_port/core/constant/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/models/quote.dart';
+import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/custom_cached_image.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
 
@@ -21,6 +23,8 @@ class _QuoteBoxState extends State<QuoteBox> {
 
   @override
   Widget build(BuildContext context) {
+    final sharedProvider = Provider.of<SharedProvider>(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -166,33 +170,36 @@ class _QuoteBoxState extends State<QuoteBox> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.quote.isOneWay
-                              ? AppLocalizations.of(context)!.totalOneWayPrice
-                              : AppLocalizations.of(
-                                context,
-                              )!.totalRoundTripPrice,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppColors.textGrey,
-                            fontWeight: FontWeight.w500,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.quote.isOneWay
+                                ? AppLocalizations.of(context)!.totalOneWayPrice
+                                : AppLocalizations.of(
+                                  context,
+                                )!.totalRoundTripPrice,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.textGrey,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          widget.quote.priceDiscounted == null
-                              ? widget.quote.priceFormatted
-                              : widget.quote.priceDiscountedFormatted,
-                          style: const TextStyle(
-                            fontSize: 27,
-                            fontWeight: FontWeight.w800,
-                            // color: AppColors.primaryColor,
+                          const SizedBox(height: 4),
+                          Text(
+                            widget.quote.priceDiscounted == null
+                                ? widget.quote.priceFormatted
+                                : widget.quote.priceDiscountedFormatted,
+                            style: TextStyle(
+                              fontSize:
+                                  sharedProvider.currency == "USD" ? 27 : 19,
+                              fontWeight: FontWeight.w800,
+                              // color: AppColors.primaryColor,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

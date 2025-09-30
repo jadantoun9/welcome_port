@@ -360,5 +360,7 @@
   "flightNumberIsRequired": "Flight number is required",
   "addressIsRequired": "Address is required",
   "pleaseFillInAllRequiredFields": "Please fill in all required fields",
-  "bookNow": "Book Now"
+  "bookNow": "Book Now",
+  "searchCountry": "Search country",
+  "phoneNumberPlaceholder": "Phone Number"
 }

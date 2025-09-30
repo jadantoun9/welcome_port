@@ -157,19 +157,6 @@ class _BookingDetailsContentState extends State<_BookingDetailsContent> {
                                       .destination,
                                 ),
                               ),
-                              const SizedBox(height: 16),
-                              if (!provider
-                                  .preBookRequirementsResponse
-                                  .isOneWay)
-                                _buildBookingDetail(
-                                  label: "Return Flight Date",
-                                  value: _formatDateString(
-                                    provider
-                                            .preBookRequirementsResponse
-                                            .returnDate ??
-                                        '',
-                                  ),
-                                ),
                             ],
                           ),
                         ),
@@ -192,6 +179,19 @@ class _BookingDetailsContentState extends State<_BookingDetailsContent> {
                                       .outwardDate,
                                 ),
                               ),
+                              const SizedBox(height: 16),
+                              if (!provider
+                                  .preBookRequirementsResponse
+                                  .isOneWay)
+                                _buildBookingDetail(
+                                  label: "Return Flight Date",
+                                  value: _formatDateString(
+                                    provider
+                                            .preBookRequirementsResponse
+                                            .returnDate ??
+                                        '',
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -322,10 +322,14 @@ class _BookingDetailsContentState extends State<_BookingDetailsContent> {
     final children = provider.preBookRequirementsResponse.passengers.children;
     final infants = provider.preBookRequirementsResponse.passengers.infants;
 
-    if (adults == 1 && children == 0 && infants == 0) {
-      return '1 Adult';
-    }
+    String s = '$adults Adults';
 
-    return '$adults Adults, $children Children, $infants Infants';
+    if (children > 0) {
+      s += ", $children Children";
+    }
+    if (infants > 0) {
+      s += ", $infants Infants";
+    }
+    return s;
   }
 }

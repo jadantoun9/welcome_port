@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:welcome_port/core/constant/constants.dart';
 import 'package:welcome_port/core/helpers/singletons.dart';
 import 'package:welcome_port/core/models/setting.dart';
@@ -62,14 +63,19 @@ class SharedProvider extends ChangeNotifier {
       changeCurrency(setting.activeCurrency);
     }
 
-    if (setting.customer != null) {
-      setCustomer(setting.customer!);
-    }
+    setCustomer(setting.customer);
+
     notifyListeners();
   }
 
   void setCustomer(CustomerModel? customerData) {
-    customer = customerData;
+    if (customerData != null) {
+      OneSignal.login(customerData.id.toString());
+      customer = customerData;
+    } else {
+      customer = null;
+      OneSignal.logout();
+    }
     notifyListeners();
   }
 }

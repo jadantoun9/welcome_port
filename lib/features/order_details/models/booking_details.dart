@@ -23,6 +23,8 @@ class OrderDetailsModel {
   final Direction routeDirection;
   final String outwardDate;
   final String returnDate;
+  final String outwardPickupDate;
+  final String returnPickupDate;
 
   OrderDetailsModel({
     required this.reference,
@@ -43,6 +45,8 @@ class OrderDetailsModel {
     required this.location,
     required this.outwardDate,
     required this.returnDate,
+    required this.outwardPickupDate,
+    required this.returnPickupDate,
   });
 
   factory OrderDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -71,6 +75,8 @@ class OrderDetailsModel {
               : Direction.locationToAirport,
       outwardDate: json['outward_date'] ?? '',
       returnDate: json['return_date'] ?? '',
+      outwardPickupDate: json['outward_pickup_date'] ?? '',
+      returnPickupDate: json['return_pickup_date'] ?? '',
     );
   }
 }

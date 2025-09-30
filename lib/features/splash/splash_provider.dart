@@ -78,6 +78,7 @@ class SplashProvider extends ChangeNotifier {
   }
 
   void fetchData(BuildContext context) async {
+    final startTime = DateTime.now();
     final result = await service.getSetting();
     if (!context.mounted) return;
 
@@ -94,13 +95,20 @@ class SplashProvider extends ChangeNotifier {
         if (!context.mounted) return;
         allowToProceed = await _checkIfCanProceed(context);
         if (!allowToProceed) {
-          // Wait a bit before checking again (prevents infinite tight loop)
           await Future.delayed(const Duration(seconds: 1));
         }
       }
 
-      if (!context.mounted) return;
+      // Ensure minimum 2 seconds have passed
+      final elapsed = DateTime.now().difference(startTime);
+      final remainingTime = Duration(seconds: 2) - elapsed;
+      if (remainingTime.inMilliseconds > 0) {
+        await Future.delayed(remainingTime);
+      }
 
+      if (!context.mounted) {
+        return;
+      }
       NavigationUtils.pushReplacement(context, const NavScreen());
     });
   }

@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:welcome_port/core/constant/colors.dart';
-import 'package:welcome_port/core/widgets/show_error_toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:welcome_port/core/widgets/show_error_toast.dart';
 import 'package:welcome_port/core/widgets/wide_button.dart';
+import 'package:welcome_port/features/book/home/utils/utils.dart';
 
 class DateTimePickerScreen extends StatefulWidget {
   final DateTime? initialDate;
   final TimeOfDay? initialTime;
   final DateTime? minimumDate;
+  final DateTime? maximumDate;
   final String title;
 
   const DateTimePickerScreen({
@@ -18,6 +20,7 @@ class DateTimePickerScreen extends StatefulWidget {
     this.initialDate,
     this.initialTime,
     this.minimumDate,
+    this.maximumDate,
   });
 
   @override
@@ -88,8 +91,8 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: TableCalendar<dynamic>(
-                firstDay: _getEffectiveMinimumDate(),
-                lastDay: DateTime.utc(2030, 12, 31),
+                firstDay: getEffectiveMinimumDate(widget.minimumDate),
+                lastDay: widget.maximumDate ?? DateTime.utc(2030, 12, 31),
                 focusedDay: _selectedDate,
                 calendarFormat: _calendarFormat,
                 rangeSelectionMode: _rangeSelectionMode,
@@ -97,12 +100,36 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
                   return isSameDay(_selectedDate, day);
                 },
                 enabledDayPredicate: (day) {
-                  // Disable days before the effective minimum date
-                  return !day.isBefore(_getEffectiveMinimumDate());
+                  // Disable days before the effective minimum date (allow same day)
+                  final effectiveMinDate = getEffectiveMinimumDate(
+                    widget.minimumDate,
+                  );
+                  // Compare dates only (ignore time)
+                  final dayOnly = DateTime(day.year, day.month, day.day);
+                  final minDateOnly = DateTime(
+                    effectiveMinDate.year,
+                    effectiveMinDate.month,
+                    effectiveMinDate.day,
+                  );
+                  return !dayOnly.isBefore(minDateOnly);
                 },
                 onDaySelected: (selectedDay, focusedDay) {
-                  // Check if selected day is not before effective minimum date
-                  if (selectedDay.isBefore(_getEffectiveMinimumDate())) {
+                  // Check if selected day is not before effective minimum date (allow same day)
+                  final effectiveMinDate = getEffectiveMinimumDate(
+                    widget.minimumDate,
+                  );
+                  // Compare dates only (ignore time)
+                  final selectedDayOnly = DateTime(
+                    selectedDay.year,
+                    selectedDay.month,
+                    selectedDay.day,
+                  );
+                  final minDateOnly = DateTime(
+                    effectiveMinDate.year,
+                    effectiveMinDate.month,
+                    effectiveMinDate.day,
+                  );
+                  if (selectedDayOnly.isBefore(minDateOnly)) {
                     return; // Don't allow selection before minimum date
                   }
 
@@ -182,7 +209,7 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  _format24Hour(_selectedTime!),
+                                  format24Hour(_selectedTime!),
                                   style: const TextStyle(
                                     fontSize: 19,
                                     color: Colors.black,
@@ -339,25 +366,24 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
       _selectedTime!.minute,
     );
 
-    Navigator.pop(context, selectedDateTime);
-  }
-
-  DateTime _getEffectiveMinimumDate() {
-    final today = DateTime.now();
-    final todayDate = DateTime(today.year, today.month, today.day);
-    final minimumDate = widget.minimumDate;
-
-    if (minimumDate == null) {
-      return todayDate;
+    if (widget.minimumDate != null &&
+        selectedDateTime.isBefore(widget.minimumDate!)) {
+      showErrorToast(
+        context,
+        "Date must be after minimum date ${widget.minimumDate}",
+      );
+      return;
     }
 
-    // Return the later of today or the provided minimum date
-    return minimumDate.isAfter(todayDate) ? minimumDate : todayDate;
-  }
+    if (widget.maximumDate != null &&
+        selectedDateTime.isAfter(widget.maximumDate!)) {
+      showErrorToast(
+        context,
+        "Date must be before maximum date ${widget.maximumDate}",
+      );
+      return;
+    }
 
-  String _format24Hour(TimeOfDay time) {
-    final hour = time.hour.toString().padLeft(2, '0');
-    final minute = time.minute.toString().padLeft(2, '0');
-    return '$hour:$minute';
+    Navigator.pop(context, selectedDateTime);
   }
 }

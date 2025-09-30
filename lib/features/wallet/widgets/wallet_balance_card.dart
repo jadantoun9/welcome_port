@@ -67,7 +67,7 @@ class WalletBalanceCard extends StatelessWidget {
                   balance,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 31,
+                    fontSize: 23,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

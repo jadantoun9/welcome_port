@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
-import 'package:welcome_port/features/orders/orders_provider.dart';
-import 'package:welcome_port/features/orders/widgets/order_card.dart';
+import 'package:welcome_port/features/booking/bookings_provider.dart';
+import 'package:welcome_port/features/booking/widgets/order_card.dart';
 
-class OrdersList extends StatelessWidget {
-  final OrdersProvider provider;
+class BookingsList extends StatelessWidget {
+  final BookingsProvider provider;
 
-  const OrdersList({super.key, required this.provider});
+  const BookingsList({super.key, required this.provider});
 
   @override
   Widget build(BuildContext context) {
@@ -14,26 +14,26 @@ class OrdersList extends StatelessWidget {
       return _buildErrorWidget();
     }
 
-    if (provider.orders.isEmpty && !provider.isLoading) {
+    if (provider.bookings.isEmpty && !provider.isLoading) {
       return _buildEmptyWidget();
     }
 
     // Show skeleton when loading and no orders yet
-    if (provider.isLoading && provider.orders.isEmpty) {
-      return const OrdersSkeleton(itemCount: 5);
+    if (provider.isLoading && provider.bookings.isEmpty) {
+      return const BookingsSkeleton(itemCount: 5);
     }
 
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: provider.orders.length + (provider.hasMoreData ? 1 : 0),
+      itemCount: provider.bookings.length + (provider.hasMoreData ? 1 : 0),
       itemBuilder: (context, index) {
-        if (index == provider.orders.length) {
+        if (index == provider.bookings.length) {
           return _buildLoadMoreButton();
         }
 
-        final order = provider.orders[index];
-        return OrderCard(order: order);
+        final order = provider.bookings[index];
+        return BookingCard(order: order);
       },
     );
   }
@@ -61,7 +61,7 @@ class OrdersList extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: () => provider.refreshOrders(),
+            onPressed: () => provider.refreshBookings(),
             child: const Text('Retry'),
           ),
         ],
@@ -102,17 +102,17 @@ class OrdersList extends StatelessWidget {
           provider.isLoading
               ? Loader(color: Colors.black)
               : ElevatedButton(
-                onPressed: provider.loadMoreOrders,
+                onPressed: provider.loadMoreBookings,
                 child: const Text('Load More'),
               ),
     );
   }
 }
 
-class OrdersSkeleton extends StatelessWidget {
+class BookingsSkeleton extends StatelessWidget {
   final int itemCount;
 
-  const OrdersSkeleton({super.key, this.itemCount = 5});
+  const BookingsSkeleton({super.key, this.itemCount = 5});
 
   @override
   Widget build(BuildContext context) {
@@ -123,89 +123,107 @@ class OrdersSkeleton extends StatelessWidget {
 
   Widget _buildSkeletonItem() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          // Header skeleton
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // Vehicle image skeleton
+          Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          const SizedBox(width: 10),
+          // Order details skeleton
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Order reference skeleton
               Container(
-                width: 100,
+                width: 80,
+                height: 14,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 4),
+              // Route skeleton
+              Container(
+                width: 120,
                 height: 16,
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
+              const SizedBox(height: 2),
+              // Date skeleton
               Container(
-                width: 60,
-                height: 20,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          // Details skeleton
-          ...List.generate(
-            4,
-            (index) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                children: [
-                  Container(
-                    width: 60,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Container(
-                      height: 12,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          // Amount skeleton
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 80,
+                width: 100,
                 height: 12,
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
+              const SizedBox(height: 2),
+              // Trip type skeleton
               Container(
-                width: 100,
-                height: 16,
+                width: 60,
+                height: 12,
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ],
+          ),
+          // Status and button skeleton
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  children: [
+                    // Status skeleton
+                    Container(
+                      width: 50,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(height: 7),
+                    // View button skeleton
+                    Container(
+                      width: 50,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),

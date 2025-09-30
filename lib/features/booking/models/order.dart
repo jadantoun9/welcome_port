@@ -12,7 +12,8 @@ class OrderModel {
   final double price;
   final String priceFormatted;
   final String paymentMethod;
-  final String dateAdded;
+  final String outwardDate;
+  final String returnDate;
   final Vehicle vehicle;
 
   OrderModel({
@@ -26,7 +27,8 @@ class OrderModel {
     required this.price,
     required this.priceFormatted,
     required this.paymentMethod,
-    required this.dateAdded,
+    required this.outwardDate,
+    required this.returnDate,
     required this.vehicle,
   });
 
@@ -45,7 +47,14 @@ class OrderModel {
       price: double.tryParse(json['price'].toString()) ?? 0,
       priceFormatted: json['price_formatted'] ?? '',
       paymentMethod: json['payment_method'] ?? '',
-      dateAdded: json['date_added'] ?? '',
+      outwardDate:
+          json['outward_date'].length > 0
+              ? json['outward_date'].substring(0, 10)
+              : '',
+      returnDate:
+          json['return_date'].length > 0
+              ? json['return_date'].substring(0, 10)
+              : '',
       vehicle: Vehicle.fromJson(json['vehicle']),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +13,7 @@ import 'package:welcome_port/core/widgets/input_container.dart';
 import 'package:welcome_port/core/widgets/wide_button.dart';
 import 'package:welcome_port/features/book/home/home_provider.dart';
 import 'package:welcome_port/features/book/home/models/location_type.dart';
+import 'package:welcome_port/features/book/home/utils/utils.dart';
 import 'package:welcome_port/features/book/home/widgets/date_time_picker_screen.dart';
 import 'package:welcome_port/features/book/home/widgets/location_picker_screen.dart';
 import 'package:welcome_port/features/book/home/widgets/passenger_picker_screen.dart';
@@ -64,7 +67,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                     AppLocalizations.of(context)!.quickEasyAirportTransfers,
                     style: const TextStyle(color: Colors.white70, fontSize: 16),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
 
                   // Trip Type Selection
                   _buildTripTypeSelector(provider),
@@ -86,7 +89,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
 
                   // Passenger Selection
                   _buildPassengerSelector(provider),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
 
                   // Search Button
                   WideButton(
@@ -123,7 +126,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
               provider,
               TripType.oneWay,
               AppLocalizations.of(context)!.oneWay,
-              Icons.flight,
+              Icons.arrow_forward_outlined,
             ),
           ),
           Expanded(
@@ -152,7 +155,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
         provider.setTripType(tripType);
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         decoration: BoxDecoration(
           color: isSelected ? Colors.amber : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
@@ -270,7 +273,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           );
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.only(bottom: 5),
           child: Row(
             children: [
               Icon(Icons.location_on, color: Colors.black, size: 22),
@@ -311,6 +314,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                 context,
                 DateTimePickerScreen(
                   initialDate: provider.flightDate,
+                  maximumDate: provider.returnFlightDate,
                   title: AppLocalizations.of(context)!.flightTime,
                 ),
               );
@@ -320,18 +324,15 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           }
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 2),
           child: Row(
             children: [
-              Icon(Icons.calendar_today, color: Colors.black, size: 22),
+              Icon(Icons.calendar_today, color: Colors.black, size: 16),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   provider.flightDate != null
-                      ? (provider.flightDate!.hour == 0 &&
-                              provider.flightDate!.minute == 0
-                          ? '${provider.flightDate!.day}/${provider.flightDate!.month}/${provider.flightDate!.year}'
-                          : '${provider.flightDate!.day}/${provider.flightDate!.month}/${provider.flightDate!.year} ${_formatTimeWithBothFormats(provider.flightDate!)}')
+                      ? formatDateTimeForDisplay(provider.flightDate!, context)
                       : AppLocalizations.of(context)!.selectFlightTime,
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
@@ -351,7 +352,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           provider.setTripType(TripType.roundTrip);
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
             color: Colors.amber,
             borderRadius: BorderRadius.circular(10),
@@ -391,11 +392,12 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
               );
 
           if (newSelectedDateTime != null) {
+            log("newSelectedDateTime: $newSelectedDateTime");
             provider.setReturnFlightDate(newSelectedDateTime);
           }
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.only(bottom: 5),
           child: Row(
             children: [
               Icon(Icons.calendar_today, color: Colors.black, size: 22),
@@ -403,10 +405,10 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
               Expanded(
                 child: Text(
                   provider.returnFlightDate != null
-                      ? (provider.returnFlightDate!.hour == 0 &&
-                              provider.returnFlightDate!.minute == 0
-                          ? '${provider.returnFlightDate!.day}/${provider.returnFlightDate!.month}/${provider.returnFlightDate!.year}'
-                          : '${provider.returnFlightDate!.day}/${provider.returnFlightDate!.month}/${provider.returnFlightDate!.year} ${_formatTimeWithBothFormats(provider.returnFlightDate!)}')
+                      ? formatDateTimeForDisplay(
+                        provider.returnFlightDate!,
+                        context,
+                      )
                       : AppLocalizations.of(context)!.selectReturnFlightTime,
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
@@ -440,38 +442,22 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           }
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.only(bottom: 5),
           child: Row(
             children: [
               Icon(Icons.people, color: Colors.black, size: 22),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  _getPassengerSummary(provider),
+                  getPassengerSummary(provider),
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 16),
             ],
           ),
         ),
       ),
     );
-  }
-
-  String _getPassengerSummary(HomeProvider provider) {
-    final totalPassengers =
-        provider.adults + provider.children + provider.babies;
-
-    return totalPassengers.toString();
-  }
-
-  String _formatTimeWithBothFormats(DateTime dateTime) {
-    final time24 =
-        '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
-    final timeOfDay = TimeOfDay.fromDateTime(dateTime);
-    final timeAmPm = timeOfDay.format(context);
-    return '$time24 ($timeAmPm)';
   }
 
   Widget _buildCouponSection(HomeProvider provider) {

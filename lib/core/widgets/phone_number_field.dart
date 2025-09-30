@@ -4,6 +4,7 @@ import 'package:flutter_intl_phone_field/country_picker_dialog.dart';
 import 'package:flutter_intl_phone_field/countries.dart';
 import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PhoneNumberField extends StatefulWidget {
   final Function(PhoneNumber) onPhoneNumberChanged;
@@ -56,7 +57,8 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
             child: IntlPhoneField(
               initialValue: widget.value,
               focusNode: widget.focusNode,
-              countries: countries,
+              countries:
+                  countries.where((country) => country.code != 'IL').toList(),
               readOnly: widget.readOnly,
               buildCounter:
                   (
@@ -69,8 +71,10 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   widget.value == null ? 'LB' : null, // Default country code
               pickerDialogStyle: PickerDialogStyle(
                 searchFieldInputDecoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.searchCountry,
+                  hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey[300]!),
+                    borderSide: BorderSide(color: Colors.grey[500]!),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -81,7 +85,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                 ),
               ),
               decoration: InputDecoration(
-                hintText: widget.placeholder ?? 'Phone Number',
+                hintText:
+                    widget.placeholder ??
+                    AppLocalizations.of(context)!.phoneNumberPlaceholder,
                 hintStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
                 prefixIcon: Icon(
                   Icons.phone,

@@ -9,7 +9,8 @@ import 'package:welcome_port/features/book/home/utils/utils.dart';
 import 'package:welcome_port/features/book/home/widgets/date_time_picker_screen.dart';
 import 'package:welcome_port/features/book/quotes/models/prebook_requirements_response.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
-import 'package:welcome_port/features/order_details/order_details_screen.dart';
+import 'package:welcome_port/features/nav/nav_screen.dart';
+import 'package:welcome_port/features/order_details/booking_details_screen.dart';
 
 class BookingDetailsProvider extends ChangeNotifier {
   final bookingDetailsService = BookingDetailsService();
@@ -160,7 +161,10 @@ class BookingDetailsProvider extends ChangeNotifier {
     return childAges[index];
   }
 
-  void onPickUpDateClick(BuildContext context, bool isDeparture) async {
+  void onPickUpDateClick({
+    required BuildContext context,
+    required bool isDeparture,
+  }) async {
     final defaultValue =
         isDeparture
             ? preBookRequirementsResponse.outwardFromPickupDate
@@ -170,12 +174,65 @@ class BookingDetailsProvider extends ChangeNotifier {
     final DateTime? initialDate = parsedDateTime['date'];
     final TimeOfDay? initialTime = parsedDateTime['time'];
 
+    DateTime? maximumDate;
+    DateTime? minimumDate;
+
+    bool toAirport =
+        preBookRequirementsResponse.direction == TripDirection.toAirport;
+
+    // if user is going TO AIRPORT,
+    // 1- departure pick up (pickup from home) cannot be after recommended date
+    // 2- return pick up (pickup from airport) cannot be before recommended date
+
+    // if user is going FROM AIRPORT TO LOCATION,
+    // 1- departure pick up (pickup from airport) cannot be before recommended date
+    // 2- return pick up (pickup from home) cannot be after recommended date
+
+    if (toAirport) {
+      if (isDeparture) {
+        // departure pick up (pickup from home) cannot be after recommended date
+        minimumDate = null; // No minimum restriction
+        maximumDate = parseFullDateTime(
+          preBookRequirementsResponse.outwardFromPickupDate,
+        );
+      } else {
+        // return pick up (pickup from airport) cannot be before recommended date
+        minimumDate = parseFullDateTime(
+          preBookRequirementsResponse.returnFromPickupDate,
+        );
+        maximumDate = null; // No maximum restriction
+      }
+    } else {
+      if (isDeparture) {
+        // departure pick up (pickup from airport) cannot be before recommended date
+        minimumDate = parseFullDateTime(
+          preBookRequirementsResponse.outwardFromPickupDate,
+        );
+        maximumDate = null; // No maximum restriction
+      } else {
+        // return pick up (pickup from home) cannot be after recommended date
+        minimumDate = null; // No minimum restriction
+        maximumDate = parseFullDateTime(
+          preBookRequirementsResponse.returnFromPickupDate,
+        );
+      }
+    }
+
+    if (maximumDate == null && initialDate != null) {
+      maximumDate = initialDate.add(const Duration(days: 1));
+    }
+    if (minimumDate == null && initialDate != null) {
+      minimumDate = initialDate.subtract(const Duration(days: 1));
+    }
+
     final result = await NavigationUtils.push(
       context,
       DateTimePickerScreen(
         initialDate: initialDate,
         initialTime: initialTime,
         title: isDeparture ? 'Departure Date' : 'Return Date',
+        maximumDate: maximumDate,
+        minimumDate: minimumDate,
       ),
     );
 
@@ -384,9 +441,10 @@ class BookingDetailsProvider extends ChangeNotifier {
               );
             },
             (reference) {
+              NavigationUtils.clearAndPush(context, NavScreen());
               NavigationUtils.push(
                 context,
-                OrderDetailsScreen(orderReference: reference),
+                BookingDetailsScreen(orderReference: reference),
               );
             },
           );

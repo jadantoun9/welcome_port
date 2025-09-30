@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:welcome_port/core/constant/colors.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -59,41 +58,38 @@ class _CustomTextFieldState extends State<CustomTextField> {
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
-            prefixIcon: Icon(
-              widget.icon,
-              color:
-                  widget.focusNode.hasFocus
-                      ? AppColors.primaryColor
-                      : Colors.grey[400],
-              size: 22,
-            ),
+            prefixIcon: Icon(widget.icon, color: Colors.grey[600], size: 20),
             suffixIcon: widget.suffixIcon,
+            filled: true,
+            fillColor: Colors.white,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[400]!, width: 1.5),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.red[700]!, width: 1),
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.red),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.red[700]!, width: 2),
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.red, width: 1.5),
             ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
-              vertical: 15,
+              vertical: 10,
             ),
-            filled: true,
-            fillColor: Colors.transparent,
           ),
         ),
         if (widget.errorText != null) ...[

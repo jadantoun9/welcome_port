@@ -44,75 +44,88 @@ class BookingTextfield extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: isClickable ? onClick : null,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: backgroundColor ?? Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color:
-                              field.hasError ? Colors.red : Colors.grey[200]!,
-                        ),
+                    child: TextFormField(
+                      controller: controller,
+                      keyboardType: keyboardType,
+                      readOnly: isClickable || readOnly,
+                      onChanged: (value) {
+                        field.didChange(value);
+                        if (!isClickable) {
+                          controller.text = value;
+                        }
+                      },
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color:
+                            isClickable && controller.text.isEmpty
+                                ? Colors.grey[500]
+                                : Colors.black87,
                       ),
-                      child: TextFormField(
-                        controller: controller,
-                        keyboardType: keyboardType,
-                        readOnly: isClickable || readOnly,
-                        onChanged: (value) {
-                          field.didChange(value);
-                          if (!isClickable) {
-                            controller.text = value;
-                          }
-                        },
-                        style: TextStyle(
-                          fontSize: 16,
+                      onTap: isClickable ? onClick : null,
+                      onTapOutside: (event) {
+                        FocusScope.of(context).unfocus();
+                      },
+                      decoration: InputDecoration(
+                        labelText:
+                            isClickable && controller.text.isEmpty
+                                ? (placeholder ?? label)
+                                : label,
+                        labelStyle: TextStyle(
+                          fontSize: 14,
+                          color: field.hasError ? Colors.red : Colors.grey[600],
                           fontWeight: FontWeight.w500,
-                          color:
-                              isClickable && controller.text.isEmpty
-                                  ? Colors.grey[500]
-                                  : Colors.black87,
                         ),
-                        onTap: isClickable ? onClick : null,
-                        onTapOutside: (event) {
-                          FocusScope.of(context).unfocus();
-                        },
-                        decoration: InputDecoration(
-                          labelText:
-                              isClickable && controller.text.isEmpty
-                                  ? (placeholder ?? label)
-                                  : label,
-                          labelStyle: TextStyle(
-                            fontSize: 14,
-                            color:
-                                field.hasError ? Colors.red : Colors.grey[600],
-                            fontWeight: FontWeight.w500,
+                        prefixIcon:
+                            icon != null
+                                ? Icon(
+                                  icon,
+                                  color:
+                                      field.hasError
+                                          ? Colors.red
+                                          : Colors.grey[600],
+                                  size: 20,
+                                )
+                                : null,
+                        suffixIcon:
+                            isClickable
+                                ? Icon(
+                                  Icons.arrow_drop_down,
+                                  color:
+                                      field.hasError
+                                          ? Colors.red
+                                          : Colors.grey[600],
+                                  size: 20,
+                                )
+                                : null,
+                        filled: true,
+                        fillColor: backgroundColor ?? Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey[300]!),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey[300]!),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Colors.grey[400]!,
+                            width: 1.5,
                           ),
-                          prefixIcon:
-                              icon != null
-                                  ? Icon(
-                                    icon,
-                                    color:
-                                        field.hasError
-                                            ? Colors.red
-                                            : Colors.grey[600],
-                                    size: 20,
-                                  )
-                                  : null,
-                          suffixIcon:
-                              isClickable
-                                  ? Icon(
-                                    Icons.arrow_drop_down,
-                                    color:
-                                        field.hasError
-                                            ? Colors.red
-                                            : Colors.grey[600],
-                                    size: 20,
-                                  )
-                                  : null,
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
-                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.red, width: 1.5),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
                         ),
                       ),
                     ),
@@ -146,73 +159,88 @@ class BookingTextfield extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: isClickable ? onClick : null,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: backgroundColor ?? Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: field.hasError ? Colors.red : Colors.grey[200]!,
-                    ),
+                child: TextFormField(
+                  controller: controller,
+                  keyboardType: keyboardType,
+                  readOnly: isClickable || readOnly,
+                  onChanged: (value) {
+                    field.didChange(value);
+                    if (!isClickable) {
+                      controller.text = value;
+                    }
+                  },
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color:
+                        isClickable && controller.text.isEmpty
+                            ? Colors.grey[500]
+                            : Colors.black87,
                   ),
-                  child: TextFormField(
-                    controller: controller,
-                    keyboardType: keyboardType,
-                    readOnly: isClickable || readOnly,
-                    onChanged: (value) {
-                      field.didChange(value);
-                      if (!isClickable) {
-                        controller.text = value;
-                      }
-                    },
-                    style: TextStyle(
-                      fontSize: 16,
+                  onTap: isClickable ? onClick : null,
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
+                  decoration: InputDecoration(
+                    labelText:
+                        isClickable && controller.text.isEmpty
+                            ? (placeholder ?? label)
+                            : label,
+                    labelStyle: TextStyle(
+                      fontSize: 14,
+                      color: field.hasError ? Colors.red : Colors.grey[600],
                       fontWeight: FontWeight.w500,
-                      color:
-                          isClickable && controller.text.isEmpty
-                              ? Colors.grey[500]
-                              : Colors.black87,
                     ),
-                    onTap: isClickable ? onClick : null,
-                    onTapOutside: (event) {
-                      FocusScope.of(context).unfocus();
-                    },
-                    decoration: InputDecoration(
-                      labelText:
-                          isClickable && controller.text.isEmpty
-                              ? (placeholder ?? label)
-                              : label,
-                      labelStyle: TextStyle(
-                        fontSize: 14,
-                        color: field.hasError ? Colors.red : Colors.grey[600],
-                        fontWeight: FontWeight.w500,
+                    prefixIcon:
+                        icon != null
+                            ? Icon(
+                              icon,
+                              color:
+                                  field.hasError
+                                      ? Colors.red
+                                      : Colors.grey[600],
+                              size: 20,
+                            )
+                            : null,
+                    suffixIcon:
+                        isClickable
+                            ? Icon(
+                              Icons.arrow_drop_down,
+                              color:
+                                  field.hasError
+                                      ? Colors.red
+                                      : Colors.grey[600],
+                              size: 20,
+                            )
+                            : null,
+                    filled: true,
+                    fillColor: backgroundColor ?? Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey[300]!),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey[300]!),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.grey[400]!,
+                        width: 1.5,
                       ),
-                      prefixIcon:
-                          icon != null
-                              ? Icon(
-                                icon,
-                                color:
-                                    field.hasError
-                                        ? Colors.red
-                                        : Colors.grey[600],
-                                size: 20,
-                              )
-                              : null,
-                      suffixIcon:
-                          isClickable
-                              ? Icon(
-                                Icons.arrow_drop_down,
-                                color:
-                                    field.hasError
-                                        ? Colors.red
-                                        : Colors.grey[600],
-                                size: 20,
-                              )
-                              : null,
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.red, width: 1.5),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
                     ),
                   ),
                 ),

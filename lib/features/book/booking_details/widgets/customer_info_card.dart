@@ -29,21 +29,23 @@ class CustomerInfoCard extends StatelessWidget {
         const SizedBox(height: 24),
 
         // Form Fields
-        BookingDropdown(
-          value: provider.selectedTitle,
-          items: provider.titleOptions,
-          itemBuilder: (title) => title,
-          onChanged: (title) => provider.updateTitle(title ?? 'Mr'),
-          label: '',
-          validator: (value) => provider.validateTitle(value, context),
-          backgroundColor: Colors.white,
-        ),
-
-        const SizedBox(height: 16),
-
         Row(
           children: [
             Expanded(
+              flex: 1,
+              child: BookingDropdown(
+                value: provider.selectedTitle,
+                items: provider.titleOptions,
+                itemBuilder: (title) => title,
+                onChanged: (title) => provider.updateTitle(title ?? 'Mr'),
+                label: '',
+                validator: (value) => provider.validateTitle(value, context),
+                backgroundColor: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 2,
               child: BookingTextfield(
                 controller: provider.firstNameController,
                 label: AppLocalizations.of(context)!.firstName,
@@ -54,26 +56,25 @@ class CustomerInfoCard extends StatelessWidget {
                     ),
               ),
             ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: BookingTextfield(
-                controller: provider.lastNameController,
-                label: AppLocalizations.of(context)!.lastName,
-                validator:
-                    (value) => provider.validateRequired(
-                      value,
-                      AppLocalizations.of(context)!.lastName,
-                    ),
-              ),
-            ),
           ],
+        ),
+
+        const SizedBox(height: 16),
+
+        BookingTextfield(
+          controller: provider.lastNameController,
+          label: AppLocalizations.of(context)!.lastName,
+          validator:
+              (value) => provider.validateRequired(
+                value,
+                AppLocalizations.of(context)!.lastName,
+              ),
         ),
         const SizedBox(height: 16),
 
         PhoneNumberField(
           focusNode: provider.phoneFocusNode,
           bgColor: Colors.white,
-          border: Border.all(width: 1, color: Colors.grey[200]!),
           onPhoneNumberChanged: (phoneNumber) {
             provider.updatePhoneNumber(phoneNumber);
           },

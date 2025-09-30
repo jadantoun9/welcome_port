@@ -181,7 +181,7 @@ class _QuoteBoxState extends State<QuoteBox> {
                                   context,
                                 )!.totalRoundTripPrice,
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               color: AppColors.textGrey,
                               fontWeight: FontWeight.w500,
                             ),

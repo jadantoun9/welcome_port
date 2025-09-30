@@ -31,7 +31,6 @@ class BookingDetailsService {
         '/transfer/book',
         data: {"payment_method": "balance"},
       );
-      print(response.data);
       return Right(response.data['data']['reference']);
     } on DioException catch (e) {
       return Left(getMessageFromError(e));

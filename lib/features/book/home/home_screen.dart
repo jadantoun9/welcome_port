@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -392,7 +390,6 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
               );
 
           if (newSelectedDateTime != null) {
-            log("newSelectedDateTime: $newSelectedDateTime");
             provider.setReturnFlightDate(newSelectedDateTime);
           }
         },

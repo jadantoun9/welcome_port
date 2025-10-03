@@ -14,7 +14,6 @@ class QuotesService {
         '/transfer/prebook-requirements',
         data: {'quote_id': quoteId},
       );
-      print(response.data);
       return Right(PreBookRequirementsResponse.fromJson(response.data['data']));
     } on DioException catch (e) {
       return Left(getMessageFromError(e));

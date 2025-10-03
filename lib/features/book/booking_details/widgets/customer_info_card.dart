@@ -19,7 +19,7 @@ class CustomerInfoCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.customerInformation,
+          "Leader Passenger",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,

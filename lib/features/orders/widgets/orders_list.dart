@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:welcome_port/core/widgets/error_card.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
-import 'package:welcome_port/features/booking/bookings_provider.dart';
-import 'package:welcome_port/features/booking/widgets/order_card.dart';
+import 'package:welcome_port/features/orders/orders_provider.dart';
+import 'package:welcome_port/features/orders/widgets/order_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BookingsList extends StatelessWidget {
-  final BookingsProvider provider;
+  final OrdersProvider provider;
 
   const BookingsList({super.key, required this.provider});
 
@@ -35,7 +35,12 @@ class BookingsList extends StatelessWidget {
         }
 
         final order = provider.bookings[index];
-        return BookingCard(order: order);
+        return BookingCard(
+          order: order,
+          onAccept: (String orderReference) {
+            provider.onAccept(context, orderReference);
+          },
+        );
       },
     );
   }
@@ -74,7 +79,9 @@ class BookingsList extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                l.noOrdersYet,
+                provider.searchQuery.isNotEmpty
+                    ? 'No orders found'
+                    : l.noOrdersYet,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -83,7 +90,9 @@ class BookingsList extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                l.orderHistoryWillAppearHere,
+                provider.searchQuery.isNotEmpty
+                    ? 'No orders found with this search'
+                    : l.orderHistoryWillAppearHere,
                 style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                 textAlign: TextAlign.center,
               ),

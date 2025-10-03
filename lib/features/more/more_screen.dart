@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:salesiq_mobilisten/salesiq_mobilisten.dart';
+import 'package:salesiq_mobilisten_calls/salesiq_mobilisten_calls.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/models/setting.dart';
@@ -38,11 +41,13 @@ class MoreContent extends StatelessWidget {
     final sharedProvider = Provider.of<SharedProvider>(context);
     final isLoggedIn = sharedProvider.customer != null;
     final isAgent = sharedProvider.customer?.type == CustomerType.agent;
+    final isSupplier = sharedProvider.customer?.type == CustomerType.supplier;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header with teal background
             Container(
@@ -162,7 +167,7 @@ class MoreContent extends StatelessWidget {
                         ),
                         MenuButton(
                           icon: Icons.person_add,
-                          title: l10n.signUp,
+                          title: l10n.register,
                           onTap:
                               () => NavigationUtils.push(
                                 context,
@@ -181,7 +186,7 @@ class MoreContent extends StatelessWidget {
                               ),
                         ),
                       ],
-                      if (isLoggedIn && isAgent) ...[
+                      if (isLoggedIn && (isAgent || isSupplier)) ...[
                         MenuButton(
                           icon: Icons.business,
                           title: l10n.companyInfo,
@@ -190,7 +195,7 @@ class MoreContent extends StatelessWidget {
                           },
                         ),
                       ],
-                      if (!isLoggedIn || !isAgent) ...[
+                      if (!isSupplier && (!isLoggedIn || !isAgent)) ...[
                         MenuButton(
                           svgPath: 'assets/icons/handshake4.svg',
                           iconPadding: 9,
@@ -237,18 +242,56 @@ class MoreContent extends StatelessWidget {
                               sharedProvider,
                             ),
                       ),
-                      MenuButton(
-                        icon: Icons.attach_money,
-                        title: l10n.currency,
-                        subtitle: sharedProvider.currency,
-                        onTap:
-                            () => provider.showCurrencyDialog(
-                              context,
-                              sharedProvider,
-                            ),
-                      ),
+                      if (!isSupplier) ...[
+                        MenuButton(
+                          icon: Icons.attach_money,
+                          title: l10n.currency,
+                          subtitle: sharedProvider.currency,
+                          onTap:
+                              () => provider.showCurrencyDialog(
+                                context,
+                                sharedProvider,
+                              ),
+                        ),
+                      ],
                     ],
                   ),
+                  // if (sharedProvider.setting?. == true ||
+                  //     sharedProvider.setting?.showCall == true) ...[
+                  const SizedBox(height: 35),
+                  MenuSection(
+                    title: "CONTACT",
+                    children: [
+                      MenuButton(
+                        imagePath: 'assets/icons/support.png',
+                        iconPadding: 10,
+                        title:
+                            sharedProvider.setting?.chatType == ChatType.zoho
+                                ? "Live Chat"
+                                : "Chat with us",
+                        onTap: () {
+                          if (sharedProvider.setting?.chatType ==
+                              ChatType.zoho) {
+                            ZohoSalesIQ.show();
+                          } else {
+                            launchUrl(
+                              Uri.parse(
+                                sharedProvider.setting?.whatsappUrl ?? '',
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      if (sharedProvider.setting?.callSupport == true) ...[
+                        MenuButton(
+                          icon: Icons.phone,
+                          title: "Call Support",
+                          onTap: () => ZohoSalesIQCalls.start(),
+                        ),
+                      ],
+                    ],
+                  ),
+
                   const SizedBox(height: 35),
 
                   // INFORMATION Section

@@ -177,6 +177,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  facebook_app_events:
+    dependency: "direct main"
+    description:
+      name: facebook_app_events
+      sha256: febb0c73714ed48c546b4fa214ac08cf3b4db0a4acebaaefc61e3b653bf1f342
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.20.1"
   fake_async:
     dependency: transitive
     description:
@@ -797,6 +805,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  salesiq_mobilisten:
+    dependency: "direct main"
+    description:
+      name: salesiq_mobilisten
+      sha256: ca70f0d6feb93867a07d3938c2db8aa13bbd9dc935a23b8af114ffa60e78f2ec
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.5.3"
+  salesiq_mobilisten_calls:
+    dependency: "direct main"
+    description:
+      name: salesiq_mobilisten_calls
+      sha256: "43f0e16582f1bf254b4617b696177960d035081f5b254f06298114cd23dd65db"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
+  salesiq_mobilisten_core:
+    dependency: transitive
+    description:
+      name: salesiq_mobilisten_core
+      sha256: "05d1dd36f7cc5e2a89de8f61db65bd28ca00c6e3350a6df7d594cb03846c6144"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   sanitize_html:
     dependency: transitive
     description:
@@ -1146,6 +1178,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  webview_flutter:
+    dependency: "direct main"
+    description:
+      name: webview_flutter
+      sha256: c3e4fe614b1c814950ad07186007eff2f2e5dd2935eba7b9a9a1af8e5885f1ba
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.13.0"
+  webview_flutter_android:
+    dependency: transitive
+    description:
+      name: webview_flutter_android
+      sha256: "9a25f6b4313978ba1c2cda03a242eea17848174912cfb4d2d8ee84a556f248e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.10.1"
+  webview_flutter_platform_interface:
+    dependency: transitive
+    description:
+      name: webview_flutter_platform_interface
+      sha256: "63d26ee3aca7256a83ccb576a50272edd7cfc80573a4305caa98985feb493ee0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.14.0"
+  webview_flutter_wkwebview:
+    dependency: transitive
+    description:
+      name: webview_flutter_wkwebview
+      sha256: fb46db8216131a3e55bcf44040ca808423539bc6732e7ed34fb6d8044e3d512f
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.23.0"
   win32:
     dependency: transitive
     description:

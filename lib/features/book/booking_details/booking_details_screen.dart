@@ -322,13 +322,13 @@ class _BookingDetailsContentState extends State<_BookingDetailsContent> {
     final children = provider.preBookRequirementsResponse.passengers.children;
     final infants = provider.preBookRequirementsResponse.passengers.infants;
 
-    String s = '$adults Adults';
+    String s = '$adults Adult${adults > 1 ? 's' : ''}';
 
     if (children > 0) {
-      s += ", $children Children";
+      s += ", $children ${children > 1 ? 'Children' : 'Child'}";
     }
     if (infants > 0) {
-      s += ", $infants Infants";
+      s += ", $infants Infant${infants > 1 ? 's' : ''}";
     }
     return s;
   }

@@ -38,16 +38,38 @@
 				<string>com.ipublish.welcome-port</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1734388837311525</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>1734388837311525</string>
+	<key>FacebookDisplayName</key>
+	<string>Welcome Port</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>We would like access to the camera to allow taking photos and videos to share</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We would like to access your Photo Library to enable sharing Image and Videos</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We would like access to store Image/Videos in your Photo Library</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We would like access to the microphone to allow recording voice messages</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We would like access to location services to update your location on the map</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
+		<string>voip</string>
+		<string>fetch</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -66,9 +88,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>This app needs access to camera to take photos for company logo upload.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs access to photo library to select images for company logo upload.</string>
 </dict>
 </plist>

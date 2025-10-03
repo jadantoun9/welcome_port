@@ -25,6 +25,9 @@ class OrderDetailsModel {
   final String returnDate;
   final String outwardPickupDate;
   final String returnPickupDate;
+  final String passengerFn;
+  final String passengerLn;
+  final String passengerPhone;
 
   OrderDetailsModel({
     required this.reference,
@@ -47,6 +50,9 @@ class OrderDetailsModel {
     required this.returnDate,
     required this.outwardPickupDate,
     required this.returnPickupDate,
+    required this.passengerFn,
+    required this.passengerLn,
+    required this.passengerPhone,
   });
 
   factory OrderDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -77,6 +83,9 @@ class OrderDetailsModel {
       returnDate: json['return_date'] ?? '',
       outwardPickupDate: json['outward_pickup_date'] ?? '',
       returnPickupDate: json['return_pickup_date'] ?? '',
+      passengerFn: json['firstname'] ?? '',
+      passengerLn: json['lastname'] ?? '',
+      passengerPhone: json['telephone'] ?? '',
     );
   }
 }

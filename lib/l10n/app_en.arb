@@ -360,5 +360,9 @@
   "retry": "Retry",
   "noOrdersYet": "No orders yet",
   "orderHistoryWillAppearHere": "Your order history will appear here",
-  "loadMore": "Load More"
+  "loadMore": "Load More",
+  "selectPaymentMethod": "Select Payment Method",
+  "pay": "Pay",
+  "paymentFailed": "Payment was not successful. Please try again.",
+  "noPaymentMethodsAvailable": "No payment methods available"
 }

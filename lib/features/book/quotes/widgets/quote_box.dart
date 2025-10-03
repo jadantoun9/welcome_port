@@ -198,6 +198,16 @@ class _QuoteBoxState extends State<QuoteBox> {
                               // color: AppColors.primaryColor,
                             ),
                           ),
+                          if (widget.quote.priceDiscounted != null)
+                            Text(
+                              widget.quote.priceFormatted,
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[500],
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
                         ],
                       ),
                     ),

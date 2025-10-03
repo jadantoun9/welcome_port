@@ -40,6 +40,24 @@ class BookingDetailsService {
     }
   }
 
+  Future<Either<String, String>> bookWithPaymentMethod(
+    String paymentMethodCode,
+  ) async {
+    try {
+      final response = await Singletons.dio.post(
+        '/transfer/book',
+        data: {"payment_method": paymentMethodCode},
+      );
+      print(response.data);
+      return Right(response.data['data']['webview']);
+    } on DioException catch (e) {
+      return Left(getMessageFromError(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Left(getDefaultErrorMessage());
+    }
+  }
+
   Future<Either<String, Unit>> preBook({
     required String title,
     required String firstName,

@@ -3,14 +3,17 @@ import 'package:flutter_intl_phone_field/phone_number.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/models/setting.dart';
+import 'package:welcome_port/core/widgets/show_error_toast.dart';
 import 'package:welcome_port/features/book/booking_details/booking_details_service.dart';
 import 'package:welcome_port/features/book/booking_details/models/flight_suggestion.dart';
+import 'package:welcome_port/features/book/booking_details/widgets/payment_method_bottom_sheet.dart';
 import 'package:welcome_port/features/book/home/utils/utils.dart';
 import 'package:welcome_port/features/book/home/widgets/date_time_picker_screen.dart';
 import 'package:welcome_port/features/book/quotes/models/prebook_requirements_response.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/features/nav/nav_screen.dart';
-import 'package:welcome_port/features/order_details/booking_details_screen.dart';
+import 'package:welcome_port/features/order_details/order_details_screen.dart';
+import 'package:welcome_port/features/payment/payment_webview.dart';
 
 class BookingDetailsProvider extends ChangeNotifier {
   final bookingDetailsService = BookingDetailsService();
@@ -48,6 +51,9 @@ class BookingDetailsProvider extends ChangeNotifier {
   // Flight suggestions
   FlightSuggestion? departureFlight;
   FlightSuggestion? returnFlight;
+
+  // Selected payment method
+  PaymentMethod? selectedPaymentMethod;
 
   BookingDetailsProvider(
     this.preBookRequirementsResponse,
@@ -150,6 +156,11 @@ class BookingDetailsProvider extends ChangeNotifier {
 
   void updatePhoneNumber(PhoneNumber phoneNumber) {
     phoneController.text = phoneNumber.completeNumber;
+    notifyListeners();
+  }
+
+  void setSelectedPaymentMethod(PaymentMethod paymentMethod) {
+    selectedPaymentMethod = paymentMethod;
     notifyListeners();
   }
 
@@ -383,6 +394,7 @@ class BookingDetailsProvider extends ChangeNotifier {
   void onSubmit({required BuildContext context}) async {
     if (isBooking) return;
     final l = AppLocalizations.of(context)!;
+
     if (!validateForm()) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -424,9 +436,8 @@ class BookingDetailsProvider extends ChangeNotifier {
     );
     result.fold(
       (error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(backgroundColor: Colors.red, content: Text(error)),
-        );
+        print("1: $error");
+        showErrorToast(context, error);
         setIsBooking(false);
       },
       (success) async {
@@ -436,20 +447,68 @@ class BookingDetailsProvider extends ChangeNotifier {
 
           result.fold(
             (error) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(backgroundColor: Colors.red, content: Text(error)),
-              );
+              print("2: $error");
+              showErrorToast(context, error);
             },
             (reference) {
               NavigationUtils.clearAndPush(context, NavScreen());
               NavigationUtils.push(
                 context,
-                BookingDetailsScreen(orderReference: reference),
+                OrderDetailsScreen(orderReference: reference),
               );
             },
           );
+        } else if (sharedProvider.customer?.type == CustomerType.customer) {
+          setIsBooking(false);
+          _showPaymentMethodBottomSheet(context);
         }
       },
+    );
+  }
+
+  void _showPaymentMethodBottomSheet(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final paymentMethods = sharedProvider.setting?.paymentMethods ?? [];
+
+    if (paymentMethods.isEmpty) {
+      showErrorToast(context, l.noPaymentMethodsAvailable);
+      return;
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder:
+          (bottomSheetContext) => PaymentMethodBottomSheet(
+            paymentMethods: paymentMethods,
+            onPaymentMethodSelected: (paymentMethod) {
+              setSelectedPaymentMethod(paymentMethod);
+            },
+            onPayPressed: () async {
+              if (selectedPaymentMethod == null) return;
+
+              Navigator.pop(bottomSheetContext); // Close bottom sheet
+              setIsBooking(true);
+
+              final result = await bookingDetailsService.bookWithPaymentMethod(
+                selectedPaymentMethod!.code,
+              );
+
+              setIsBooking(false);
+
+              result.fold(
+                (error) {
+                  print("3: $error");
+                  showErrorToast(context, error);
+                },
+                (url) {
+                  // Navigate to payment webview using parent context
+                  NavigationUtils.push(context, PaymentWebview(url: url));
+                },
+              );
+            },
+          ),
     );
   }
 

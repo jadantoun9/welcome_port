@@ -2,7 +2,10 @@ import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:salesiq_mobilisten/salesiq_mobilisten.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/features/book/home/models/airport_suggestion.dart';
@@ -18,6 +21,7 @@ import 'package:welcome_port/features/book/home/widgets/passenger_picker_screen.
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/features/book/home/widgets/coupon_dialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:welcome_port/features/notifications/notifications_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -41,6 +45,8 @@ class _HomeScreenContent extends StatefulWidget {
 class _HomeScreenContentState extends State<_HomeScreenContent> {
   @override
   Widget build(BuildContext context) {
+    final sharedProvider = Provider.of<SharedProvider>(context);
+
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: SafeArea(
@@ -51,19 +57,117 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header
-                  Text(
-                    AppLocalizations.of(context)!.bookTransfer,
-                    style: TextStyle(
-                      color: Colors.grey[100],
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    AppLocalizations.of(context)!.quickEasyAirportTransfers,
-                    style: const TextStyle(color: Colors.white70, fontSize: 16),
+                  // Header with action buttons
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.bookTransfer,
+                              style: TextStyle(
+                                color: Colors.grey[100],
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              AppLocalizations.of(
+                                context,
+                              )!.quickEasyAirportTransfers,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (sharedProvider.setting?.chatType ==
+                                    ChatType.zoho) {
+                                  ZohoSalesIQ.show();
+                                } else {
+                                  launchUrl(
+                                    Uri.parse(
+                                      sharedProvider.setting?.whatsappUrl ?? '',
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Container(
+                                width: 42,
+                                height: 42,
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(color: Colors.grey[200]!),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.05),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Image.asset(
+                                  'assets/icons/support.png',
+                                  color: Colors.black,
+                                  width: 18,
+                                  height: 22,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+
+                            // Notifications button
+                            GestureDetector(
+                              onTap: () {
+                                NavigationUtils.push(
+                                  context,
+                                  NotificationsScreen(),
+                                );
+                              },
+                              child: Container(
+                                width: 42,
+                                height: 42,
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(color: Colors.grey[200]!),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.05),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Image.asset(
+                                  'assets/icons/notification.png',
+                                  color: Colors.black,
+                                  width: 18,
+                                  height: 22,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // Chat with support button
+                    ],
                   ),
                   const SizedBox(height: 20),
 
@@ -91,7 +195,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
 
                   // Search Button
                   WideButton(
-                    text: AppLocalizations.of(context)!.searchBooking,
+                    text: "Search",
                     onPressed: () => provider.handleSearch(context, provider),
                     isLoading: provider.isLoading,
                     bgColor: Colors.amber,
@@ -284,15 +388,15 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
               ),
               if ((isPickupField && provider.pickupLocation != null) ||
                   (!isPickupField && provider.destinationLocation != null)) ...[
-                IconButton(
-                  onPressed: () {
+                InkwellWithOpacity(
+                  onTap: () {
                     if (isPickupField) {
                       provider.setPickupLocation(null);
                     } else {
                       provider.setDestinationLocation(null);
                     }
                   },
-                  icon: const Icon(Icons.close, color: Colors.black, size: 20),
+                  child: const Icon(Icons.close, color: Colors.black, size: 20),
                 ),
               ],
             ],
@@ -461,7 +565,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
     return Center(
       child: Column(
         children: [
-          if (provider.isCouponApplied) ...[
+          if (provider.appliedCoupon != null) ...[
             // Applied coupon display
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

@@ -3,6 +3,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:welcome_port/core/constant/constants.dart';
 import 'package:welcome_port/core/helpers/singletons.dart';
 import 'package:welcome_port/core/models/setting.dart';
+import 'package:welcome_port/features/splash/splash_service.dart';
 
 class SharedProvider extends ChangeNotifier {
   Setting? setting;
@@ -77,5 +78,14 @@ class SharedProvider extends ChangeNotifier {
       OneSignal.logout();
     }
     notifyListeners();
+  }
+
+  Future<void> refreshSetting() async {
+    final splashService = SplashService();
+    final result = await splashService.getSetting();
+
+    result.fold((error) {}, (newSetting) {
+      setSetting(newSetting);
+    });
   }
 }

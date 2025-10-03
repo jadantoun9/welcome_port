@@ -53,17 +53,19 @@ class _LoginContentState extends State<LoginContent> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            AuthHeader(),
-            Padding(
+      body: Stack(
+        children: [
+          // Scrollable content
+          SingleChildScrollView(
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Form(
                 key: provider.formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Add padding at top to account for header
+                    const SizedBox(height: 175),
                     const SizedBox(height: 10),
                     Text(
                       l.login,
@@ -168,8 +170,10 @@ class _LoginContentState extends State<LoginContent> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          // Header overlay
+          Positioned(top: 0, left: 0, right: 0, child: AuthHeader()),
+        ],
       ),
     );
   }

@@ -10,7 +10,7 @@ import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/features/book/home/home_screen.dart';
 import 'package:welcome_port/features/login/login_screen.dart';
 import 'package:welcome_port/features/more/more_screen.dart';
-import 'package:welcome_port/features/booking/bookings_screen.dart';
+import 'package:welcome_port/features/orders/orders_screen.dart';
 import 'package:welcome_port/features/wallet/wallet_screen.dart';
 
 class NavScreen extends StatefulWidget {
@@ -23,9 +23,12 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   getWidgetOptions(SharedProvider sharedProv) {
     if (sharedProv.customer?.type == CustomerType.agent) {
-      return [HomeScreen(), BookingsScreen(), WalletScreen(), MoreScreen()];
+      return [HomeScreen(), OrdersScreen(), WalletScreen(), MoreScreen()];
     }
-    return [HomeScreen(), BookingsScreen(), MoreScreen()];
+    if (sharedProv.customer?.type == CustomerType.supplier) {
+      return [OrdersScreen(), WalletScreen(), MoreScreen()];
+    }
+    return [HomeScreen(), OrdersScreen(), MoreScreen()];
   }
 
   @override
@@ -77,39 +80,68 @@ class CustomNavBar extends StatelessWidget {
         color: Colors.white,
         child: Row(
           spacing: 3,
-          children: [
-            _buildNavItem(
-              index: 0,
-              label: 'Home',
-              context: context,
-              sharedProvider: sharedProvider,
-              iconPath: 'assets/icons/home.svg',
-            ),
-            _buildNavItem(
-              index: 1,
-              label: 'Bookings',
-              context: context,
-              sharedProvider: sharedProvider,
-              iconPath: 'assets/icons/bookings.svg',
-            ),
-            if (sharedProvider.customer?.type == CustomerType.agent)
-              _buildNavItem(
-                index: 2,
-                label: 'Wallet',
-                context: context,
-                sharedProvider: sharedProvider,
-                iconPath: 'assets/icons/wallet.svg',
-                size: 22,
-              ),
-            _buildNavItem(
-              index:
-                  sharedProvider.customer?.type == CustomerType.agent ? 3 : 2,
-              label: 'More',
-              context: context,
-              sharedProvider: sharedProvider,
-              icon: Icons.menu,
-            ),
-          ],
+          children:
+              sharedProvider.customer?.type != CustomerType.supplier
+                  ? [
+                    _buildNavItem(
+                      index: 0,
+                      label: 'Home',
+                      context: context,
+                      sharedProvider: sharedProvider,
+                      iconPath: 'assets/icons/home.svg',
+                    ),
+                    _buildNavItem(
+                      index: 1,
+                      label: 'Bookings',
+                      context: context,
+                      sharedProvider: sharedProvider,
+                      iconPath: 'assets/icons/bookings.svg',
+                    ),
+                    if (sharedProvider.customer?.type == CustomerType.agent)
+                      _buildNavItem(
+                        index: 2,
+                        label: 'Wallet',
+                        context: context,
+                        sharedProvider: sharedProvider,
+                        iconPath: 'assets/icons/wallet.svg',
+                        size: 22,
+                      ),
+                    _buildNavItem(
+                      index:
+                          sharedProvider.customer?.type == CustomerType.agent
+                              ? 3
+                              : 2,
+                      label: 'More',
+                      context: context,
+                      sharedProvider: sharedProvider,
+                      icon: Icons.menu,
+                    ),
+                  ]
+                  : [
+                    // _buildNavItem(index: 0, label: "", context: context, sharedProvider: sharedProvider)
+                    _buildNavItem(
+                      index: 0,
+                      label: 'Bookings',
+                      context: context,
+                      sharedProvider: sharedProvider,
+                      iconPath: 'assets/icons/bookings.svg',
+                    ),
+                    _buildNavItem(
+                      index: 1,
+                      label: 'Wallet',
+                      context: context,
+                      sharedProvider: sharedProvider,
+                      iconPath: 'assets/icons/wallet.svg',
+                      size: 22,
+                    ),
+                    _buildNavItem(
+                      index: 2,
+                      label: 'More',
+                      context: context,
+                      sharedProvider: sharedProvider,
+                      icon: Icons.menu,
+                    ),
+                  ],
         ),
       ),
     );

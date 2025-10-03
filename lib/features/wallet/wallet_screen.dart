@@ -34,7 +34,9 @@ class _WalletContentState extends State<_WalletContent> {
     // Load initial transactions
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<WalletProvider>(context, listen: false).loadTransactions();
+      Provider.of<SharedProvider>(context, listen: false).refreshSetting();
     });
+
     _scrollController.addListener(_onScroll);
   }
 
@@ -85,7 +87,13 @@ class _WalletContentState extends State<_WalletContent> {
         ),
         actions: [
           IconButton(
-            onPressed: () => walletProvider.refreshTransactions(),
+            onPressed: () async {
+              // Refresh both balance and transactions
+              await Future.wait([
+                sharedProvider.refreshSetting(),
+                walletProvider.refreshTransactions(),
+              ]);
+            },
             icon: const Icon(Icons.refresh, color: Colors.black),
           ),
         ],

@@ -102,7 +102,12 @@ class MenuButton extends StatelessWidget {
     } else if (imagePath != null) {
       return Padding(
         padding: EdgeInsets.all(iconPadding ?? 8.0),
-        child: Image.asset(imagePath!, width: 20, height: 20),
+        child: Image.asset(
+          imagePath!,
+          width: 20,
+          height: 20,
+          color: Colors.black,
+        ),
       );
     } else if (networkImagePath != null) {
       if (networkImagePath!.isEmpty) {

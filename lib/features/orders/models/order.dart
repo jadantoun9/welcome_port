@@ -15,6 +15,8 @@ class OrderModel {
   final String outwardDate;
   final String returnDate;
   final Vehicle vehicle;
+  final String supplierStatus;
+
 
   OrderModel({
     required this.reference,
@@ -30,6 +32,7 @@ class OrderModel {
     required this.outwardDate,
     required this.returnDate,
     required this.vehicle,
+    required this.supplierStatus,
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
@@ -56,6 +59,7 @@ class OrderModel {
               ? json['return_date'].substring(0, 10)
               : '',
       vehicle: Vehicle.fromJson(json['vehicle']),
+      supplierStatus: json['supplier_status'] ?? '',
     );
   }
 }

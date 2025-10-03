@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/core/widgets/show_error_toast.dart';
 import 'package:welcome_port/core/widgets/wide_button.dart';
 import 'package:welcome_port/features/book/home/utils/utils.dart';
@@ -32,6 +33,13 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
   TimeOfDay? _selectedTime;
   final CalendarFormat _calendarFormat = CalendarFormat.month;
   final RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+
+  String format12Hour(TimeOfDay time) {
+    final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
+    final minute = time.minute.toString().padLeft(2, '0');
+    final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+    return '$hour:$minute $period';
+  }
 
   @override
   void initState() {
@@ -168,65 +176,68 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
               ),
             ),
             // Time Selection Row
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: GestureDetector(
-                onTap: _showTimePicker,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 12,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.time,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
+            InkwellWithOpacity(
+              onTap: _showTimePicker,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: GestureDetector(
+                  // onTap: _showTimePicker,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 12,
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.time,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      _selectedTime != null
-                          ? Row(
-                            children: [
-                              Text(
-                                "(${_selectedTime!.format(context)})",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[800],
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  format24Hour(_selectedTime!),
-                                  style: const TextStyle(
-                                    fontSize: 19,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
+                        const Spacer(),
+                        _selectedTime != null
+                            ? Row(
+                              children: [
+                                Text(
+                                  "(${format12Hour(_selectedTime!)})",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey[800],
                                   ),
                                 ),
+                                const SizedBox(width: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    format24Hour(_selectedTime!),
+                                    style: const TextStyle(
+                                      fontSize: 19,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                            : Text(
+                              AppLocalizations.of(context)!.selectTime,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey[600],
                               ),
-                            ],
-                          )
-                          : Text(
-                            AppLocalizations.of(context)!.selectTime,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[600],
                             ),
-                          ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

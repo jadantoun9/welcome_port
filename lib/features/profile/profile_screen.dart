@@ -37,7 +37,7 @@ class _ProfileScreenState extends State<_ProfileContent> {
     final provider = Provider.of<ProfileProvider>(context);
     final sharedProvider = Provider.of<SharedProvider>(context);
     final l = AppLocalizations.of(context)!;
-    final isAgent = sharedProvider.customer?.type == CustomerType.agent;
+    final isAgent = sharedProvider.customer?.type == CustomerType.agent || sharedProvider.customer?.type == CustomerType.supplier;
 
     if (provider.updateProfileError != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {

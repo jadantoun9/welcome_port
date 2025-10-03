@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/features/wallet/model/transaction.dart';
 import 'package:welcome_port/features/wallet/wallet_service.dart';
 
@@ -11,6 +13,12 @@ class WalletProvider extends ChangeNotifier {
   int currentPage = 1;
   final int limit = 10;
   String? error;
+
+  WalletProvider() {
+    log("logging checkout");
+    FacebookAnalyticsEngine.confirmCheckout();
+  }
+ 
 
   Future<void> loadTransactions({bool refresh = false}) async {
     if (isLoading) return;

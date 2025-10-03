@@ -1,5 +1,7 @@
 import 'package:welcome_port/core/helpers/error_helpers.dart';
 
+enum ChatType { zoho, whatsapp }
+
 class Setting {
   final String activeLanguage;
   final List<LanguageModel> languages;
@@ -13,6 +15,9 @@ class Setting {
   final UpdateModel? update;
   final CustomerModel? customer;
   final String whatsappUrl;
+  final ChatType chatType;
+  final bool callSupport;
+  final List<PaymentMethod> paymentMethods;
 
   Setting({
     required this.activeLanguage,
@@ -24,9 +29,12 @@ class Setting {
     required this.gmApiKey,
     required this.termsAndConditions,
     required this.information,
+    required this.paymentMethods,
     required this.update,
     required this.customer,
     required this.whatsappUrl,
+    required this.chatType,
+    required this.callSupport,
   });
 
   factory Setting.fromJson(Map<String, dynamic> json) {
@@ -62,11 +70,18 @@ class Setting {
               ? CustomerModel.fromJson(json['customer'])
               : null,
       whatsappUrl: json['whatsapp_url'] ?? '',
+      chatType: json['chat_type'] == 'zoho' ? ChatType.zoho : ChatType.whatsapp,
+      callSupport: json['call_support'].toString() == 'true' ? true : false,
+      paymentMethods:
+          (json['payment_methods'] as List?)
+              ?.map((pm) => PaymentMethod.fromJson(pm))
+              .toList() ??
+          [],
     );
   }
 }
 
-enum CustomerType { customer, agent }
+enum CustomerType { customer, agent, supplier }
 
 class CustomerModel {
   final int id;
@@ -92,6 +107,7 @@ class CustomerModel {
     required this.type,
     required this.balance,
     required this.balanceFormatted,
+
     this.companyName,
     this.companyAddress,
     this.companyTelephone,
@@ -106,7 +122,12 @@ class CustomerModel {
       lastName: json['lastname'] ?? '',
       email: json['email'] ?? '',
       phone: addPlus(json['telephone'] ?? ''),
-      type: json['type'] == 'b2b' ? CustomerType.agent : CustomerType.customer,
+      type:
+          json['type'] == 'b2b'
+              ? CustomerType.agent
+              : json['type'] == "supplier"
+              ? CustomerType.supplier
+              : CustomerType.customer,
       balance: int.tryParse(json['balance'].toString()) ?? 0,
       balanceFormatted: json['balance_formatted'] ?? '',
       companyName: json['company']?['name'],
@@ -202,6 +223,29 @@ class OsUpdateModel {
     return OsUpdateModel(
       version: json['version'] ?? '',
       url: json['url'] ?? '',
+    );
+  }
+}
+
+class PaymentMethod {
+  final String code;
+  final String name;
+  final String image;
+  final int sortOrder;
+
+  PaymentMethod({
+    required this.code,
+    required this.name,
+    required this.image,
+    required this.sortOrder,
+  });
+
+  factory PaymentMethod.fromJson(Map<String, dynamic> json) {
+    return PaymentMethod(
+      code: json['code'] ?? '',
+      name: json['name'] ?? '',
+      image: json['image'] ?? '',
+      sortOrder: int.tryParse(json['sort_order'].toString()) ?? 0,
     );
   }
 }

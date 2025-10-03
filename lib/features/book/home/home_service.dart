@@ -48,6 +48,7 @@ class HomeService {
     required int adults,
     required int children,
     required int babies,
+    required String coupon,
   }) async {
     try {
       final response = await Singletons.dio.post(
@@ -59,8 +60,10 @@ class HomeService {
           'passengers': "$adults,$children,$babies",
           'outward_date': outwardDate,
           'return_date': returnDate,
+          'coupon': coupon,
         },
       );
+      print(response.data);
       final quotes = GetQuotesResponse.fromJson(response.data['data']);
       return Right(quotes);
     } on DioException catch (e) {

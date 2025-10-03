@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
+import 'package:welcome_port/core/models/setting.dart';
+import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/custom_cached_image.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/features/book/home/home_provider.dart';
-import 'package:welcome_port/features/order_details/booking_details_screen.dart';
-import 'package:welcome_port/features/booking/models/order.dart';
+import 'package:welcome_port/features/order_details/order_details_screen.dart';
+import 'package:welcome_port/features/orders/models/order.dart';
 
 class BookingCard extends StatelessWidget {
   final OrderModel order;
+  final Function onAccept;
 
-  const BookingCard({super.key, required this.order});
+  const BookingCard({super.key, required this.order, required this.onAccept});
 
   @override
   Widget build(BuildContext context) {
+    final isSupplier =
+        Provider.of<SharedProvider>(context).customer?.type ==
+        CustomerType.supplier;
+
     return InkwellWithOpacity(
+      clickedOpacity: isSupplier ? 1 : 0.6,
       onTap: () {
+        if (isSupplier && order.supplierStatus.toLowerCase() == "pending") {
+          return;
+        }
         NavigationUtils.push(
           context,
-          BookingDetailsScreen(orderReference: order.reference),
+          OrderDetailsScreen(orderReference: order.reference),
         );
       },
       child: Container(
@@ -98,48 +110,72 @@ class BookingCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Column(
-                    children: [
-                      Text(
-                        order.statusFormatted.toUpperCase(),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color:
-                              order.statusFormatted.toLowerCase() == "confirmed"
-                                  ? Colors.green
-                                  : Colors.red,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 7),
-                      InkwellWithOpacity(
+                  isSupplier && order.supplierStatus.toLowerCase() == "pending"
+                      ? InkwellWithOpacity(
                         onTap: () {
-                          NavigationUtils.push(
-                            context,
-                            BookingDetailsScreen(
-                              orderReference: order.reference,
-                            ),
-                          );
+                          onAccept(order.reference);
                         },
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
-                            color: AppColors.primaryColor,
+                            color: Colors.green,
                           ),
                           padding: const EdgeInsets.symmetric(
                             horizontal: 20,
-                            vertical: 5,
+                            vertical: 10,
                           ),
                           child: Text(
-                            "View",
+                            "Accept",
                             style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                         ),
+                      )
+                      : Column(
+                        children: [
+                          Text(
+                            order.statusFormatted.toUpperCase(),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color:
+                                  order.statusFormatted.toLowerCase() ==
+                                          "confirmed"
+                                      ? Colors.green
+                                      : Colors.red,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 7),
+                          InkwellWithOpacity(
+                            onTap: () {
+                              NavigationUtils.push(
+                                context,
+                                OrderDetailsScreen(
+                                  orderReference: order.reference,
+                                ),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                color: AppColors.primaryColor,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 5,
+                              ),
+                              child: Text(
+                                "View",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
                 ],
               ),
             ),

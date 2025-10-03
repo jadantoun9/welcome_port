@@ -1,37 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
-import 'package:welcome_port/features/booking/bookings_provider.dart';
-import 'package:welcome_port/features/booking/widgets/orders_list.dart';
+import 'package:welcome_port/features/orders/orders_provider.dart';
+import 'package:welcome_port/features/orders/widgets/orders_list.dart';
 
-class BookingsScreen extends StatelessWidget {
-  const BookingsScreen({super.key});
+class OrdersScreen extends StatelessWidget {
+  const OrdersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => BookingsProvider(),
-      child: _BookingsContent(),
+      create: (context) => OrdersProvider(),
+      child: _OrdersContent(),
     );
   }
 }
 
-class _BookingsContent extends StatefulWidget {
-  const _BookingsContent();
+class _OrdersContent extends StatefulWidget {
+  const _OrdersContent();
 
   @override
-  State<_BookingsContent> createState() => _BookingsContentState();
+  State<_OrdersContent> createState() => _OrdersContentState();
 }
 
-class _BookingsContentState extends State<_BookingsContent> {
+class _OrdersContentState extends State<_OrdersContent> {
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     // Load initial orders
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<BookingsProvider>(context, listen: false).loadBookings();
+      Provider.of<OrdersProvider>(context, listen: false).loadBookings();
     });
     _scrollController.addListener(_onScroll);
   }
@@ -39,19 +40,20 @@ class _BookingsContentState extends State<_BookingsContent> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   void _onScroll() {
     if (_scrollController.offset >=
         _scrollController.position.maxScrollExtent - 200) {
-      Provider.of<BookingsProvider>(context, listen: false).loadMoreBookings();
+      Provider.of<OrdersProvider>(context, listen: false).loadMoreBookings();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final bookingsProvider = Provider.of<BookingsProvider>(context);
+    final bookingsProvider = Provider.of<OrdersProvider>(context);
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
@@ -83,6 +85,58 @@ class _BookingsContentState extends State<_BookingsContent> {
         controller: _scrollController,
         slivers: [
           SliverToBoxAdapter(child: const SizedBox(height: 10)),
+
+          // Search TextField
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: (value) {
+                    bookingsProvider.updateSearchQuery(value);
+                  },
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Leader Name / Order ID',
+                    hintStyle: TextStyle(color: Colors.grey[500], fontSize: 15),
+                    prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+                    suffixIcon:
+                        bookingsProvider.searchQuery.isNotEmpty
+                            ? IconButton(
+                              icon: Icon(Icons.clear, color: Colors.grey[600]),
+                              onPressed: () {
+                                _searchController.clear();
+                                bookingsProvider.clearSearch();
+                              },
+                            )
+                            : null,
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
           // Orders Section
           SliverToBoxAdapter(
             child: Padding(

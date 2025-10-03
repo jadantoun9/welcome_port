@@ -362,5 +362,9 @@
     "failedToLoadOrders": "فشل تحميل الطلبات",
     "noOrdersYet": "لا توجد طلبات بعد",
     "orderHistoryWillAppearHere": "سيظهر سجل طلباتك هنا",
-    "loadMore": "تحميل المزيد"
+    "loadMore": "تحميل المزيد",
+    "selectPaymentMethod": "اختر وسيلة الدفع",
+    "pay": "ادفع",
+    "paymentFailed": "لم تنجح عملية الدفع. يرجى المحاولة مرة أخرى.",
+    "noPaymentMethodsAvailable": "لا توجد وسائل دفع متاحة"
 }

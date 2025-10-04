@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
@@ -25,10 +24,6 @@ class WalletProvider extends ChangeNotifier {
 
   PaymentMethod? selectedPaymentMethod;
   double? topUpAmount;
-
-  WalletProvider() {
-    FacebookAnalyticsEngine.confirmCheckout();
-  }
 
   void setSelectedPaymentMethod(PaymentMethod paymentMethod) {
     selectedPaymentMethod = paymentMethod;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/service/social_login_service.dart';
@@ -48,6 +49,10 @@ class SocialLoginProvider extends ChangeNotifier {
 
     if (result.isSuccess) {
       sharedProvider.setCustomer(result.user!);
+
+      // Track successful sign in with Google
+      FacebookAnalyticsEngine.logSignIn(method: 'google');
+
       if (!context.mounted) return;
       _navigateAfterLogin(context, sharedProvider);
     } else if (result.isError) {
@@ -67,6 +72,10 @@ class SocialLoginProvider extends ChangeNotifier {
 
     if (result.isSuccess) {
       sharedProvider.setCustomer(result.user!);
+
+      // Track successful sign in with Apple
+      FacebookAnalyticsEngine.logSignIn(method: 'apple');
+
       if (!context.mounted) return;
       _navigateAfterLogin(context, sharedProvider);
     } else if (result.isError) {

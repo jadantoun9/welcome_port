@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
 import 'package:welcome_port/features/orders/orders_provider.dart';
 import 'package:welcome_port/features/orders/widgets/orders_list.dart';
@@ -31,6 +32,7 @@ class _OrdersContentState extends State<_OrdersContent> {
   @override
   void initState() {
     super.initState();
+    FacebookAnalyticsEngine.logPageView(pageName: 'Orders');
     // Load initial orders
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<OrdersProvider>(context, listen: false).loadBookings();

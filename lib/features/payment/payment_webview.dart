@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/widgets/error_dialog.dart';
@@ -10,8 +11,15 @@ import 'package:welcome_port/features/order_details/order_details_screen.dart';
 
 class PaymentWebview extends StatefulWidget {
   final String url;
+  final double? amount;
+  final String? currency;
 
-  const PaymentWebview({super.key, required this.url});
+  const PaymentWebview({
+    super.key,
+    required this.url,
+    this.amount,
+    this.currency,
+  });
 
   @override
   State<PaymentWebview> createState() => _PaymentWebviewState();
@@ -74,6 +82,16 @@ class _PaymentWebviewState extends State<PaymentWebview> {
 
   void handleSuccess({required String reference, required String email}) {
     if (_isDisposed || !mounted) return;
+
+    // Track booking purchase
+    if (widget.amount != null && widget.currency != null) {
+      FacebookAnalyticsEngine.logPurchase(
+        amount: widget.amount!,
+        currency: widget.currency!,
+        orderReference: reference,
+        contentType: 'booking',
+      );
+    }
 
     NavigationUtils.clearAndPush(context, NavScreen());
     NavigationUtils.push(

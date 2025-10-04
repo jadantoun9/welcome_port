@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/features/login/login_service.dart';
 import 'package:welcome_port/features/nav/nav_screen.dart';
@@ -111,6 +112,10 @@ class LoginProvider extends ChangeNotifier {
       // Navigate to OTP screen for email verification
       sharedProvider.setCustomer(response);
       sharedProvider.setSelectedIndex(0);
+
+      // Track successful sign in with email
+      FacebookAnalyticsEngine.logSignIn(method: 'email');
+
       NavigationUtils.push(context, NavScreen());
     });
     setLoading(false);

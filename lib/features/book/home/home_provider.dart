@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:dartz/dartz.dart';
-import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/widgets/show_error_toast.dart';
 import 'package:welcome_port/features/book/home/home_service.dart';
@@ -41,11 +38,6 @@ class HomeProvider extends ChangeNotifier {
   bool isCouponLoading = false;
   String? couponError;
   String? appliedCoupon;
-
-  HomeProvider() {
-    log("logging checkout");
-    FacebookAnalyticsEngine.confirmCheckout();
-  }
 
   void setTripType(TripType type) {
     tripType = type;

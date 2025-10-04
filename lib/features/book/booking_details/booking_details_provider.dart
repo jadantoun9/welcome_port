@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_intl_phone_field/phone_number.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/widgets/show_error_toast.dart';
@@ -449,6 +450,14 @@ class BookingDetailsProvider extends ChangeNotifier {
               showErrorToast(context, error);
             },
             (reference) {
+              // Track booking purchase with balance
+              FacebookAnalyticsEngine.logPurchase(
+                amount: preBookRequirementsResponse.total,
+                currency: sharedProvider.currency,
+                orderReference: reference.reference,
+                contentType: 'booking',
+              );
+
               NavigationUtils.clearAndPush(context, NavScreen());
               NavigationUtils.push(
                 context,
@@ -504,7 +513,14 @@ class BookingDetailsProvider extends ChangeNotifier {
                 },
                 (url) {
                   // Navigate to payment webview using parent context
-                  NavigationUtils.push(context, PaymentWebview(url: url));
+                  NavigationUtils.push(
+                    context,
+                    PaymentWebview(
+                      url: url,
+                      amount: preBookRequirementsResponse.total,
+                      currency: sharedProvider.currency,
+                    ),
+                  );
                 },
               );
             },

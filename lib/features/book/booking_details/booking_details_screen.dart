@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/features/book/booking_details/booking_details_provider.dart';
@@ -41,6 +42,12 @@ class _BookingDetailsContent extends StatefulWidget {
 class _BookingDetailsContentState extends State<_BookingDetailsContent> {
   int luggageCount = 0;
   final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    FacebookAnalyticsEngine.logPageView(pageName: 'BookingDetails');
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/features/wallet/wallet_provider.dart';
@@ -32,6 +33,7 @@ class _WalletContentState extends State<_WalletContent> {
   @override
   void initState() {
     super.initState();
+    FacebookAnalyticsEngine.logPageView(pageName: 'Wallet');
     // Load initial transactions
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<WalletProvider>(context, listen: false).loadTransactions();

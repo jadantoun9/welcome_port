@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
@@ -37,6 +38,7 @@ class _LoginContentState extends State<LoginContent> {
   @override
   void initState() {
     super.initState();
+    FacebookAnalyticsEngine.logPageView(pageName: 'Login');
     // Add listeners to focus nodes to trigger rebuild when focus changes
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<LoginProvider>(context, listen: false);

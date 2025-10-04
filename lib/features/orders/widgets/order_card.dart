@@ -60,129 +60,120 @@ class BookingCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("#${order.reference}"),
-                Text(
-                  "${order.from} ${order.tripType == TripType.roundTrip ? "⇆" : "➝"} ${order.to}",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Row(
-                  children: [
-                    Text(
-                      order.outwardDate,
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.w600,
-                      ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("#${order.reference}"),
+                  Text(
+                    "${order.from} ${order.tripType == TripType.roundTrip ? "⇆" : "➝"} ${order.to}",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
                     ),
-                    if (order.tripType == TripType.roundTrip) ...[
-                      const SizedBox(width: 5),
-                      Text(
-                        order.returnDate,
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey[600],
-                          fontWeight: FontWeight.w600,
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "${order.outwardDate} ${order.returnDate}",
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ],
-                  ],
-                ),
-
-                const SizedBox(height: 2),
-                Text(
-                  order.tripTypeFormatted.toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.grey[900],
-                    fontWeight: FontWeight.w600,
                   ),
-                ),
-              ],
+
+                  const SizedBox(height: 2),
+                  Text(
+                    order.tripTypeFormatted.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey[900],
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  isSupplier && order.supplierStatus.toLowerCase() == "pending"
-                      ? InkwellWithOpacity(
-                        onTap: () {
-                          onAccept(order.reference);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            color: Colors.green,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                isSupplier && order.supplierStatus.toLowerCase() == "pending"
+                    ? InkwellWithOpacity(
+                      onTap: () {
+                        onAccept(order.reference);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: Colors.green,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        child: Text(
+                          l10n.accept,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
                           ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
+                        ),
+                      ),
+                    )
+                    : Column(
+                      children: [
+                        Text(
+                          order.statusFormatted.toUpperCase(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color:
+                                order.statusFormatted.toLowerCase() ==
+                                        "confirmed"
+                                    ? Colors.green
+                                    : Colors.red,
+                            fontWeight: FontWeight.w600,
                           ),
-                          child: Text(
-                            l10n.accept,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
+                        ),
+                        const SizedBox(height: 7),
+                        InkwellWithOpacity(
+                          onTap: () {
+                            NavigationUtils.push(
+                              context,
+                              OrderDetailsScreen(
+                                orderReference: order.reference,
+                              ),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              color: AppColors.primaryColor,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 5,
+                            ),
+                            child: Text(
+                              l10n.view,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ),
-                      )
-                      : Column(
-                        children: [
-                          Text(
-                            order.statusFormatted.toUpperCase(),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextStyle(
-                              fontSize: 11,
-                              color:
-                                  order.statusFormatted.toLowerCase() ==
-                                          "confirmed"
-                                      ? Colors.green
-                                      : Colors.red,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 7),
-                          InkwellWithOpacity(
-                            onTap: () {
-                              NavigationUtils.push(
-                                context,
-                                OrderDetailsScreen(
-                                  orderReference: order.reference,
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                color: AppColors.primaryColor,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 5,
-                              ),
-                              child: Text(
-                                l10n.view,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                ],
-              ),
+                      ],
+                    ),
+              ],
             ),
           ],
         ),

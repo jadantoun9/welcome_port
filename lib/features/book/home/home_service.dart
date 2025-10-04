@@ -11,7 +11,6 @@ class HomeService {
     required String search,
     required String countryCode,
   }) async {
-    print("filtering on countryCode: $countryCode");
     try {
       final response = await Singletons.dio.get(
         '/autocomplete/airport/$search',
@@ -63,12 +62,12 @@ class HomeService {
           'coupon': coupon,
         },
       );
-      print(response.data);
       final quotes = GetQuotesResponse.fromJson(response.data['data']);
       return Right(quotes);
     } on DioException catch (e) {
       return Left(getMessageFromError(e));
     } catch (e) {
+      debugPrint("error: ${e.toString()}");
       return Left(getDefaultErrorMessage());
     }
   }
@@ -80,6 +79,7 @@ class HomeService {
     } on DioException catch (e) {
       return Left(getMessageFromError(e));
     } catch (e) {
+      debugPrint(e.toString());
       return Left(getDefaultErrorMessage());
     }
   }

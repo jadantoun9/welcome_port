@@ -469,5 +469,14 @@
   "topUp": "Top-up",
   "transactionHistory": "Transaction History",
   "topUpWallet": "Top Up Wallet",
-  "topUpFunctionalityComingSoon": "Top up functionality will be implemented here."
+  "topUpFunctionalityComingSoon": "Top up functionality will be implemented here.",
+  "topUpAmount": "Top Up Amount",
+  "amount": "Amount",
+  "enterAmount": "Enter amount",
+  "pleaseEnterAmount": "Please enter an amount",
+  "pleaseEnterValidAmount": "Please enter a valid amount",
+  "minimumTopUpAmount": "Minimum top-up amount is $1",
+  "next": "Next",
+  "topUpFailed": "Top-up was not successful. Please try again.",
+  "topUpSuccessfully": "Wallet topped up successfully!"
 }

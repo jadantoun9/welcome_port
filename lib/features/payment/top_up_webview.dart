@@ -5,19 +5,19 @@ import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/widgets/error_dialog.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
+import 'package:welcome_port/core/widgets/success_message.dart';
 import 'package:welcome_port/features/nav/nav_screen.dart';
-import 'package:welcome_port/features/order_details/order_details_screen.dart';
 
-class PaymentWebview extends StatefulWidget {
+class TopUpWebview extends StatefulWidget {
   final String url;
 
-  const PaymentWebview({super.key, required this.url});
+  const TopUpWebview({super.key, required this.url});
 
   @override
-  State<PaymentWebview> createState() => _PaymentWebviewState();
+  State<TopUpWebview> createState() => _TopUpWebviewState();
 }
 
-class _PaymentWebviewState extends State<PaymentWebview> {
+class _TopUpWebviewState extends State<TopUpWebview> {
   bool isLoading = true;
   String currentUrl = '';
   late WebViewController webViewController;
@@ -47,12 +47,8 @@ class _PaymentWebviewState extends State<PaymentWebview> {
               onPageFinished: (url) async {
                 if (_isDisposed || !mounted) return;
 
-                if (url.contains('success=1') &&
-                    url.contains('reference') &&
-                    url.contains('email')) {
-                  final reference = url.split('reference=')[1].split('&')[0];
-                  final email = url.split('email=')[1].split('&')[0];
-                  handleSuccess(reference: reference, email: email);
+                if (url.contains('success=1')) {
+                  handleSuccess();
                 } else if (url.contains('success=0')) {
                   handleFailure();
                 }
@@ -72,27 +68,20 @@ class _PaymentWebviewState extends State<PaymentWebview> {
     super.dispose();
   }
 
-  void handleSuccess({required String reference, required String email}) {
+  void handleSuccess() {
     if (_isDisposed || !mounted) return;
 
+    final l = AppLocalizations.of(context)!;
     NavigationUtils.clearAndPush(context, NavScreen());
-    NavigationUtils.push(
-      context,
-      OrderDetailsScreen(orderReference: reference, email: email),
-    );
+    showSuccessMessage(context: context, message: l.topUpSuccessfully);
   }
 
-  void handleFailure() async {
+  void handleFailure() {
     if (_isDisposed || !mounted) return;
 
     final l = AppLocalizations.of(context)!;
     NavigationUtils.pop(context);
-
-    await showErrorDialog(
-      context: context,
-      title: l.error,
-      message: l.paymentFailed,
-    );
+    showErrorDialog(context: context, title: l.error, message: l.topUpFailed);
   }
 
   @override
@@ -116,7 +105,10 @@ class _PaymentWebviewState extends State<PaymentWebview> {
               }
             },
           ),
-          title: Text(l.pay, style: const TextStyle(color: Colors.white)),
+          title: Text(
+            l.topUpWallet,
+            style: const TextStyle(color: Colors.white, fontSize: 21),
+          ),
           backgroundColor: AppColors.primaryColor,
           foregroundColor: Colors.white,
         ),

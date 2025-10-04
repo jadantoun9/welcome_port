@@ -53,11 +53,9 @@ Future<String?> showSelectionDialog({
               const SizedBox(height: 20),
 
               // Selection Items
-              ...items
-                  .map(
-                    (item) => _buildSelectionItem(context, item, currentValue),
-                  )
-                  .toList(),
+              ...items.map(
+                (item) => _buildSelectionItem(context, item, currentValue),
+              ),
 
               const SizedBox(height: 20),
 

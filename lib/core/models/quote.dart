@@ -24,7 +24,10 @@ class Quote {
       id: json['quote_id'] ?? '',
       price: double.tryParse(json['price'].toString()) ?? 0,
       priceFormatted: json['price_formatted'] ?? '',
-      priceDiscounted: json['price_discounted'],
+      priceDiscounted:
+          json['price_discounted'] != null
+              ? double.tryParse(json['price_discounted'].toString())
+              : null,
       priceDiscountedFormatted: json['price_discounted_formatted'] ?? '',
       durationInMinutes:
           int.tryParse(json['duration_in_minutes'].toString()) ?? 0,

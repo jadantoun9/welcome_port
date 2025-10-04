@@ -469,5 +469,14 @@
     "topUp": "شحن",
     "transactionHistory": "سجل المعاملات",
     "topUpWallet": "شحن المحفظة",
-    "topUpFunctionalityComingSoon": "سيتم تنفيذ وظيفة الشحن هنا."
+    "topUpFunctionalityComingSoon": "سيتم تنفيذ وظيفة الشحن هنا.",
+    "topUpAmount": "مبلغ الشحن",
+    "amount": "المبلغ",
+    "enterAmount": "أدخل المبلغ",
+    "pleaseEnterAmount": "الرجاء إدخال المبلغ",
+    "pleaseEnterValidAmount": "الرجاء إدخال مبلغ صحيح",
+    "minimumTopUpAmount": "الحد الأدنى لمبلغ الشحن هو $1",
+    "next": "التالي",
+    "topUpFailed": "فشل الشحن. يرجى المحاولة مرة أخرى.",
+    "topUpSuccessfully": "تم شحن المحفظة بنجاح!"
 }

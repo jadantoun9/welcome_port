@@ -5,14 +5,14 @@ import 'package:welcome_port/features/book/booking_details/booking_details_provi
 
 class ContinueButton extends StatelessWidget {
   final String text;
-  final bool isBooking;
+  final ValueNotifier<bool> isBookingNotifier;
   final BookingDetailsProvider provider;
 
   const ContinueButton({
     super.key,
     required this.provider,
     required this.text,
-    required this.isBooking,
+    required this.isBookingNotifier,
   });
 
   @override
@@ -38,37 +38,42 @@ class ContinueButton extends StatelessWidget {
           ),
         ],
       ),
-      child: ElevatedButton(
-        onPressed: () => provider.onSubmit(context: context),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        child:
-            isBooking
-                ? const Loader()
-                : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.arrow_forward_rounded,
-                      color: Colors.white,
-                      size: 20,
+      child: ValueListenableBuilder<bool>(
+        valueListenable: isBookingNotifier,
+        builder: (context, isBooking, child) {
+          return ElevatedButton(
+            onPressed: () => provider.onSubmit(context: context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+            child:
+                isBooking
+                    ? const Loader()
+                    : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.arrow_forward_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          text,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      text,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
+          );
+        },
       ),
     );
   }

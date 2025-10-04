@@ -38,7 +38,7 @@ class BookingDetailsProvider extends ChangeNotifier {
   // Form state
   String selectedTitle = 'Mr';
   bool isLoading = false;
-  bool isBooking = false;
+  final ValueNotifier<bool> isBookingNotifier = ValueNotifier<bool>(false);
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   // Title options - will be initialized with localized strings
@@ -111,11 +111,6 @@ class BookingDetailsProvider extends ChangeNotifier {
 
   void setLoading(bool loading) {
     isLoading = loading;
-    notifyListeners();
-  }
-
-  void setIsBooking(bool loading) {
-    isBooking = loading;
     notifyListeners();
   }
 
@@ -397,7 +392,7 @@ class BookingDetailsProvider extends ChangeNotifier {
   }
 
   void onSubmit({required BuildContext context}) async {
-    if (isBooking) return;
+    if (isBookingNotifier.value) return;
     final l = AppLocalizations.of(context)!;
 
     if (!validateForm()) {
@@ -409,7 +404,7 @@ class BookingDetailsProvider extends ChangeNotifier {
       );
       return;
     }
-    setIsBooking(true);
+    isBookingNotifier.value = true;
     final result = await bookingDetailsService.preBook(
       title: selectedTitle,
       firstName: firstNameController.text,
@@ -442,12 +437,12 @@ class BookingDetailsProvider extends ChangeNotifier {
     result.fold(
       (error) {
         showErrorToast(context, error);
-        setIsBooking(false);
+        isBookingNotifier.value = false;
       },
-      (success) async {
-        if (sharedProvider.customer?.type == CustomerType.agent) {
+      (redirect) async {
+        if (redirect.toLowerCase() == "book") {
           final result = await bookingDetailsService.bookWithBalance();
-          setIsBooking(false);
+          isBookingNotifier.value = false;
 
           result.fold(
             (error) {
@@ -457,12 +452,15 @@ class BookingDetailsProvider extends ChangeNotifier {
               NavigationUtils.clearAndPush(context, NavScreen());
               NavigationUtils.push(
                 context,
-                OrderDetailsScreen(orderReference: reference),
+                OrderDetailsScreen(
+                  orderReference: reference.reference,
+                  email: reference.email,
+                ),
               );
             },
           );
         } else {
-          setIsBooking(false);
+          isBookingNotifier.value = false;
           _showPaymentMethodBottomSheet(context);
         }
       },
@@ -485,24 +483,23 @@ class BookingDetailsProvider extends ChangeNotifier {
       builder:
           (bottomSheetContext) => PaymentMethodBottomSheet(
             paymentMethods: paymentMethods,
+            isLoadingNotifier: isBookingNotifier,
             onPaymentMethodSelected: (paymentMethod) {
               setSelectedPaymentMethod(paymentMethod);
             },
             onPayPressed: () async {
               if (selectedPaymentMethod == null) return;
 
-              Navigator.pop(bottomSheetContext); // Close bottom sheet
-              setIsBooking(true);
+              isBookingNotifier.value = true;
 
               final result = await bookingDetailsService.bookWithPaymentMethod(
                 selectedPaymentMethod!.code,
               );
 
-              setIsBooking(false);
+              isBookingNotifier.value = false;
 
               result.fold(
                 (error) {
-                  print("3: $error");
                   showErrorToast(context, error);
                 },
                 (url) {
@@ -517,7 +514,8 @@ class BookingDetailsProvider extends ChangeNotifier {
 
   String getButtonText(SharedProvider sharedProvider, BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    if (sharedProvider.customer?.type == CustomerType.agent) {
+    if (sharedProvider.customer?.type == CustomerType.agent ||
+        preBookRequirementsResponse.total == 0) {
       return l.bookNow;
     }
     return l.continueToPayment;

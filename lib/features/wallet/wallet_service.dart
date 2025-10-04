@@ -26,4 +26,22 @@ class WalletService {
       return Left(getDefaultErrorMessage());
     }
   }
+
+  Future<Either<String, String>> topUpWallet({
+    required double amount,
+    required String paymentMethodCode,
+  }) async {
+    try {
+      final response = await Singletons.dio.post(
+        "/account/wallet-topup",
+        data: {"amount": amount, "payment_method": paymentMethodCode},
+      );
+      return Right(response.data['data']['webview']);
+    } on DioException catch (e) {
+      return Left(getMessageFromError(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Left(getDefaultErrorMessage());
+    }
+  }
 }

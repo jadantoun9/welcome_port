@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/widgets/phone_number_field.dart';
 import 'package:welcome_port/features/book/booking_details/booking_details_provider.dart';
 import 'package:welcome_port/features/book/booking_details/widgets/reusable/booking_textfield.dart';
@@ -14,6 +15,8 @@ class CustomerInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoggedIn = provider.sharedProvider.customer != null;
+    final isAgent =
+        provider.sharedProvider.customer?.type == CustomerType.agent;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +92,7 @@ class CustomerInfoCard extends StatelessWidget {
         BookingTextfield(
           controller: provider.emailController,
           label: AppLocalizations.of(context)!.email,
-          readOnly: isLoggedIn,
+          readOnly: isLoggedIn && !isAgent,
           icon: Icons.email_outlined,
           keyboardType: TextInputType.emailAddress,
           validator: (value) => provider.validateEmail(value, context),

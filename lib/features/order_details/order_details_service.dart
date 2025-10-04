@@ -30,7 +30,6 @@ class OrderDetailsService {
         '/orders/$reference',
         data: {'email': email},
       );
-      print(response.data);
       final order = OrderDetailsModel.fromJson(response.data['data']['order']);
       return Right(order);
     } on DioException catch (e) {

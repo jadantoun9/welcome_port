@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:welcome_port/core/helpers/error_helpers.dart';
 import 'package:welcome_port/core/helpers/singletons.dart';
 import 'package:welcome_port/features/book/booking_details/models/flight_suggestion.dart';
+import 'package:welcome_port/features/book/booking_details/models/reference_email.dart';
 
 class BookingDetailsService {
   Future<Either<String, List<FlightSuggestion>>> autocompleteFlightNumber(
@@ -25,13 +26,13 @@ class BookingDetailsService {
     }
   }
 
-  Future<Either<String, String>> bookWithBalance() async {
+  Future<Either<String, ReferenceEmail>> bookWithBalance() async {
     try {
       final response = await Singletons.dio.post(
         '/transfer/book',
         data: {"payment_method": "balance"},
       );
-      return Right(response.data['data']['reference']);
+      return Right(ReferenceEmail.fromJson(response.data['data']));
     } on DioException catch (e) {
       return Left(getMessageFromError(e));
     } catch (e) {
@@ -48,7 +49,6 @@ class BookingDetailsService {
         '/transfer/book',
         data: {"payment_method": paymentMethodCode},
       );
-      print(response.data);
       return Right(response.data['data']['webview']);
     } on DioException catch (e) {
       return Left(getMessageFromError(e));
@@ -58,7 +58,7 @@ class BookingDetailsService {
     }
   }
 
-  Future<Either<String, Unit>> preBook({
+  Future<Either<String, String>> preBook({
     required String title,
     required String firstName,
     required String lastName,
@@ -120,14 +120,12 @@ class BookingDetailsService {
           returnAirlineCode,
         );
       }
-
       final response = await Singletons.dio.post(
         '/transfer/prebook',
         data: requestData,
       );
-
-      print(response.data);
-      return Right(unit);
+      debugPrint("response: ${response.data}");
+      return Right(response.data['data']['redirect']);
     } on DioException catch (e) {
       return Left(getMessageFromError(e));
     } catch (e) {

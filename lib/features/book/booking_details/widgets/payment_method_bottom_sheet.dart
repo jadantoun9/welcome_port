@@ -3,17 +3,20 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/widgets/custom_cached_image.dart';
+import 'package:welcome_port/core/widgets/wide_button.dart';
 
 class PaymentMethodBottomSheet extends StatefulWidget {
   final List<PaymentMethod> paymentMethods;
   final VoidCallback onPayPressed;
   final Function(PaymentMethod) onPaymentMethodSelected;
+  final ValueNotifier<bool> isLoadingNotifier;
 
   const PaymentMethodBottomSheet({
     super.key,
     required this.paymentMethods,
     required this.onPayPressed,
     required this.onPaymentMethodSelected,
+    required this.isLoadingNotifier,
   });
 
   @override
@@ -88,7 +91,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                           },
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 12),
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color:
                                   isSelected
@@ -161,28 +164,15 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
             const SizedBox(height: 20),
 
             // Pay button
-            SizedBox(
-              height: 54,
-              child: ElevatedButton(
-                onPressed:
-                    selectedPaymentMethod != null ? widget.onPayPressed : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor,
-                  disabledBackgroundColor: Colors.grey.shade300,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  l?.pay ?? 'Pay',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+            ValueListenableBuilder<bool>(
+              valueListenable: widget.isLoadingNotifier,
+              builder: (context, isLoading, child) {
+                return WideButton(
+                  text: l?.pay ?? 'Pay',
+                  onPressed: widget.onPayPressed,
+                  isLoading: isLoading,
+                );
+              },
             ),
           ],
         ),

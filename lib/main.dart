@@ -69,7 +69,7 @@ void main() async {
         })
         .catchError((error) {
           // initialization failed
-          print(error);
+          debugPrint(error);
         });
   }
 

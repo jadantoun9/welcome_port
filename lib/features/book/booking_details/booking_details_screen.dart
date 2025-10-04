@@ -249,7 +249,7 @@ class _BookingDetailsContentState extends State<_BookingDetailsContent> {
                               sharedProvider,
                               context,
                             ),
-                            isBooking: provider.isBooking,
+                            isBookingNotifier: provider.isBookingNotifier,
                           ),
                           const SizedBox(height: 40),
                         ],

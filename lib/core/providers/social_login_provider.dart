@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
@@ -47,7 +45,6 @@ class SocialLoginProvider extends ChangeNotifier {
   ) async {
     _setIsGoogleLoading(true);
     final result = await service.signInWithGoogle();
-    inspect(result);
 
     if (result.isSuccess) {
       sharedProvider.setCustomer(result.user!);

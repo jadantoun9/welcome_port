@@ -14,6 +14,7 @@ class PreBookRequirementsResponse {
   String? returnDate;
   String outwardFromPickupDate;
   String? returnFromPickupDate;
+  double total;
 
   PreBookRequirementsResponse({
     required this.isOneWay,
@@ -24,6 +25,7 @@ class PreBookRequirementsResponse {
     required this.outwardFromPickupDate,
     required this.vehicle,
     required this.outwardDate,
+    required this.total,
     this.returnDate,
     this.returnFromPickupDate,
   });
@@ -43,6 +45,7 @@ class PreBookRequirementsResponse {
       outwardFromPickupDate: json['outward_from_pickup_date'] ?? '',
       returnFromPickupDate: json['return_from_pickup_date'] ?? '',
       vehicle: Vehicle.fromJson(json['vehicle']),
+      total: double.tryParse(json['total'].toString()) ?? 0,
     );
   }
 

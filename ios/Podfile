@@ -40,6 +40,33 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    
+    # Disable dSYM generation for frameworks that don't provide them
+    # This prevents "Upload Symbols Failed" errors during archiving
+    frameworks_without_dsym = [
+      'Mobilisten',
+      'MobilistenCalls',
+      'MobilistenCallsCore',
+      'AVCallKit',
+      'AVCallKitBridge',
+      'AVCommonsCore',
+      'AVCommonsVoIP',
+      'AppBridge',
+      'Floatkit',
+      'MeetingsCore',
+      'Starscream',
+      'TraceKit',
+      'UIPullDownMenuKit',
+      'WMSPackage',
+      'WebRTC',
+      'iRTCPMeeting'
+    ]
+    
+    if frameworks_without_dsym.include?(target.name)
+      target.build_configurations.each do |config|
+        config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf'
+      end
+    end
   end
 end
 

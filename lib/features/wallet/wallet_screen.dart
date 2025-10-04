@@ -108,7 +108,7 @@ class _WalletContentState extends State<_WalletContent> {
             child: WalletBalanceCard(
               balance: sharedProvider.customer?.balanceFormatted ?? "",
               onTopUpPressed: () {
-                _showTopUpDialog(context, walletProvider);
+                walletProvider.showTopUpDialog(context, sharedProvider);
               },
             ),
           ),
@@ -140,32 +140,6 @@ class _WalletContentState extends State<_WalletContent> {
           const SliverToBoxAdapter(child: SizedBox(height: 20)),
         ],
       ),
-    );
-  }
-
-  void _showTopUpDialog(BuildContext context, WalletProvider walletProvider) {
-    final l10n = AppLocalizations.of(context)!;
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(l10n.topUpWallet),
-          content: Text(l10n.topUpFunctionalityComingSoon),
-          // actions: [
-          //   TextButton(
-          //     onPressed: () => Navigator.of(context).pop(),
-          //     child: const Text('Cancel'),
-          //   ),
-          //   TextButton(
-          //     onPressed: () {
-          //       Navigator.of(context).pop();
-          //     },
-          //     child: const Text('Add \$10'),
-          //   ),
-          // ],
-        );
-      },
     );
   }
 }

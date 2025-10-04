@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dartz/dartz.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
+import 'package:welcome_port/core/helpers/zoho_helper.dart';
 import 'package:welcome_port/core/widgets/show_error_toast.dart';
 import 'package:welcome_port/features/book/home/home_service.dart';
 import 'package:welcome_port/features/book/home/models/airport_suggestion.dart';
@@ -241,6 +242,11 @@ class HomeProvider extends ChangeNotifier {
         returnFlightDate != null && TripType.roundTrip == tripType
             ? formatDateTime(returnFlightDate!)
             : "";
+
+    // Track search in Zoho with location details
+    final pickupName = pickupController.text;
+    final destinationName = destinationController.text;
+    ZohoHelper.trackPageView('Search: $pickupName → $destinationName');
 
     setLoading(true);
 

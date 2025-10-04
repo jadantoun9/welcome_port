@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -82,12 +83,17 @@ class SplashProvider extends ChangeNotifier {
     final result = await service.getSetting();
     if (!context.mounted) return;
 
+    log("1");
+
     result.fold((error) => setError(error), (data) async {
       final sharedProvider = Provider.of<SharedProvider>(
         context,
         listen: false,
       );
-      sharedProvider.setSetting(data);
+      log("2");
+      await sharedProvider.setSetting(data);
+
+      log("3");
 
       // Keep checking until user can proceed (handles forced updates)
       bool allowToProceed = false;
@@ -99,6 +105,8 @@ class SplashProvider extends ChangeNotifier {
         }
       }
 
+      log("4");
+
       // Ensure minimum 2 seconds have passed
       final elapsed = DateTime.now().difference(startTime);
       final remainingTime = Duration(seconds: 2) - elapsed;
@@ -106,9 +114,15 @@ class SplashProvider extends ChangeNotifier {
         await Future.delayed(remainingTime);
       }
 
+      log("5");
+
       if (!context.mounted) {
+        log("6");
         return;
       }
+
+      log("7");
+
       NavigationUtils.pushReplacement(context, const NavScreen());
     });
   }

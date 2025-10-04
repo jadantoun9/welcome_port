@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:welcome_port/core/constant/constants.dart';
 import 'package:welcome_port/core/helpers/singletons.dart';
+import 'package:welcome_port/core/helpers/zoho_helper.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/features/splash/splash_service.dart';
 
@@ -51,7 +54,7 @@ class SharedProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSetting(Setting setting) {
+  Future<void> setSetting(Setting setting) async {
     this.setting = setting;
 
     if (setting.activeLanguage.isNotEmpty &&
@@ -64,6 +67,11 @@ class SharedProvider extends ChangeNotifier {
       changeCurrency(setting.activeCurrency);
     }
 
+    // Initialize Zoho with credentials from backend before setting customer
+    if (setting.chatType == ChatType.zoho) {
+      await ZohoHelper.initializeZoho(setting.zoho);
+    }
+
     setCustomer(setting.customer);
 
     notifyListeners();
@@ -73,9 +81,21 @@ class SharedProvider extends ChangeNotifier {
     if (customerData != null) {
       OneSignal.login(customerData.id.toString());
       customer = customerData;
+      log(
+        "filling user info of ${customerData.firstName} ${customerData.lastName}",
+      );
+
+      // Set Zoho visitor info
+      ZohoHelper.setVisitorInfo(
+        name: '${customerData.firstName} ${customerData.lastName}',
+        email: customerData.email,
+        phone: customerData.phone,
+      );
     } else {
       customer = null;
       OneSignal.logout();
+
+      ZohoHelper.setVisitorInfo(name: null, email: null, phone: null);
     }
     notifyListeners();
   }
@@ -84,8 +104,8 @@ class SharedProvider extends ChangeNotifier {
     final splashService = SplashService();
     final result = await splashService.getSetting();
 
-    result.fold((error) {}, (newSetting) {
-      setSetting(newSetting);
+    result.fold((error) {}, (newSetting) async {
+      await setSetting(newSetting);
     });
   }
 }

@@ -18,6 +18,7 @@ class Setting {
   final ChatType chatType;
   final bool callSupport;
   final List<PaymentMethod> paymentMethods;
+  final Zoho? zoho;
 
   Setting({
     required this.activeLanguage,
@@ -35,6 +36,7 @@ class Setting {
     required this.whatsappUrl,
     required this.chatType,
     required this.callSupport,
+    required this.zoho,
   });
 
   factory Setting.fromJson(Map<String, dynamic> json) {
@@ -77,6 +79,7 @@ class Setting {
               ?.map((pm) => PaymentMethod.fromJson(pm))
               .toList() ??
           [],
+      zoho: json['zoho'] != null ? Zoho.fromJson(json['zoho']) : null,
     );
   }
 }
@@ -246,6 +249,38 @@ class PaymentMethod {
       name: json['name'] ?? '',
       image: json['image'] ?? '',
       sortOrder: int.tryParse(json['sort_order'].toString()) ?? 0,
+    );
+  }
+}
+
+class Zoho {
+  ZohoCredentials iosCredentials;
+  ZohoCredentials androidCredentials;
+
+  Zoho({required this.iosCredentials, required this.androidCredentials});
+
+  factory Zoho.fromJson(Map<String, dynamic> json) {
+    return Zoho(
+      iosCredentials: ZohoCredentials.fromJson(json['ios']),
+      androidCredentials: ZohoCredentials.fromJson(json['android']),
+    );
+  }
+}
+
+class ZohoCredentials {
+  String appKey;
+  String accessKey;
+
+  ZohoCredentials({required this.accessKey, required this.appKey});
+
+  factory ZohoCredentials.fromJson(Map<String, dynamic> json) {
+    return ZohoCredentials(
+      accessKey:
+          json['access_key'] ??
+          'HBRrVVdbx%2BWg9mXldFvHn4QEttKMdZMw751f3aoDv3XjLaa%2B4B1Ufh4LnJc4Umytp%2FwLYiY1wGuKNuwMfnZ%2BZeA3%2F8GGHY0Z9JJTwWZEu559p58iZmMA1FL6qDdPT%2BPw',
+      appKey:
+          json['app_key'] ??
+          'tvoUCdhhr23ZvhAlkvEfn32slPJjbvMz2Wy81%2FmQT8Wf98K32XDKRe4xcWd8h4fn_eu',
     );
   }
 }

@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 width: 250,
                 height: 250,
                 fit: BoxFit.contain,
-                repeat: false,
+                repeat: true,
               ),
             ),
             Column(

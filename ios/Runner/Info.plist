@@ -63,15 +63,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We would like access to the camera to allow taking photos and videos to share</string>
+	<string>Welcome Port needs camera access for sharing images with support and video calls through Zoho.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We would like to access your Photo Library to enable sharing Image and Videos</string>
+	<string>Welcome Port needs access to your photo library to let you upload profile pictures, share images with customer support, and attach photos to your bookings and orders.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>We would like access to store Image/Videos in your Photo Library</string>
+	<string>Welcome Port needs permission to save images and videos to your photo library so you can keep copies of important documents, receipts, and shared content.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>We would like access to the microphone to allow recording voice messages</string>
+	<string>Welcome Port needs microphone access to enable voice and video calls with our customer support team through Zoho</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We would like access to location services to update your location on the map</string>
+	<string>Welcome Port needs your location to show nearby port services, update your location on the map for accurate service delivery, and provide location-specific information.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

@@ -6,6 +6,7 @@ import 'package:salesiq_mobilisten/salesiq_mobilisten.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:welcome_port/core/analytics/facebook_analytics_engine.dart';
 import 'package:welcome_port/core/constant/colors.dart';
+import 'package:welcome_port/core/helpers/zoho_helper.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
@@ -48,6 +49,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
   void initState() {
     super.initState();
     FacebookAnalyticsEngine.logPageView(pageName: 'Home');
+    ZohoHelper.trackPageView('Home');
   }
 
   @override

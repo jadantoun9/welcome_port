@@ -195,7 +195,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
 
                   // Search Button
                   WideButton(
-                    text: "Search",
+                    text: AppLocalizations.of(context)!.search,
                     onPressed: () => provider.handleSearch(context, provider),
                     isLoading: provider.isLoading,
                     bgColor: Colors.amber,

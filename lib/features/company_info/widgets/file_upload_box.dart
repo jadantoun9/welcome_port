@@ -136,7 +136,7 @@ class FileUploadBox extends StatelessWidget {
                   Icon(Icons.error_outline, color: Colors.grey[400], size: 40),
                   const SizedBox(height: 8),
                   Text(
-                    'Failed to load image',
+                    AppLocalizations.of(context)!.failedToLoadImage,
                     style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
                 ],

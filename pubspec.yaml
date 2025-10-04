@@ -41,6 +41,7 @@ dependencies:
   salesiq_mobilisten: ^6.5.3
   salesiq_mobilisten_calls: ^0.0.3
   webview_flutter: ^4.13.0
+  lottie: ^3.3.0
 
 dev_dependencies:
   flutter_test:

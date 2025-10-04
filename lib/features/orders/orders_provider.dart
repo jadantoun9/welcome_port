@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/widgets/confirmation_dialog.dart';
 import 'package:welcome_port/features/orders/models/order.dart';
 import 'package:welcome_port/features/orders/orders_service.dart';
@@ -88,6 +89,8 @@ class OrdersProvider extends ChangeNotifier {
   }
 
   void onAccept(BuildContext context, String orderReference) {
+    final l10n = AppLocalizations.of(context)!;
+
     // Create a ValueNotifier that will update when the provider's error changes
     final errorNotifier = ValueNotifier<String>(acceptError ?? '');
 
@@ -101,9 +104,9 @@ class OrdersProvider extends ChangeNotifier {
 
     showConfirmationDialog(
       context: context,
-      title: "Accept Booking",
-      message: "Are you sure you want to accept this booking?",
-      confirmButtonText: "Accept",
+      title: l10n.acceptBooking,
+      message: l10n.areYouSureAcceptBooking,
+      confirmButtonText: l10n.accept,
       errorNotifier: errorNotifier,
       onConfirm: () async {
         final result = await _acceptBooking(orderReference);

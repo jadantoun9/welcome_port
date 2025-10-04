@@ -58,8 +58,8 @@ class OTPScreenContent extends StatelessWidget {
                   children: [
                     const SizedBox(height: 10),
                     Text(
-                      "Email Verification",
-                      style: TextStyle(
+                      l.emailVerification,
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
                       ),
@@ -72,21 +72,12 @@ class OTPScreenContent extends StatelessWidget {
                         message: provider.error!,
                         margin: const EdgeInsets.only(bottom: 20),
                       ),
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(text: "Please enter the code sent to "),
-                          TextSpan(
-                            text: email,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(text: " to verify your account"),
-                        ],
+                    Text(
+                      l.pleaseEnterCodeSentTo(email),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 22),

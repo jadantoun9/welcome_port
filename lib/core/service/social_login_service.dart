@@ -9,6 +9,24 @@ import 'package:welcome_port/core/helpers/error_helpers.dart';
 import 'package:welcome_port/core/helpers/singletons.dart';
 import 'package:welcome_port/core/models/setting.dart';
 
+// Helper function to get localized strings without BuildContext
+String _getLocalizedString(String key) {
+  final locale = Singletons.sharedPref.getString('locale') ?? 'en';
+
+  switch (key) {
+    case 'failedToGetGoogleData':
+      return locale == 'ar'
+          ? 'فشل الحصول على البيانات المطلوبة من جوجل'
+          : 'Failed to get required data from Google';
+    case 'failedToGetAppleEmail':
+      return locale == 'ar'
+          ? 'فشل الحصول على البريد الإلكتروني من تسجيل الدخول بآبل'
+          : 'Failed to get email from Apple sign in';
+    default:
+      return key;
+  }
+}
+
 // Define a class to handle the three possible outcomes
 class LoginResult {
   final CustomerModel? user;
@@ -41,7 +59,7 @@ class SocialLoginService {
       final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
       if (gUser.email.isEmpty || gAuth.accessToken == null) {
-        return LoginResult.error('Failed to get required data from Google');
+        return LoginResult.error(_getLocalizedString('failedToGetGoogleData'));
       }
 
       final displayNameParts = (gUser.displayName ?? '').split(' ');
@@ -108,7 +126,6 @@ class SocialLoginService {
         // Subsequent sign in - retrieve email from token or stored data
         if (credential.identityToken != null) {
           final decodedToken = Jwt.parseJwt(credential.identityToken!);
-          print("decoded token: $decodedToken ");
           email = decodedToken['email'];
         }
         if (email == null || email.isEmpty) {
@@ -129,7 +146,7 @@ class SocialLoginService {
       }
 
       if (email == null || email.isEmpty) {
-        return LoginResult.error('Failed to get email from Apple sign in');
+        return LoginResult.error(_getLocalizedString('failedToGetAppleEmail'));
       }
 
       final result = await _serverSocialLogin(

@@ -133,12 +133,13 @@ class ProfileProvider extends ChangeNotifier {
 
     addListener(updateErrorNotifier);
 
+    final l = AppLocalizations.of(context)!;
+
     showConfirmationDialog(
       context: context,
-      title: "Delete Account",
-      message:
-          "Are you sure you want to delete your account? All your data will be lost",
-      confirmButtonText: "Delete",
+      title: l.deleteAccountTitle,
+      message: l.deleteAccountMessage,
+      confirmButtonText: l.delete,
       errorNotifier: errorNotifier,
       onConfirm: () async {
         final result = await _deleteAccount(sharedProvider);

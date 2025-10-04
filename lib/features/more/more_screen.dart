@@ -260,15 +260,15 @@ class MoreContent extends StatelessWidget {
                   //     sharedProvider.setting?.showCall == true) ...[
                   const SizedBox(height: 35),
                   MenuSection(
-                    title: "CONTACT",
+                    title: l10n.contact,
                     children: [
                       MenuButton(
                         imagePath: 'assets/icons/support.png',
                         iconPadding: 10,
                         title:
                             sharedProvider.setting?.chatType == ChatType.zoho
-                                ? "Live Chat"
-                                : "Chat with us",
+                                ? l10n.liveChat
+                                : l10n.chatWithUs,
                         onTap: () {
                           if (sharedProvider.setting?.chatType ==
                               ChatType.zoho) {
@@ -285,7 +285,7 @@ class MoreContent extends StatelessWidget {
                       if (sharedProvider.setting?.callSupport == true) ...[
                         MenuButton(
                           icon: Icons.phone,
-                          title: "Call Support",
+                          title: l10n.callSupport,
                           onTap: () => ZohoSalesIQCalls.start(),
                         ),
                       ],

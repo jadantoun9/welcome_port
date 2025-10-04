@@ -139,15 +139,15 @@ class DepartureReturnCard extends StatelessWidget {
                 isOrigin
                     ? provider.flightNumberController
                     : provider.returnFlightNumberController,
-            label: 'Flight Number',
+            label: AppLocalizations.of(context)!.flightNumber,
             icon: Icons.confirmation_number,
             backgroundColor: Colors.white,
             onClick: () async {
               NavigationUtils.push(
                 context,
                 FlightPickerScreen(
-                  title: 'Flight Number',
-                  hintText: 'Flight Number',
+                  title: AppLocalizations.of(context)!.flightNumber,
+                  hintText: AppLocalizations.of(context)!.flightNumber,
                   onSubmit: (flight) {
                     if (isDeparture) {
                       provider.setDepartureFlight(flight);
@@ -165,7 +165,7 @@ class DepartureReturnCard extends StatelessWidget {
           if (isDeparture)
             BookingTextfield(
               controller: provider.addressDetailsController,
-              label: 'Additional Directions (Optional)',
+              label: AppLocalizations.of(context)!.additionalDirections,
               icon: Icons.location_on,
               backgroundColor: Colors.white,
               // validator: (value) => provider.validateAddress(value, context),

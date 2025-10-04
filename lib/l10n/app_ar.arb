@@ -316,6 +316,8 @@
     "viewMore": "عرض المزيد",
     "airports": "المطارات",
     "places": "الأماكن",
+    "suggestedAirports": "المطارات المقترحة",
+    "suggestedPlaces": "الأماكن المقترحة",
     "typeAirport": "اكتب المطار",
     "typeCity": "اكتب المدينة",
     "totalOneWayPrice": "السعر الإجمالي للرحلة الواحدة",
@@ -366,5 +368,106 @@
     "selectPaymentMethod": "اختر وسيلة الدفع",
     "pay": "ادفع",
     "paymentFailed": "لم تنجح عملية الدفع. يرجى المحاولة مرة أخرى.",
-    "noPaymentMethodsAvailable": "لا توجد وسائل دفع متاحة"
+    "noPaymentMethodsAvailable": "لا توجد وسائل دفع متاحة",
+    "unexpectedError": "حدث خطأ غير متوقع!",
+    "connectionError": "يرجى التحقق من الاتصال والمحاولة مرة أخرى!",
+    "failedToGetGoogleData": "فشل الحصول على البيانات المطلوبة من جوجل",
+    "failedToGetAppleEmail": "فشل الحصول على البريد الإلكتروني من تسجيل الدخول بآبل",
+    "years": "سنوات",
+    "leaderPassenger": "المسافر الرئيسي",
+    "flightNumber": "رقم الرحلة",
+    "additionalDirections": "اتجاهات إضافية (اختياري)",
+    "typeYourFlightNumber": "اكتب رقم رحلتك",
+    "noFlightsFound": "لم يتم العثور على رحلات",
+    "searchResults": "نتائج البحث",
+    "departureDate": "تاريخ المغادرة",
+    "returnDate": "تاريخ العودة",
+    "fieldRequired": "{field} مطلوب",
+    "@fieldRequired": {
+        "placeholders": {
+            "field": {
+                "type": "String"
+            }
+        }
+    },
+    "flightDate": "تاريخ الرحلة",
+    "returnFlightDate": "تاريخ رحلة العودة",
+    "notAvailable": "غير متوفر",
+    "adult": "بالغ",
+    "adults": "بالغين",
+    "child": "طفل",
+    "infant": "رضيع",
+    "search": "بحث",
+    "dateAfterMinimum": "يجب أن يكون التاريخ بعد الحد الأدنى للتاريخ",
+    "dateBeforeMaximum": "يجب أن يكون التاريخ قبل الحد الأقصى للتاريخ",
+    "failedToLoadImage": "فشل تحميل الصورة",
+    "home": "الرئيسية",
+    "bookings": "الحجوزات",
+    "wallet": "المحفظة",
+    "notifications": "الإشعارات",
+    "contact": "التواصل",
+    "liveChat": "الدردشة المباشرة",
+    "chatWithUs": "تحدث معنا",
+    "callSupport": "اتصل بالدعم",
+    "failedToLoadNotifications": "فشل تحميل الإشعارات",
+    "noNotificationsYet": "لا توجد إشعارات بعد",
+    "yourNotificationsWillAppearHere": "ستظهر إشعاراتك هنا",
+    "errorLoadingBookingDetails": "خطأ في تحميل تفاصيل الحجز",
+    "unknownError": "خطأ غير معروف",
+    "bookingReference": "الحجز #{reference}",
+    "@bookingReference": {
+        "placeholders": {
+            "reference": {
+                "type": "String"
+            }
+        }
+    },
+    "pickupLocation": "موقع الاستلام",
+    "pickupDateLabel": "تاريخ الاستلام",
+    "returnPickupDate": "تاريخ استلام العودة",
+    "downloadVoucher": "تحميل القسيمة",
+    "needHelpContactSupport": "تحتاج مساعدة؟ اتصل بالدعم",
+    "leader": "القائد",
+    "leaderName": "القائد: {firstName} {lastName}",
+    "@leaderName": {
+        "placeholders": {
+            "firstName": {
+                "type": "String"
+            },
+            "lastName": {
+                "type": "String"
+            }
+        }
+    },
+    "accept": "قبول",
+    "view": "عرض",
+    "failedToLoadBookings": "فشل تحميل الحجوزات",
+    "noOrdersFound": "لم يتم العثور على طلبات",
+    "noOrdersFoundWithSearch": "لم يتم العثور على طلبات بهذا البحث",
+    "leaderNameOrOrderId": "اسم القائد / رقم الطلب",
+    "bookingHistory": "سجل الحجوزات",
+    "acceptBooking": "قبول الحجز",
+    "areYouSureAcceptBooking": "هل أنت متأكد من قبول هذا الحجز؟",
+    "emailVerification": "التحقق من البريد الإلكتروني",
+    "pleaseEnterCodeSentTo": "يرجى إدخال الرمز المرسل إلى {email} للتحقق من حسابك",
+    "@pleaseEnterCodeSentTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
+    "deleteAccountTitle": "حذف الحساب",
+    "deleteAccountMessage": "هل أنت متأكد من رغبتك في حذف حسابك؟ سيتم فقدان جميع بياناتك",
+    "delete": "حذف",
+    "description": "الوصف",
+    "inOut": "وارد/صادر",
+    "failedToLoadTransactions": "فشل تحميل المعاملات",
+    "noTransactionsYet": "لا توجد معاملات بعد",
+    "transactionHistoryWillAppearHere": "سيظهر سجل معاملاتك هنا",
+    "walletBalance": "رصيد المحفظة",
+    "topUp": "شحن",
+    "transactionHistory": "سجل المعاملات",
+    "topUpWallet": "شحن المحفظة",
+    "topUpFunctionalityComingSoon": "سيتم تنفيذ وظيفة الشحن هنا."
 }

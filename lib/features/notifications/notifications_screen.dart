@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/features/notifications/notifications_provider.dart';
@@ -58,6 +59,7 @@ class _NotificationsContentState extends State<_NotificationsContent> {
   @override
   Widget build(BuildContext context) {
     final notificationsProvider = Provider.of<NotificationsProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
@@ -78,9 +80,9 @@ class _NotificationsContentState extends State<_NotificationsContent> {
           preferredSize: const Size.fromHeight(1.0),
           child: Container(color: Colors.grey[300], height: 1.0),
         ),
-        title: const Text(
-          'Notifications',
-          style: TextStyle(
+        title: Text(
+          l10n.notifications,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: Colors.black,

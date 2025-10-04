@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:salesiq_mobilisten/salesiq_mobilisten.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -46,6 +47,7 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
   Widget build(BuildContext context) {
     final provider = Provider.of<OrderDetailsProvider>(context);
     final sharedProvider = Provider.of<SharedProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     if (provider.isLoading) {
       return Scaffold(
@@ -59,9 +61,9 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_back, color: Colors.white),
           ),
-          title: const Text(
-            'Booking Details',
-            style: TextStyle(
+          title: Text(
+            l10n.bookingDetails,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
               color: Colors.white,
@@ -84,9 +86,9 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_back, color: Colors.white),
           ),
-          title: const Text(
-            'Booking Details',
-            style: TextStyle(
+          title: Text(
+            l10n.bookingDetails,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
               color: Colors.white,
@@ -99,13 +101,13 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
             children: [
               const Icon(Icons.error_outline, color: Colors.white, size: 48),
               const SizedBox(height: 16),
-              const Text(
-                'Error loading booking details',
-                style: TextStyle(color: Colors.white, fontSize: 18),
+              Text(
+                l10n.errorLoadingBookingDetails,
+                style: const TextStyle(color: Colors.white, fontSize: 18),
               ),
               const SizedBox(height: 8),
               Text(
-                provider.error ?? 'Unknown error',
+                provider.error ?? l10n.unknownError,
                 style: const TextStyle(color: Colors.white70, fontSize: 14),
                 textAlign: TextAlign.center,
               ),
@@ -128,9 +130,9 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
-        title: const Text(
-          'Booking Details',
-          style: TextStyle(
+        title: Text(
+          l10n.bookingDetails,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: Colors.white,
@@ -158,8 +160,8 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Booking #${order.reference}',
-                              style: TextStyle(
+                              l10n.bookingReference(order.reference),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
@@ -201,26 +203,31 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
 
                             _buildCapacityItem(
                               icon: Icons.people,
-                              text:
-                                  'Min 1 - Max ${order.vehicle.maxPassengers} Passengers',
+                              text: l10n.minPassengers(
+                                order.vehicle.maxPassengers,
+                              ),
                             ),
                             const SizedBox(height: 10),
                             _buildCapacityItem(
                               icon: Icons.work_outline,
-                              text: '${order.vehicle.maxLuggage} Suitcase',
+                              text:
+                                  '${order.vehicle.maxLuggage} ${l10n.suitcase}',
                             ),
                             const SizedBox(height: 10),
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.person,
                                   size: 16,
                                   color: Colors.white,
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
-                                  "Leader: ${order.passengerFn} ${order.passengerLn}",
-                                  style: TextStyle(
+                                  l10n.leaderName(
+                                    order.passengerFn,
+                                    order.passengerLn,
+                                  ),
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
@@ -246,13 +253,13 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _buildOrderDetail(
-                                    label: 'Pickup Location',
+                                    label: l10n.pickupLocation,
                                     value:
                                         "${order.from} ${order.routeDirection == Direction.airportToLocation ? order.airport.name : '${order.location.name} \n${order.location.directionNote}'}",
                                   ),
                                   const SizedBox(height: 16),
                                   _buildOrderDetail(
-                                    label: 'Drop-Off Location',
+                                    label: l10n.dropOffLocation,
                                     value:
                                         "${order.to} ${order.routeDirection == Direction.locationToAirport ? order.airport.name : '${order.location.name} \n${order.location.directionNote}'}",
                                   ),
@@ -266,21 +273,22 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _buildOrderDetail(
-                                    label: 'Passengers',
+                                    label: l10n.passengers,
                                     value: _getPassengerSummary(
                                       order.passengers,
+                                      l10n,
                                     ),
                                   ),
                                   const SizedBox(height: 16),
                                   _buildOrderDetail(
-                                    label: 'Pickup Date',
+                                    label: l10n.pickupDateLabel,
                                     value: order.outwardPickupDate,
                                   ),
                                   const SizedBox(height: 16),
                                   if (provider.orderDetails?.tripType ==
                                       TripType.roundTrip)
                                     _buildOrderDetail(
-                                      label: 'Return Pickup Date',
+                                      label: l10n.returnPickupDate,
                                       value:
                                           provider
                                               .orderDetails
@@ -356,9 +364,9 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
                             ),
                             elevation: 0,
                           ),
-                          child: const Text(
-                            'Download Voucher',
-                            style: TextStyle(
+                          child: Text(
+                            l10n.downloadVoucher,
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -393,9 +401,9 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
                             ),
                             elevation: 0,
                           ),
-                          child: const Text(
-                            'Need Help? Contact Support',
-                            style: TextStyle(
+                          child: Text(
+                            l10n.needHelpContactSupport,
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -458,15 +466,18 @@ class _OrderDetailsContentState extends State<_OrderDetailsContent> {
     );
   }
 
-  String _getPassengerSummary(passengers) {
+  String _getPassengerSummary(passengers, AppLocalizations l10n) {
     final adults = passengers.adults;
     final children = passengers.children;
     final infants = passengers.infants;
 
     List<String> parts = [];
-    if (adults > 0) parts.add('$adults Adult${adults > 1 ? 's' : ''}');
-    if (children > 0) parts.add('$children Children');
-    if (infants > 0) parts.add('$infants Infant${infants > 1 ? 's' : ''}');
+    if (adults > 0)
+      parts.add('$adults ${adults > 1 ? l10n.adults : l10n.adult}');
+    if (children > 0)
+      parts.add('$children ${children > 1 ? l10n.children : l10n.child}');
+    if (infants > 0)
+      parts.add('$infants ${infants > 1 ? l10n.infants : l10n.infant}');
 
     return parts.join(', ');
   }

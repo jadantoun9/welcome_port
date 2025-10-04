@@ -48,208 +48,219 @@ class _BookingDetailsContentState extends State<_BookingDetailsContent> {
     final sharedProvider = Provider.of<SharedProvider>(context);
     final l = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: AppColors.primaryColor,
-      appBar: AppBar(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
         backgroundColor: AppColors.primaryColor,
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-        ),
-        title: Text(
-          l.bookingDetails,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
+        appBar: AppBar(
+          backgroundColor: AppColors.primaryColor,
+          elevation: 0,
+          surfaceTintColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+          ),
+          title: Text(
+            l.bookingDetails,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
           ),
         ),
-      ),
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          // Visual Summary Section
-          SliverToBoxAdapter(
-            child: Container(
-              color: AppColors.primaryColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Vehicle image
-                  Container(
-                    height: 200,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: CustomCachedImage(
-                        imageUrl:
-                            provider.preBookRequirementsResponse.vehicle.image,
-                        contain: true,
+        body: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            // Visual Summary Section
+            SliverToBoxAdapter(
+              child: Container(
+                color: AppColors.primaryColor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Vehicle image
+                    Container(
+                      height: 200,
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: CustomCachedImage(
+                          imageUrl:
+                              provider
+                                  .preBookRequirementsResponse
+                                  .vehicle
+                                  .image,
+                          contain: true,
+                        ),
+                      ),
+                    ),
+
+                    // Vehicle details
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Vehicle name
+                          Text(
+                            provider.preBookRequirementsResponse.vehicle.name,
+                            style: const TextStyle(
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+
+                          _buildCapacityItem(
+                            icon: Icons.people,
+                            text: l.minPassengers(
+                              provider
+                                  .preBookRequirementsResponse
+                                  .vehicle
+                                  .maxPassengers,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          _buildCapacityItem(
+                            icon: Icons.work_outline,
+                            text:
+                                '${provider.preBookRequirementsResponse.vehicle.maxLuggage} ${l.suitcase}',
+                          ),
+                          // Capacity details
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    // Booking details in two columns
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Left column
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildBookingDetail(
+                                  label: l.pickupLocation,
+                                  value: _getLocationName(
+                                    provider.preBookRequirementsResponse.origin,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                _buildBookingDetail(
+                                  label: l.dropOffLocation,
+                                  value: _getLocationName(
+                                    provider
+                                        .preBookRequirementsResponse
+                                        .destination,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          // Right column
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildBookingDetail(
+                                  label: l.passengers,
+                                  value: _getPassengerSummary(provider),
+                                ),
+                                const SizedBox(height: 16),
+                                _buildBookingDetail(
+                                  label: l.flightDate,
+                                  value: _formatDateString(
+                                    provider
+                                        .preBookRequirementsResponse
+                                        .outwardDate,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                if (!provider
+                                    .preBookRequirementsResponse
+                                    .isOneWay)
+                                  _buildBookingDetail(
+                                    label: l.returnFlightDate,
+                                    value: _formatDateString(
+                                      provider
+                                              .preBookRequirementsResponse
+                                              .returnDate ??
+                                          '',
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Original Form Section with curved top
+            SliverToBoxAdapter(
+              child: Container(
+                color: AppColors.primaryColor,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 25, 20, 32),
+                    child: Form(
+                      key: provider.formKey,
+                      child: Column(
+                        children: [
+                          CustomerInfoCard(provider: provider),
+                          const SizedBox(height: 24),
+                          DepartureReturnCard(
+                            provider: provider,
+                            isDeparture: true,
+                          ),
+                          const SizedBox(height: 24),
+                          if (!provider
+                              .preBookRequirementsResponse
+                              .isOneWay) ...[
+                            DepartureReturnCard(
+                              provider: provider,
+                              isDeparture: false,
+                            ),
+                            const SizedBox(height: 24),
+                          ],
+                          ContinueButton(
+                            provider: provider,
+                            text: provider.getButtonText(
+                              sharedProvider,
+                              context,
+                            ),
+                            isBooking: provider.isBooking,
+                          ),
+                          const SizedBox(height: 40),
+                        ],
                       ),
                     ),
                   ),
-
-                  // Vehicle details
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Vehicle name
-                        Text(
-                          provider.preBookRequirementsResponse.vehicle.name,
-                          style: const TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-
-                        _buildCapacityItem(
-                          icon: Icons.people,
-                          text: l.minPassengers(
-                            provider
-                                .preBookRequirementsResponse
-                                .vehicle
-                                .maxPassengers,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        _buildCapacityItem(
-                          icon: Icons.work_outline,
-                          text:
-                              '${provider.preBookRequirementsResponse.vehicle.maxLuggage} ${l.suitcase}',
-                        ),
-                        // Capacity details
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  // Booking details in two columns
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Left column
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildBookingDetail(
-                                label: l.pickupLocation,
-                                value: _getLocationName(
-                                  provider.preBookRequirementsResponse.origin,
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              _buildBookingDetail(
-                                label: l.dropOffLocation,
-                                value: _getLocationName(
-                                  provider
-                                      .preBookRequirementsResponse
-                                      .destination,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        // Right column
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildBookingDetail(
-                                label: l.passengers,
-                                value: _getPassengerSummary(provider),
-                              ),
-                              const SizedBox(height: 16),
-                              _buildBookingDetail(
-                                label: "Flight Date",
-                                value: _formatDateString(
-                                  provider
-                                      .preBookRequirementsResponse
-                                      .outwardDate,
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              if (!provider
-                                  .preBookRequirementsResponse
-                                  .isOneWay)
-                                _buildBookingDetail(
-                                  label: "Return Flight Date",
-                                  value: _formatDateString(
-                                    provider
-                                            .preBookRequirementsResponse
-                                            .returnDate ??
-                                        '',
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Original Form Section with curved top
-          SliverToBoxAdapter(
-            child: Container(
-              color: AppColors.primaryColor,
-              child: Container(
-                margin: const EdgeInsets.only(top: 20),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 25, 20, 32),
-                  child: Form(
-                    key: provider.formKey,
-                    child: Column(
-                      children: [
-                        CustomerInfoCard(provider: provider),
-                        const SizedBox(height: 24),
-                        DepartureReturnCard(
-                          provider: provider,
-                          isDeparture: true,
-                        ),
-                        const SizedBox(height: 24),
-                        if (!provider.preBookRequirementsResponse.isOneWay) ...[
-                          DepartureReturnCard(
-                            provider: provider,
-                            isDeparture: false,
-                          ),
-                          const SizedBox(height: 24),
-                        ],
-                        ContinueButton(
-                          provider: provider,
-                          text: provider.getButtonText(sharedProvider, context),
-                          isBooking: provider.isBooking,
-                        ),
-                        const SizedBox(height: 40),
-                      ],
-                    ),
-                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -306,7 +317,8 @@ class _BookingDetailsContentState extends State<_BookingDetailsContent> {
   }
 
   String _getLocationName(dynamic location) {
-    if (location == null) return 'N/A';
+    final l = AppLocalizations.of(context)!;
+    if (location == null) return l.notAvailable;
 
     if (location is ReturnedAirport) {
       return '${location.name} (${location.code})';
@@ -314,21 +326,22 @@ class _BookingDetailsContentState extends State<_BookingDetailsContent> {
       return location.name;
     }
 
-    return 'N/A';
+    return l.notAvailable;
   }
 
   String _getPassengerSummary(BookingDetailsProvider provider) {
+    final l = AppLocalizations.of(context)!;
     final adults = provider.preBookRequirementsResponse.passengers.adults;
     final children = provider.preBookRequirementsResponse.passengers.children;
     final infants = provider.preBookRequirementsResponse.passengers.infants;
 
-    String s = '$adults Adult${adults > 1 ? 's' : ''}';
+    String s = '$adults ${adults > 1 ? l.adults : l.adult}';
 
     if (children > 0) {
-      s += ", $children ${children > 1 ? 'Children' : 'Child'}";
+      s += ", $children ${children > 1 ? l.children : l.child}";
     }
     if (infants > 0) {
-      s += ", $infants Infant${infants > 1 ? 's' : ''}";
+      s += ", $infants ${infants > 1 ? l.infants : l.infant}";
     }
     return s;
   }

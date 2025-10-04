@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
@@ -21,6 +22,7 @@ class BookingCard extends StatelessWidget {
     final isSupplier =
         Provider.of<SharedProvider>(context).customer?.type ==
         CustomerType.supplier;
+    final l10n = AppLocalizations.of(context)!;
 
     return InkwellWithOpacity(
       clickedOpacity: isSupplier ? 1 : 0.6,
@@ -125,8 +127,11 @@ class BookingCard extends StatelessWidget {
                             vertical: 10,
                           ),
                           child: Text(
-                            "Accept",
-                            style: TextStyle(color: Colors.white, fontSize: 14),
+                            l10n.accept,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                       )
@@ -166,8 +171,8 @@ class BookingCard extends StatelessWidget {
                                 vertical: 5,
                               ),
                               child: Text(
-                                "View",
-                                style: TextStyle(
+                                l10n.view,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
                                 ),

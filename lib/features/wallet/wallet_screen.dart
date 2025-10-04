@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:welcome_port/core/models/setting.dart';
 import 'package:welcome_port/core/providers/shared_provider.dart';
@@ -60,6 +61,7 @@ class _WalletContentState extends State<_WalletContent> {
   Widget build(BuildContext context) {
     final sharedProvider = Provider.of<SharedProvider>(context);
     final walletProvider = Provider.of<WalletProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     if (sharedProvider.customer != null &&
         sharedProvider.customer?.type == CustomerType.customer) {
@@ -77,9 +79,9 @@ class _WalletContentState extends State<_WalletContent> {
           preferredSize: const Size.fromHeight(1.0),
           child: Container(color: Colors.grey[300], height: 1.0),
         ),
-        title: const Text(
-          'Wallet',
-          style: TextStyle(
+        title: Text(
+          l10n.wallet,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: Colors.black,
@@ -116,9 +118,9 @@ class _WalletContentState extends State<_WalletContent> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  const Text(
-                    'Transaction History',
-                    style: TextStyle(
+                  Text(
+                    l10n.transactionHistory,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
@@ -142,24 +144,26 @@ class _WalletContentState extends State<_WalletContent> {
   }
 
   void _showTopUpDialog(BuildContext context, WalletProvider walletProvider) {
+    final l10n = AppLocalizations.of(context)!;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Top Up Wallet'),
-          content: const Text('Top up functionality will be implemented here.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Add \$10'),
-            ),
-          ],
+          title: Text(l10n.topUpWallet),
+          content: Text(l10n.topUpFunctionalityComingSoon),
+          // actions: [
+          //   TextButton(
+          //     onPressed: () => Navigator.of(context).pop(),
+          //     child: const Text('Cancel'),
+          //   ),
+          //   TextButton(
+          //     onPressed: () {
+          //       Navigator.of(context).pop();
+          //     },
+          //     child: const Text('Add \$10'),
+          //   ),
+          // ],
         );
       },
     );

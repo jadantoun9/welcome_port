@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
 import 'package:welcome_port/features/orders/orders_provider.dart';
@@ -54,6 +55,7 @@ class _OrdersContentState extends State<_OrdersContent> {
   @override
   Widget build(BuildContext context) {
     final bookingsProvider = Provider.of<OrdersProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
@@ -66,9 +68,9 @@ class _OrdersContentState extends State<_OrdersContent> {
           preferredSize: const Size.fromHeight(1.0),
           child: Container(color: Colors.grey[300], height: 1.0),
         ),
-        title: const Text(
-          'Bookings',
-          style: TextStyle(
+        title: Text(
+          l10n.bookings,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: Colors.black,
@@ -111,7 +113,7 @@ class _OrdersContentState extends State<_OrdersContent> {
                     FocusScope.of(context).unfocus();
                   },
                   decoration: InputDecoration(
-                    hintText: 'Leader Name / Order ID',
+                    hintText: l10n.leaderNameOrOrderId,
                     hintStyle: TextStyle(color: Colors.grey[500], fontSize: 15),
                     prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
                     suffixIcon:
@@ -143,9 +145,9 @@ class _OrdersContentState extends State<_OrdersContent> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  const Text(
-                    'Booking History',
-                    style: TextStyle(
+                  Text(
+                    l10n.bookingHistory,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,

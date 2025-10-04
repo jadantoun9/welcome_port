@@ -5,15 +5,16 @@ import 'package:welcome_port/core/helpers/singletons.dart';
 String _getLocalizedErrorMessage(String key) {
   final locale = Singletons.sharedPref.getString('locale') ?? 'en';
 
+  // Map keys to translation keys in app_en.arb / app_ar.arb
   switch (key) {
     case 'defaultError':
       return locale == 'ar'
-          ? 'حدث خطأ غير متوقع!'
-          : 'An unexpected error occurred!';
+          ? 'حدث خطأ غير متوقع!' // unexpectedError
+          : 'An unexpected error occurred!'; // unexpectedError
     case 'connectionError':
       return locale == 'ar'
-          ? 'يرجى التحقق من الاتصال والمحاولة مرة أخرى!'
-          : 'Please check your connection and try again!';
+          ? 'يرجى التحقق من الاتصال والمحاولة مرة أخرى!' // connectionError
+          : 'Please check your connection and try again!'; // connectionError
     default:
       return key;
   }

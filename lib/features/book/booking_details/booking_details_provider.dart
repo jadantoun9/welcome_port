@@ -72,7 +72,8 @@ class BookingDetailsProvider extends ChangeNotifier {
 
   void _initializeForm() {
     // Fill form with customer data if logged in
-    if (sharedProvider.customer != null) {
+    if (sharedProvider.customer != null &&
+        sharedProvider.customer?.type != CustomerType.agent) {
       final customer = sharedProvider.customer!;
       firstNameController.text = customer.firstName;
       lastNameController.text = customer.lastName;
@@ -236,12 +237,14 @@ class BookingDetailsProvider extends ChangeNotifier {
       minimumDate = initialDate.subtract(const Duration(days: 1));
     }
 
+    final l10n = AppLocalizations.of(context)!;
+
     final result = await NavigationUtils.push(
       context,
       DateTimePickerScreen(
         initialDate: initialDate,
         initialTime: initialTime,
-        title: isDeparture ? 'Departure Date' : 'Return Date',
+        title: isDeparture ? l10n.departureDate : l10n.returnDate,
         maximumDate: maximumDate,
         minimumDate: minimumDate,
       ),
@@ -302,7 +305,9 @@ class BookingDetailsProvider extends ChangeNotifier {
   String? validateRequired(String? value, String fieldName) {
     // For text fields, the value parameter should contain the controller text
     if (value == null || value.isEmpty) {
-      return '$fieldName is required';
+      // Use localized string from shared preferences
+      final locale = sharedProvider.locale.languageCode;
+      return locale == 'ar' ? '$fieldName مطلوب' : '$fieldName is required';
     }
     return null;
   }
@@ -436,7 +441,6 @@ class BookingDetailsProvider extends ChangeNotifier {
     );
     result.fold(
       (error) {
-        print("1: $error");
         showErrorToast(context, error);
         setIsBooking(false);
       },
@@ -447,7 +451,6 @@ class BookingDetailsProvider extends ChangeNotifier {
 
           result.fold(
             (error) {
-              print("2: $error");
               showErrorToast(context, error);
             },
             (reference) {
@@ -458,7 +461,7 @@ class BookingDetailsProvider extends ChangeNotifier {
               );
             },
           );
-        } else if (sharedProvider.customer?.type == CustomerType.customer) {
+        } else {
           setIsBooking(false);
           _showPaymentMethodBottomSheet(context);
         }

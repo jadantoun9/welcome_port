@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/widgets/custom_cached_image.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
@@ -79,6 +80,8 @@ class _FlightPickerScreenState extends State<FlightPickerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -110,7 +113,7 @@ class _FlightPickerScreenState extends State<FlightPickerScreen> {
                     controller: _searchController,
                     focusNode: _searchFocus,
                     decoration: InputDecoration(
-                      hintText: "Type your flight number",
+                      hintText: l10n.typeYourFlightNumber,
                       hintStyle: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 18,
@@ -180,10 +183,10 @@ class _FlightPickerScreenState extends State<FlightPickerScreen> {
     }
 
     if (_flightSuggestions.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'No flights found',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
+          AppLocalizations.of(context)!.noFlightsFound,
+          style: const TextStyle(fontSize: 16, color: Colors.grey),
         ),
       );
     }
@@ -192,7 +195,7 @@ class _FlightPickerScreenState extends State<FlightPickerScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "SEARCH RESULTS",
+          AppLocalizations.of(context)!.searchResults,
           style: TextStyle(
             fontSize: 15,
             color: Colors.grey[500],

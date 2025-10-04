@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/widgets/error_dialog.dart';
@@ -45,11 +46,12 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Container(),
             Center(
-              child: Image.asset(
-                'assets/logos/logo transparent.png',
-                width: 170,
-                height: 170,
-                fit: BoxFit.cover,
+              child: Lottie.asset(
+                'assets/images/splash.json',
+                width: 250,
+                height: 250,
+                fit: BoxFit.contain,
+                repeat: false,
               ),
             ),
             Column(
@@ -58,11 +60,13 @@ class _SplashScreenState extends State<SplashScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: LinearProgressIndicator(
                     backgroundColor: Colors.white.withOpacity(0.3),
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      Colors.white,
+                    ),
                     minHeight: 3,
                   ),
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
               ],
             ),
           ],

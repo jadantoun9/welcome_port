@@ -23,7 +23,6 @@ class NotificationsProvider extends ChangeNotifier {
 
     isLoading = true;
     error = null;
-    print("is loading: $isLoading");
     notifyListeners();
 
     final result = await _notificationsService.getNotifications(
@@ -47,7 +46,6 @@ class NotificationsProvider extends ChangeNotifier {
         hasMoreData = newNotifications.length == limit;
         currentPage++;
         isLoading = false;
-        print("is loading: $isLoading");
         this.error = null;
         notifyListeners();
       },

@@ -207,6 +207,7 @@
   "done": "Done",
   "searchResults": "SEARCH RESULTS",
   "noLocationsFound": "No locations found",
+  "noAirportsFound": "No airports found",
   "popularLocations": "POPULAR LOCATIONS",
   "typeCityOrAirport": "Type city or airport",
   "validationErrorSelectPickupDestination": "Please select pickup and destination locations",
@@ -315,6 +316,8 @@
   "viewMore": "View More",
   "airports": "AIRPORTS",
   "places": "PLACES",
+  "suggestedAirports": "SUGGESTED AIRPORTS",
+  "suggestedPlaces": "SUGGESTED PLACES",
   "typeAirport": "Type airport",
   "typeCity": "Type city",
   "totalOneWayPrice": "Total one-way price",
@@ -358,11 +361,113 @@
   "searchCountry": "Search country",
   "phoneNumberPlaceholder": "Phone Number",
   "retry": "Retry",
+  "failedToLoadOrders": "Failed to load orders",
   "noOrdersYet": "No orders yet",
   "orderHistoryWillAppearHere": "Your order history will appear here",
   "loadMore": "Load More",
   "selectPaymentMethod": "Select Payment Method",
   "pay": "Pay",
   "paymentFailed": "Payment was not successful. Please try again.",
-  "noPaymentMethodsAvailable": "No payment methods available"
+  "noPaymentMethodsAvailable": "No payment methods available",
+  "unexpectedError": "An unexpected error occurred!",
+  "connectionError": "Please check your connection and try again!",
+  "failedToGetGoogleData": "Failed to get required data from Google",
+  "failedToGetAppleEmail": "Failed to get email from Apple sign in",
+  "years": "years",
+  "leaderPassenger": "Leader Passenger",
+  "flightNumber": "Flight Number",
+  "additionalDirections": "Additional Directions (Optional)",
+  "typeYourFlightNumber": "Type your flight number",
+  "noFlightsFound": "No flights found",
+  "searchResults": "SEARCH RESULTS",
+  "departureDate": "Departure Date",
+  "returnDate": "Return Date",
+  "fieldRequired": "{field} is required",
+  "@fieldRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "flightDate": "Flight Date",
+  "returnFlightDate": "Return Flight Date",
+  "notAvailable": "N/A",
+  "adult": "Adult",
+  "adults": "Adults",
+  "child": "Child",
+  "infant": "Infant",
+  "search": "Search",
+  "dateAfterMinimum": "Date must be after minimum date",
+  "dateBeforeMaximum": "Date must be before maximum date",
+  "failedToLoadImage": "Failed to load image",
+  "home": "Home",
+  "bookings": "Bookings",
+  "wallet": "Wallet",
+  "notifications": "Notifications",
+  "contact": "CONTACT",
+  "liveChat": "Live Chat",
+  "chatWithUs": "Chat with us",
+  "callSupport": "Call Support",
+  "failedToLoadNotifications": "Failed to load notifications",
+  "noNotificationsYet": "No notifications yet",
+  "yourNotificationsWillAppearHere": "Your notifications will appear here",
+  "errorLoadingBookingDetails": "Error loading booking details",
+  "unknownError": "Unknown error",
+  "bookingReference": "Booking #{reference}",
+  "@bookingReference": {
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "pickupLocation": "Pickup Location",
+  "pickupDateLabel": "Pickup Date",
+  "returnPickupDate": "Return Pickup Date",
+  "downloadVoucher": "Download Voucher",
+  "needHelpContactSupport": "Need Help? Contact Support",
+  "leader": "Leader",
+  "leaderName": "Leader: {firstName} {lastName}",
+  "@leaderName": {
+    "placeholders": {
+      "firstName": {
+        "type": "String"
+      },
+      "lastName": {
+        "type": "String"
+      }
+    }
+  },
+  "accept": "Accept",
+  "view": "View",
+  "failedToLoadBookings": "Failed to load bookings",
+  "noOrdersFound": "No orders found",
+  "noOrdersFoundWithSearch": "No orders found with this search",
+  "leaderNameOrOrderId": "Leader Name / Order ID",
+  "bookingHistory": "Booking History",
+  "acceptBooking": "Accept Booking",
+  "areYouSureAcceptBooking": "Are you sure you want to accept this booking?",
+  "emailVerification": "Email Verification",
+  "pleaseEnterCodeSentTo": "Please enter the code sent to {email} to verify your account",
+  "@pleaseEnterCodeSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteAccountTitle": "Delete Account",
+  "deleteAccountMessage": "Are you sure you want to delete your account? All your data will be lost",
+  "delete": "Delete",
+  "description": "Description",
+  "inOut": "In/Out",
+  "failedToLoadTransactions": "Failed to load transactions",
+  "noTransactionsYet": "No transactions yet",
+  "transactionHistoryWillAppearHere": "Your transaction history will appear here",
+  "walletBalance": "Wallet Balance",
+  "topUp": "Top-up",
+  "transactionHistory": "Transaction History",
+  "topUpWallet": "Top Up Wallet",
+  "topUpFunctionalityComingSoon": "Top up functionality will be implemented here."
 }

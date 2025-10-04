@@ -379,19 +379,13 @@ class _DateTimePickerScreenState extends State<DateTimePickerScreen> {
 
     if (widget.minimumDate != null &&
         selectedDateTime.isBefore(widget.minimumDate!)) {
-      showErrorToast(
-        context,
-        "Date must be after minimum date ${widget.minimumDate}",
-      );
+      showErrorToast(context, AppLocalizations.of(context)!.dateAfterMinimum);
       return;
     }
 
     if (widget.maximumDate != null &&
         selectedDateTime.isAfter(widget.maximumDate!)) {
-      showErrorToast(
-        context,
-        "Date must be before maximum date ${widget.maximumDate}",
-      );
+      showErrorToast(context, AppLocalizations.of(context)!.dateBeforeMaximum);
       return;
     }
 

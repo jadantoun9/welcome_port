@@ -48,13 +48,14 @@ class BookingsList extends StatelessWidget {
   Widget _buildErrorWidget() {
     return Builder(
       builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
         return Container(
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
               ErrorCard(
-                title: "Failed to load bookings",
-                message: provider.error ?? 'Unknown error',
+                title: l10n.failedToLoadBookings,
+                message: provider.error ?? l10n.unknownError,
                 onRetry: () => provider.refreshBookings(),
               ),
             ],
@@ -80,7 +81,7 @@ class BookingsList extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 provider.searchQuery.isNotEmpty
-                    ? 'No orders found'
+                    ? l.noOrdersFound
                     : l.noOrdersYet,
                 style: TextStyle(
                   fontSize: 16,
@@ -91,7 +92,7 @@ class BookingsList extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 provider.searchQuery.isNotEmpty
-                    ? 'No orders found with this search'
+                    ? l.noOrdersFoundWithSearch
                     : l.orderHistoryWillAppearHere,
                 style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                 textAlign: TextAlign.center,

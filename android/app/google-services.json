@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "25702481865-och59eth4p5flo327saqg5hojkpti4kh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipublish.welcomeport",
+            "certificate_hash": "16c56d5e43598f8391179c86ea25bc4c40856e59"
+          }
+        },
+        {
           "client_id": "25702481865-ldqjuk9j0vg2rrq6r7bp92jt9i4tpk01.apps.googleusercontent.com",
           "client_type": 3
         }

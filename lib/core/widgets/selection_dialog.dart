@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/widgets/custom_cached_image.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
@@ -9,6 +10,8 @@ Future<String?> showSelectionDialog({
   required List<SelectionItem> items,
   String? currentValue,
 }) async {
+  final l10n = AppLocalizations.of(context)!;
+
   Navigator.of(context).popUntil((route) => route is! PopupRoute);
 
   final result = await showDialog<String>(
@@ -69,10 +72,10 @@ Future<String?> showSelectionDialog({
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Text(
-                      'Cancel',
+                    child: Text(
+                      l10n.cancel,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: Colors.black87,

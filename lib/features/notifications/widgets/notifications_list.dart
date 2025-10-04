@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/widgets/error_card.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
 import 'package:welcome_port/features/notifications/notifications_provider.dart';
@@ -48,12 +49,13 @@ class NotificationsList extends StatelessWidget {
   Widget _buildErrorWidget() {
     return Builder(
       builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
         return Container(
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
               ErrorCard(
-                title: "Failed to load notifications",
+                title: l10n.failedToLoadNotifications,
                 message: provider.error ?? 'Unknown error',
                 onRetry: () => provider.refreshNotifications(),
               ),
@@ -67,6 +69,7 @@ class NotificationsList extends StatelessWidget {
   Widget _buildEmptyWidget() {
     return Builder(
       builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
         return Center(
           child: Container(
             padding: const EdgeInsets.only(top: 60),
@@ -79,7 +82,7 @@ class NotificationsList extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No notifications yet',
+                  l10n.noNotificationsYet,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -88,7 +91,7 @@ class NotificationsList extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Your notifications will appear here',
+                  l10n.yourNotificationsWillAppearHere,
                   style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                   textAlign: TextAlign.center,
                 ),

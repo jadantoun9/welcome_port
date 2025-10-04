@@ -10,6 +10,7 @@ import 'package:welcome_port/features/book/home/models/airport_suggestion.dart';
 import 'package:welcome_port/features/book/home/models/gm_location.dart';
 import 'package:welcome_port/features/book/home/models/google_suggested_location.dart';
 import 'package:welcome_port/features/book/home/models/location_type.dart';
+import 'package:welcome_port/features/book/home/utils/data.dart';
 import 'package:welcome_port/features/book/home/utils/google_map_utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -282,9 +283,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   }
 
   Widget _buildSearchResults() {
-    // Hide content when text field is empty
+    // Show initial suggestions when text field is empty
     if (_searchController.text.isEmpty) {
-      return const SizedBox.shrink();
+      return _buildInitialSuggestions();
     }
 
     if (_isLoading) {
@@ -370,6 +371,71 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               style: const TextStyle(fontSize: 16, color: Colors.grey),
               textAlign: TextAlign.center,
             ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildInitialSuggestions() {
+    final shouldShowAirports =
+        widget.restrictToDirection == null ||
+        widget.restrictToDirection == LocationType.airport;
+    final shouldShowPlaces =
+        widget.restrictToDirection == null ||
+        widget.restrictToDirection == LocationType.place;
+
+    if (widget.selectedLocation != null || widget.selectedAirport != null) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Initial Airports Section
+        if (shouldShowAirports) ...[
+          Text(
+            AppLocalizations.of(context)!.suggestedAirports,
+            style: TextStyle(
+              fontSize: 15,
+              color: Colors.grey[500],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            children:
+                initialAirportSuggestions
+                    .map(
+                      (suggestion) => _buildAirportSuggestionItem(suggestion),
+                    )
+                    .toList(),
+          ),
+          const SizedBox(height: 16),
+        ],
+
+        // Initial Places Section
+        if (shouldShowPlaces) ...[
+          Text(
+            AppLocalizations.of(context)!.suggestedPlaces,
+            style: TextStyle(
+              fontSize: 15,
+              color: Colors.grey[500],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            children:
+                initialLocationSuggestions
+                    .map((location) => _buildGoogleMapsSuggestionItem(location))
+                    .toList(),
           ),
         ],
       ],

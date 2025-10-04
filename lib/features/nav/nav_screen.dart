@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/helpers/navigation_utils.dart';
@@ -68,6 +69,7 @@ class CustomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sharedProvider = Provider.of<SharedProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       decoration: BoxDecoration(
@@ -85,14 +87,14 @@ class CustomNavBar extends StatelessWidget {
                   ? [
                     _buildNavItem(
                       index: 0,
-                      label: 'Home',
+                      label: l10n.home,
                       context: context,
                       sharedProvider: sharedProvider,
                       iconPath: 'assets/icons/home.svg',
                     ),
                     _buildNavItem(
                       index: 1,
-                      label: 'Bookings',
+                      label: l10n.bookings,
                       context: context,
                       sharedProvider: sharedProvider,
                       iconPath: 'assets/icons/bookings.svg',
@@ -100,7 +102,7 @@ class CustomNavBar extends StatelessWidget {
                     if (sharedProvider.customer?.type == CustomerType.agent)
                       _buildNavItem(
                         index: 2,
-                        label: 'Wallet',
+                        label: l10n.wallet,
                         context: context,
                         sharedProvider: sharedProvider,
                         iconPath: 'assets/icons/wallet.svg',
@@ -111,7 +113,7 @@ class CustomNavBar extends StatelessWidget {
                           sharedProvider.customer?.type == CustomerType.agent
                               ? 3
                               : 2,
-                      label: 'More',
+                      label: l10n.more,
                       context: context,
                       sharedProvider: sharedProvider,
                       icon: Icons.menu,
@@ -121,14 +123,14 @@ class CustomNavBar extends StatelessWidget {
                     // _buildNavItem(index: 0, label: "", context: context, sharedProvider: sharedProvider)
                     _buildNavItem(
                       index: 0,
-                      label: 'Bookings',
+                      label: l10n.bookings,
                       context: context,
                       sharedProvider: sharedProvider,
                       iconPath: 'assets/icons/bookings.svg',
                     ),
                     _buildNavItem(
                       index: 1,
-                      label: 'Wallet',
+                      label: l10n.wallet,
                       context: context,
                       sharedProvider: sharedProvider,
                       iconPath: 'assets/icons/wallet.svg',
@@ -136,7 +138,7 @@ class CustomNavBar extends StatelessWidget {
                     ),
                     _buildNavItem(
                       index: 2,
-                      label: 'More',
+                      label: l10n.more,
                       context: context,
                       sharedProvider: sharedProvider,
                       icon: Icons.menu,

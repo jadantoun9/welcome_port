@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:welcome_port/core/constant/colors.dart';
 import 'package:welcome_port/core/widgets/inkwell_with_opacity.dart';
 import 'package:welcome_port/core/widgets/loader.dart';
@@ -7,13 +8,18 @@ Future<bool> showConfirmationDialog({
   required BuildContext context,
   required String title,
   required String message,
-  String confirmButtonText = 'Confirm',
-  String cancelButtonText = 'Cancel',
+  String? confirmButtonText,
+  String? cancelButtonText,
   ValueNotifier<String>? errorNotifier,
   Future<bool> Function()? onConfirm,
 }) async {
   bool isLoading = false;
   final localErrorNotifier = errorNotifier ?? ValueNotifier<String>('');
+  final l10n = AppLocalizations.of(context)!;
+
+  // Use provided text or fall back to localized defaults
+  final confirm = confirmButtonText ?? l10n.confirm;
+  final cancel = cancelButtonText ?? l10n.cancel;
 
   Navigator.of(context).popUntil((route) => route is! PopupRoute);
 
@@ -117,7 +123,7 @@ Future<bool> showConfirmationDialog({
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  cancelButtonText,
+                                  cancel,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontSize: 16,
@@ -146,7 +152,7 @@ Future<bool> showConfirmationDialog({
                                     isLoading
                                         ? const Loader()
                                         : Text(
-                                          confirmButtonText,
+                                          confirm,
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                             fontSize: 16,
